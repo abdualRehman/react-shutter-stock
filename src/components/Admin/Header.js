@@ -6,6 +6,8 @@ import { AuthContext } from '../../context/AuthContext';
 import swal from 'sweetalert';
 import M from 'materialize-css';
 
+import { withRouter } from "react-router-dom";
+
 
 class AdminHeader extends React.Component {
     componentDidMount = () => {
@@ -19,7 +21,10 @@ class AdminHeader extends React.Component {
         firebase.auth().signOut().then(() => {
 
             swal("logut", "Sucessfully Logout", "success");
-            window.location.href = "http://localhost:3000/";
+            // window.location.href = "http://localhost:3000/";
+            this.props.history.push({
+                pathname: '/'
+              });
         }).catch((error) => {
             alert("Something Went Wrong Please Try Again");
         });
@@ -226,4 +231,4 @@ class AdminHeader extends React.Component {
         );
     }
 }
-export default AdminHeader;
+export default withRouter(AdminHeader);

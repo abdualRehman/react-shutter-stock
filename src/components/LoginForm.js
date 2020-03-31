@@ -5,6 +5,7 @@ import M from 'materialize-css';
 import swal from 'sweetalert';
 import firebase from '../config/firebase';
 import $ from 'jquery';
+import { withRouter } from "react-router-dom";
 
 
 
@@ -47,8 +48,12 @@ class LoginForm extends Component {
         //     return alert("login fail");
         // }
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((user) => {
-            swal("Login", "Successfully Logedin", "Success")
-            window.location.href = "http://localhost:3000"
+            swal("Login", "Successfully Logedin", "success")
+            // window.location.href = "http://localhost:3000"
+            // this.props.history.push({
+            //     pathname: '/'
+            //   });
+            console.log(user);
         }).catch((error) => {
             console.log(error);
             swal("Login Failed", "Somthing Wrong!", "warning")
@@ -84,8 +89,12 @@ class LoginForm extends Component {
                 tocken: user.refreshToken,
                 
             }).then((user) => {
-                swal("Login", "Successfully Logedin", "Success")
-                window.location.href = "http://localhost:3000"
+                swal("Login", "Successfully Logedin", "success")
+                // window.location.href = "http://localhost:3000"
+                this.props.history.push({
+                    pathname: '/'
+                  });
+                console.log(user)
             })
             // ...
         }).catch((error) => {
@@ -250,7 +259,11 @@ class RegisterForm extends Component {
                     role: 'user',
 
                 }).then((user) => {
-                    window.location.href = "http://localhost:3000";
+                    // window.location.href = "http://localhost:3000";
+                    // this.props.history.push({
+                    //     pathname: '/'
+                    //   });
+                    console.log(user)
                 })
 
             }).catch((error) => {
@@ -364,7 +377,10 @@ class Forms extends React.Component {
                 {(authContext) => {
                     console.log(authContext);
                     if (authContext.isAuthenticated) {
-                        return window.location.href = "http://localhost:3000/user/about";
+                        // return window.location.href = "http://localhost:3000/user/dashboard";
+                       return this.props.history.push({
+                            pathname: '/'
+                          });
                     }
                     return (
                         <div className="Content">
@@ -418,4 +434,4 @@ class Forms extends React.Component {
         );
     }
 }
-export default Forms;
+export default withRouter(Forms);

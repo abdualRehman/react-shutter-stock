@@ -2,7 +2,6 @@ import React from 'react';
 import '../App.css';
 import { GalleryContext } from '../context/GalleryContext';
 // import {Router} from 'react-router' ;
-import SearchResult from './SearchResult';
 import PropTypes from "prop-types"; //fail
 
 
