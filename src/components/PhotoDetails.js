@@ -30,6 +30,10 @@ class PhotoDetails extends React.Component {
     componentDidMount = () => {
         M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), { closeOnClick: false, coverTrigger: false, constrainWidth: false, alignment: "left" });
         M.Collapsible.init(document.querySelectorAll('.collapsible'));
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 
 
@@ -57,6 +61,25 @@ class PhotoDetails extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
+    downloadEPS = () => {
+        // var details = this.state.details;
+        // console.log(details);
+
+        var url = this.state.details.epsURL;
+        var fileName = this.state.details.epsName;
+
+        var tag = document.createElement('a');
+        tag.href = url;
+        tag.download = fileName;
+        document.body.appendChild(tag);
+        tag.click();
+        document.body.removeChild(tag);
+
+
+
+
+    }
+
     downloadImage = () => {
         var url = this.state.details.src;
         var fileName = this.state.details.title;
@@ -82,8 +105,6 @@ class PhotoDetails extends React.Component {
                 document.body.removeChild(tag);
             }
             xhr.send();
-
-
 
         } else {
 
@@ -134,6 +155,8 @@ class PhotoDetails extends React.Component {
             productId: this.state.details.id,
             cartId: cartID,
             creatorId: this.state.details.user_id,
+            epsName: this.state.details.epsName,
+            epsURL : this.state.details.epsURL
         };
 
         var existing = localStorage.getItem('cartItems');
@@ -204,7 +227,10 @@ class PhotoDetails extends React.Component {
                                                                 <div>
                                                                     Created by: {this.findName(userContext)}
                                                                 </div>
-                                                                <br /><br />
+                                                                <br />
+                                                                <div>
+                                                                    Format: */EPS
+                                                                </div>
                                                                 <div>
                                                                     Price: {this.state.details.price_status ? this.state.details.price : "Free"}
                                                                 </div>
@@ -212,7 +238,8 @@ class PhotoDetails extends React.Component {
                                                                 {/* <button className="btn green p-2" style={{width:"100%"}} onClick={this.addToCart} > <i className="fas fa-cart-plus"></i> Add To Cart</button><br /><br /> */}
 
                                                                 {this.state.details.price_status ? <button className="btn green p-2" style={{ width: "100%" }} onClick={this.addToCart} > <i className="fas fa-cart-plus"></i> Add To Cart</button> :
-                                                                    <button className='dropdown-trigger btn downloadBtn green p-1' data-target='dropdown1'><i className="fas fa-download"></i> Download</button>
+                                                                    // <button className='dropdown-trigger btn downloadBtn green p-1' data-target='dropdown1'><i className="fas fa-download"></i> Download</button>
+                                                                    <button className="btn confirmDownload green" style={{ color: "white", paddingTop: "7px", borderRadius: "15px", width: "100%" }} onClick={this.downloadEPS} ><i className="fas fa-download"></i> Download</button>
                                                                 }
 
                                                                 <ul id='dropdown1' style={{ width: "inherit" }} className='dropdown-content downloadContent'>

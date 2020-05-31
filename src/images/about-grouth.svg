@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 61" style="enable-background:new 0 0 60 61;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#D6FDFF;}
+	.st1{filter:url(#Adobe_OpacityMaskFilter);}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st3{mask:url(#mask-2_1_);fill-rule:evenodd;clip-rule:evenodd;fill:#D6FDFF;}
+</style>
+<desc>Created with Sketch.</desc>
+<g id="Main-Screens">
+	<g id="Desktop-HD-with-EC-Grid" transform="translate(-64.000000, -781.000000)">
+		<g id="Grow-Icon" transform="translate(64.000000, 778.000000)">
+			<path id="Fill-1" class="st0" d="M52.7,21.4c-2.4,2.5-5.7,3.7-9,3.7l7.5-7.5c0.7-0.7,0.7-1.8,0-2.5c-0.7-0.7-1.8-0.7-2.5,0
+				l-7.5,7.5c0-3.4,1.2-6.6,3.7-9.1c3-3,7.2-4.3,11.4-3.5C57,14.1,55.7,18.3,52.7,21.4 M59.4,8c-0.2-0.6-0.6-1.1-1.3-1.3
+				c-5.7-1.5-11.7,0.1-15.8,4.2c-4,4-5.6,10-4.3,15.6v23.6c0,1,0.8,1.8,1.8,1.8c1,0,1.8-0.8,1.8-1.8V28.5c0.7,0.1,1.3,0.1,2,0.1
+				c4.3,0,8.5-1.7,11.6-4.8C59.3,19.8,60.9,13.7,59.4,8"/>
+			<g id="Group-5" transform="translate(0.000000, 3.546311)">
+				<g id="Clip-4">
+				</g>
+				<defs>
+					<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="31.7" height="60.4">
+						<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+					</filter>
+				</defs>
+				<mask maskUnits="userSpaceOnUse" x="0" y="0" width="31.7" height="60.4" id="mask-2_1_">
+					<g class="st1">
+						<polygon id="path-1_1_" class="st2" points="0,0 31.7,0 31.7,60.4 0,60.4 						"/>
+					</g>
+				</mask>
+				<path id="Fill-3" class="st3" d="M9.4,22.6C4.5,17.7,2.5,10.8,4,4c6.8-1.5,13.6,0.5,18.4,5.4c4.4,4.4,6.4,10.4,5.7,16.4
+					l-12.3-12c-0.7-0.7-1.8-0.7-2.5,0c-0.7,0.7-0.7,1.8,0,2.5l12.2,11.9C19.5,29,13.7,26.9,9.4,22.6 M24.9,6.9C19,1,10.2-1.4,2,0.8
+					C1.4,1,1,1.5,0.8,2.1c-2.2,8.2,0.2,17.1,6.1,23c4.4,4.5,10.5,6.9,16.7,6.9c1.3,0,2.6-0.1,3.9-0.4v27c0,1,0.8,1.8,1.8,1.8
+					c1,0,1.8-0.8,1.8-1.8v-29C33,21.5,30.7,12.8,24.9,6.9"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

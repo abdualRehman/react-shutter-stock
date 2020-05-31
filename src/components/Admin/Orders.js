@@ -102,8 +102,8 @@ export default class Orders extends React.Component {
                                                 <div>
                                                     <div className="container">
                                                         <div className="row">
-                                                            <div className="col-lg-10 col-md-12 m-auto m-30 ">
-                                                                <div className="card-panel">
+                                                            <div className="col-lg-10 col-md-12 m-auto m-10 ">
+                                                                <div className="card-panel1">
                                                                     <h3>ALL Orders</h3>
                                                                     <br />
                                                                     <div className="table-responsive table-responsive-data2">

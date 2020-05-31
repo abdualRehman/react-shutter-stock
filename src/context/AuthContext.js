@@ -22,7 +22,8 @@ export default class AuthContextProvider extends Component {
                 console.log("User is Loged in");
                 // this.setState({isAuthenticated: true , user : user});
 
-                console.log(currentUser.uid)
+                // console.log(currentUser.uid)
+                
                 var docPath = db.doc('/users/' + currentUser.uid);
 
                 docPath.get().then((user)=>{

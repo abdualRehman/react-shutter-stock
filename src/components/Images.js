@@ -5,10 +5,18 @@ import Search from './Search';
 import { Link } from 'react-router-dom';
 // for gallery
 import Gallery from 'react-photo-masonry';
+
+// new one
+
+import ImageMasonry from 'react-image-masonry';
+
 import Carousel, { Modal, ModalGateway } from "react-images";
 
 // for import images
 import { GalleryContext } from '../context/GalleryContext';
+
+// jQuery
+import $ from 'jquery';
 
 
 class Images extends React.Component {
@@ -20,9 +28,96 @@ class Images extends React.Component {
             previewSrc: "",
             currentImage: "",
             viewerIsOpen: false,
+
+            // Panigation
+            todos: null,
+            currentPage: 1,
+            todosPerPage: 6,
+            upperPageBound: 3,
+            lowerPageBound: 0,
+            isPrevBtnActive: 'disabled',
+            isNextBtnActive: '',
+            pageBound: 3
         }
+
+        this.handleClick = this.handleClick.bind(this);
+        this.btnDecrementClick = this.btnDecrementClick.bind(this);
+        this.btnIncrementClick = this.btnIncrementClick.bind(this);
+        this.btnNextClick = this.btnNextClick.bind(this);
+        this.btnPrevClick = this.btnPrevClick.bind(this);
+        this.setPrevAndNextBtnClass = this.setPrevAndNextBtnClass.bind(this);
     }
 
+    componentDidUpdate = () => {
+        // $("ul li.active").removeClass('active');
+        // $('ul li#' + this.state.currentPage).addClass('active');
+        $("ul li.active").removeClass('active');
+        $('ul li.' + this.state.currentPage).addClass('active');
+    }
+    handleClick = (listid, todos) => {
+        console.log(todos);
+        // let listid = Number(event.target.id);
+        this.setState({
+            currentPage: listid
+        });
+        // $("ul li.active").removeClass('active');
+        // $('ul li#' + listid).addClass('active');
+
+        $("ul li.active").removeClass('active');
+        $('ul li.' + listid).addClass('active');
+
+
+
+        this.setPrevAndNextBtnClass(listid, todos);
+    }
+    setPrevAndNextBtnClass = (listid, todos) => {
+        // let totalPage = Math.ceil(this.state.todos.length / this.state.todosPerPage);
+        let totalPage = Math.ceil(todos.length / this.state.todosPerPage);
+        this.setState({ isNextBtnActive: 'disabled' });
+        this.setState({ isPrevBtnActive: 'disabled' });
+        if (totalPage === listid && totalPage > 1) {
+            this.setState({ isPrevBtnActive: '' });
+        }
+        else if (listid === 1 && totalPage > 1) {
+            this.setState({ isNextBtnActive: '' });
+        }
+        else if (totalPage > 1) {
+            this.setState({ isNextBtnActive: '' });
+            this.setState({ isPrevBtnActive: '' });
+        }
+    }
+    btnIncrementClick = (todos) => {
+        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
+        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
+        let listid = this.state.upperPageBound + 1;
+        this.setState({ currentPage: listid });
+        this.setPrevAndNextBtnClass(listid, todos);
+    }
+    btnDecrementClick = (todos) => {
+        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
+        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
+        let listid = this.state.upperPageBound - this.state.pageBound;
+        this.setState({ currentPage: listid });
+        this.setPrevAndNextBtnClass(listid, todos);
+    }
+    btnPrevClick = (todos) => {
+        if ((this.state.currentPage - 1) % this.state.pageBound === 0) {
+            this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
+            this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
+        }
+        let listid = this.state.currentPage - 1;
+        this.setState({ currentPage: listid });
+        this.setPrevAndNextBtnClass(listid, todos);
+    }
+    btnNextClick = (todos) => {
+        if ((this.state.currentPage + 1) > this.state.upperPageBound) {
+            this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
+            this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
+        }
+        let listid = this.state.currentPage + 1;
+        this.setState({ currentPage: listid });
+        this.setPrevAndNextBtnClass(listid, todos);
+    }
 
     columns = (containerWidth) => {
         let columns = 1;
@@ -32,29 +127,17 @@ class Images extends React.Component {
         return columns;
     }
 
-    checkImage = (event, { photo, index }) => {
-        console.log("event");
-        console.log(event);
-        console.log("Photo");
-        console.log(photo);
-        console.log("index");
-        console.log(index);
-    }
-
     previewPhoto = (photo) => {
 
         this.setState({ previewSrc: photo.src })
 
         console.log(this.state.previewSrc);
     }
-
-
     openLightbox = (index) => {
         console.log(index);
         this.setState({ currentImage: index, viewerIsOpen: true });
 
     };
-
     closeLightbox = () => {
         this.setState({ currentImage: '', viewerIsOpen: false })
     };
@@ -68,13 +151,194 @@ class Images extends React.Component {
             backgroundColor: "#eee",
             cursor: "pointer",
             overflow: "hidden",
-            position: "relative"
+            position: "relative",
+            display: "flex"
         };
+
+
 
 
         return (
             <GalleryContext.Consumer>
                 {(gallery) => {
+
+                    const todos = gallery.photos;
+                    const { currentPage, todosPerPage, upperPageBound, lowerPageBound, isPrevBtnActive, isNextBtnActive } = this.state;
+                    // Logic for displaying current todos
+                    const indexOfLastTodo = currentPage * todosPerPage;
+                    const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+                    const currentTodos = todos.slice(indexOfFirstTodo, indexOfLastTodo);
+
+
+                    // currently working
+                    const renderTodos = currentTodos.map((item, index) => {
+                        return (
+                            <div className="brick" key={index} >
+                                <figure className="snip0016 caption" style={{...cont}} >
+                                    {item.src ?   
+                                    <img className="gallery" alt={index} src={item.src} /> : <img className="gallery" alt={index} src={FreeLabel} />   }
+                                    <figcaption>
+                                        {!item.price_status ?
+                                            <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
+                                            : null}
+                                        <div className="details">
+                                            <h2>{item.title}</h2>
+                                            <p>{item.description}</p>
+                                        </div>
+                                        <div className="links">
+                                            <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.id}`, state: item }}><i className="small material-icons left">file_download</i>Download</Link>&nbsp;&nbsp;&nbsp;
+                                                <a href="" className="waves-effect waves-light btn light-blue" onClick={(e) => {
+                                                e.preventDefault();
+                                                this.openLightbox(indexOfFirstTodo + index)
+                                            }}><i className="small material-icons left ">visibility</i>Preview </a>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+
+                            </div>
+
+
+                        )
+
+                    });
+
+                    // const renderTodos = 
+                    //     <div>
+                    //         <ImageMasonry
+                    //             numCols={3}
+                    //             animate={false}
+                    //         >
+                    //             {currentTodos.map((item, i) => {
+                    //                 console.log(item);
+                    //                 return (
+                    //                     // <img key={i} className="gallery" alt={i} src={item.src} />
+                    //                     <div style={{ padding: "10px", backgroundColor: "transparent" }} key={i} >
+                    //                         <figure className="snip0016 caption" style={{ ...cont }} >
+                    //                             <img className="gallery" alt={i} src={item.src} style={{ height: "100%", width: "100%" }} />
+                    //                             <figcaption>
+                    //                                 {!item.price_status ?
+                    //                                     <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
+                    //                                     : null}
+                    //                                 <div className="details">
+                    //                                     <h2>{item.title}</h2>
+                    //                                     {/* <p>{item.description}</p> */}
+                    //                                 </div>
+                    //                                 <div className="links">
+                    //                                     <Link className="waves-effect waves-light btn black" style={{ width: "auto" }} to={{ pathname: `/details/${item.id}`, state: item }}><i style={{ width: "auto" }} className="small material-icons left">file_download</i><em style={{ width: "auto" }} >Download</em></Link>&nbsp;&nbsp;&nbsp;
+                    //                                         <a href="" className="waves-effect waves-light btn light-blue" style={{ width: "auto" }} onClick={(e) => {
+                    //                                         e.preventDefault();
+                    //                                         this.openLightbox(i)
+                    //                                     }}><i className="small material-icons left" style={{ width: "auto" }} >visibility</i><em style={{ width: "auto" }} > Preview </em> </a>
+                    //                                 </div>
+                    //                             </figcaption>
+                    //                         </figure>
+                    //                     </div>
+                    //                 )
+                    //             })}
+
+                    //         </ImageMasonry>
+                    //     </div>
+
+
+
+
+                    // let renderTodos = <div>
+                    {/* <Gallery photos={currentTodos} direction={"row"} renderImage={(item) => {
+                                console.log(item)
+                                return (
+                                    <div style={{ padding: "5px", backgroundColor: "transparent", minHeight: item.photo.height, maxWidth: item.photo.width}} key={item.index} >
+                                        <figure className="snip0016 caption" style={{ minHeight: item.photo.height, maxWidth: item.photo.width, ...cont }} >
+                                            <img className="gallery" alt={item.index} src={item.photo.src} style={{ minHeight: item.photo.height, maxWidth: item.photo.width }} />
+                                            <figcaption>
+                                                {!item.photo.price_status ?
+                                                    <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
+                                                    : null}
+                                                <div className="details">
+                                                    <h2>{item.photo.title}</h2>
+                                                    <p>{item.photo.description}</p>
+                                                </div>
+                                                <div className="links">
+                                                    <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.photo.id}`, state: item.photo }}><i className="small material-icons left">file_download</i>Download</Link>&nbsp;&nbsp;&nbsp;
+                                                    <a href="" className="waves-effect waves-light btn light-blue" onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.openLightbox(item.index)
+                                                    }}><i className="small material-icons left ">visibility</i>Preview </a>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                )
+                            }} /> */}
+                    {/* <ImageMasonry numCols={3} animate={true} >
+                            {currentTodos.map((item, i) => {
+                                console.log(item);
+                                return (
+                                    <div style={{ padding: "10px", backgroundColor: "transparent" }} key={i} >
+                                        <figure className="snip0016 caption" style={{ ...cont }} >
+                                            <img className="gallery" alt={i} src={item.src} style={{ height: "100%", width: "100%" }} />
+                                            <figcaption>
+                                                {!item.price_status ?
+                                                    <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
+                                                    : null}
+                                                <div className="details">
+                                                    <h2>{item.title}</h2>
+                                                </div>
+                                                <div className="links">
+                                                    <Link className="waves-effect waves-light btn black" style={{ width: "auto" }} to={{ pathname: `/details/${item.id}`, state: item }}><i style={{ width: "auto" }} className="small material-icons left">file_download</i><em style={{ width: "auto" }} >Download</em></Link>&nbsp;&nbsp;&nbsp;
+                                                    <a href="" className="waves-effect waves-light btn light-blue" style={{ width: "auto" }} onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.openLightbox(i)
+                                                    }}><i className="small material-icons left" style={{ width: "auto" }} >visibility</i><em style={{ width: "auto" }} > Preview </em> </a>
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                )
+                            })}
+                        </ImageMasonry> */}
+                    // </div>
+
+                    // Logic for displaying page numbers
+                    const pageNumbers = [];
+                    for (let i = 1; i <= Math.ceil(todos.length / todosPerPage); i++) {
+                        pageNumbers.push(i);
+                    }
+                    const renderPageNumbers = pageNumbers.map(number => {
+                        if (number === 1 && currentPage === 1) {
+                            return (
+                                <li key={number} className='active' id={number}><a href='#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
+                            )
+                        }
+                        else if ((number < upperPageBound + 1) && number > lowerPageBound) {
+                            return (
+                                <li key={number} className={`${number}`} id={number}><a href='#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
+                            )
+                        }
+                    });
+                    let pageIncrementBtn = null;
+                    if (pageNumbers.length > upperPageBound) {
+                        pageIncrementBtn = <li className=''><a href='#' onClick={() => this.btnIncrementClick(todos)}> &hellip; </a></li>
+                    }
+                    let pageDecrementBtn = null;
+                    if (lowerPageBound >= 1) {
+                        pageDecrementBtn = <li className=''><a href='#' onClick={() => this.btnDecrementClick(todos)}> &hellip; </a></li>
+                    }
+                    let renderPrevBtn = null;
+                    if (isPrevBtnActive === 'disabled') {
+                        renderPrevBtn = <li className={isPrevBtnActive}><span id="btnPrev"> <i className="material-icons">chevron_left</i> </span></li>
+                    }
+                    else {
+                        renderPrevBtn = <li className={isPrevBtnActive}><a href='#' id="btnPrev" onClick={() => this.btnPrevClick(todos)}> <i className="material-icons">chevron_left</i> </a></li>
+                    }
+                    let renderNextBtn = null;
+                    if (isNextBtnActive === 'disabled') {
+                        renderNextBtn = <li className={isNextBtnActive}><span id="btnNext"> <i className="material-icons">chevron_right</i> </span></li>
+                    }
+                    else {
+                        renderNextBtn = <li className={isNextBtnActive}><a href='#' id="btnNext" onClick={() => this.btnNextClick(todos)}> <i className="material-icons">chevron_right</i> </a></li>
+                    }
+
+
 
                     return (
 
@@ -95,38 +359,32 @@ class Images extends React.Component {
                                             Images
 			                        </span>
                                     </div>
+
+                                    {gallery.photos.length !== 0 ?
+                                    <div>
+                                        
+                                        <ul className="pagination">
+                                            {renderPrevBtn}
+                                            {pageDecrementBtn}
+                                            {renderPageNumbers}
+                                            {pageIncrementBtn}
+                                            {renderNextBtn}
+                                        </ul>
+                                        <br />
+                                    </div> : null}
+
+
+
+
                                 </div>
 
                                 <br />
                             </div>
                             <div className="container">
-
-                                {/* <Gallery photos={photos} direction="row" columns={this.columns} onClick={this.checkImage} /> */}
-
-                                {/* <Gallery photos={photos} direction="row" renderImage={(item) => {
-                        return (
-                            <figure className="snip0016 caption" style={{ margin: item.margin, minHeight: item.photo.height, width: item.photo.width, ...cont }} key={item.index} >
-                                <img className="gallery" alt={item.index} {...item.photo} style={{ height: "100%", width: item.photo.width }} />
-
-                                <figcaption>
-                                    <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
-                                    <div className="details">
-                                        <h2>I think the <span>surest</span> sign </h2>
-                                        <p>That intelligent life exists elsewhere in the universe is that none of it has tried to contact us.</p>
-                                    </div>
-                                    <div className="links">
-                                        <a className="waves-effect waves-light btn black" href="!#">Download / Details</a>
-                                        <a className="waves-effect waves-light btn" onClick={() => this.openLightbox(item.index)}>Preview</a>
-                                    </div>
-
-                                </figcaption>
-                            </figure>
-                        )
-                    }} /> */}
-                                <Gallery photos={gallery.photos} direction="row" renderImage={(item) => {
+                                {/* <Gallery photos={gallery.photos} direction="row" renderImage={(item) => {
                                     return (
                                         <figure className="snip0016 caption" style={{ margin: item.margin, minHeight: item.photo.height, width: item.photo.width, ...cont }} key={item.index} >
-                                            <img className="gallery" alt={item.index} {...item.photo} style={{ height: "100%", width: "100%" }} />
+                                            <img className="gallery" alt={item.index} src={item.photo.src} style={{ height: "100%", width: "100%" }} />
                                             <figcaption>
                                                 {!item.photo.price_status ?
                                                     <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
@@ -136,16 +394,69 @@ class Images extends React.Component {
                                                     <p>{item.photo.description}</p>
                                                 </div>
                                                 <div className="links">
-                                                    <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.photo.id}`, state: item.photo }}  >Download / Details</Link>
-                                                    <a href="" className="waves-effect waves-light btn" onClick={(e) =>{
+                                                    <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.photo.id}`, state: item.photo }}><i className="small material-icons left">file_download</i>Download</Link>&nbsp;&nbsp;&nbsp;
+                                                    <a href="" className="waves-effect waves-light btn light-blue" onClick={(e) =>{
                                                         e.preventDefault();
-                                                        this.openLightbox(item.index)}}>Preview</a>
+                                                        this.openLightbox(item.index)}}><i className="small material-icons left ">visibility</i>Preview </a>
                                                 </div>
                                             </figcaption>
                                         </figure>
                                     )
-                                }} />
+                                }} /> */}
 
+                                {gallery.photos.length !== 0 ?
+                                    <div>
+                                        <div className="masonry bordered" style={{width:"100%" , margin:"0px" , padding:"0px"}}>
+                                            {renderTodos}
+                                        </div>
+                                        <br />
+                                        <ul className="pagination">
+                                            {renderPrevBtn}
+                                            {pageDecrementBtn}
+                                            {renderPageNumbers}
+                                            {pageIncrementBtn}
+                                            {renderNextBtn}
+                                        </ul>
+                                    </div> : null}
+
+                                {gallery.photos.length !== 0 ?
+                                    <div>
+                                        {/* {console.log(gallery.photos)} */}
+                                        {/* <ImageMasonry
+                                            numCols={3}
+                                            animate={true}
+                                            scrollable={false}
+                                            className="imagesGallery"
+                                            forceOrder={true}
+                                        >
+                                            {gallery.photos.map((item, i) => {
+                                                // console.log(item);
+                                                return (
+                                                    <div style={{ padding: "10px", backgroundColor: "transparent" }} key={i} >
+                                                        <figure className="snip0016 caption" style={{ ...cont }} >
+                                                            <img className="gallery" alt={i} src={item.src} style={{ height: "100%", width: "100%" }} />
+                                                            <figcaption>
+                                                                {!item.price_status ?
+                                                                    <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
+                                                                    : null}
+                                                                <div className="details">
+                                                                    <h2>{item.title}</h2>
+                                                                    <p>{item.description}</p>
+                                                                </div>
+                                                                <div className="links">
+                                                                    <Link className="waves-effect waves-light btn black" style={{ width: "auto" }} to={{ pathname: `/details/${item.id}`, state: item }}><i style={{ width: "auto" }} className="small material-icons left">file_download</i><em style={{ width: "auto" }} >Download</em></Link>&nbsp;&nbsp;&nbsp;
+                                                            <a href="" className="waves-effect waves-light btn light-blue" style={{ width: "auto" }} onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        this.openLightbox(i)
+                                                                    }}><i className="small material-icons left" style={{ width: "auto" }} >visibility</i><em style={{ width: "auto" }} > Preview </em> </a>
+                                                                </div>
+                                                            </figcaption>
+                                                        </figure>
+                                                    </div>
+                                                )
+                                            })}
+                                        </ImageMasonry> */}
+                                    </div> : null}
 
                             </div>
 
@@ -174,8 +485,9 @@ class Images extends React.Component {
 
                         </div >
                     );
-                }}
-            </GalleryContext.Consumer>
+                }
+                }
+            </GalleryContext.Consumer >
         )
     }
 }

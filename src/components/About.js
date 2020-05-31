@@ -1,5 +1,7 @@
 import React from 'react';
 // import * as jQuery from 'jquery';
+import Header2 from './Header2';
+import Footer from './Footer';
 
 class About extends React.Component {
 
@@ -8,523 +10,99 @@ class About extends React.Component {
 
 
     render() {
+        const aboutImage = require('../images/about-image.jpg');
+        const aboutCustomer = require('../images/about-customer.jpg');
 
-       
-
-
-
-
-        // this.componentDidMount = () => {
-        //     (($) => {
-        //         // Dropdown 
-        //         try {
-        //             var menu = $('.js-item-menu');
-        //             var sub_menu_is_showed = -1;
-    
-        //             for (var i = 0; i < menu.length; i++) {
-        //                 $(menu[i]).on('click', function (e) {
-        //                     e.preventDefault();
-        //                     $('.js-right-sidebar').removeClass("show-sidebar");
-        //                     if (jQuery.inArray(this, menu) == sub_menu_is_showed) {
-        //                         $(this).toggleClass('show-dropdown');
-        //                         sub_menu_is_showed = -1;
-        //                     }
-        //                     else {
-        //                         for (var i = 0; i < menu.length; i++) {
-        //                             $(menu[i]).removeClass("show-dropdown");
-        //                         }
-        //                         $(this).toggleClass('show-dropdown');
-        //                         sub_menu_is_showed = jQuery.inArray(this, menu);
-        //                     }
-        //                 });
-        //             }
-        //             $(".js-item-menu, .js-dropdown").click(function (event) {
-        //                 event.stopPropagation();
-        //             });
-    
-        //             $("body,html").on("click", function () {
-        //                 for (var i = 0; i < menu.length; i++) {
-        //                     menu[i].classList.remove("show-dropdown");
-        //                 }
-        //                 sub_menu_is_showed = -1;
-        //             });
-    
-        //         } catch (error) {
-        //             console.log(error);
-        //         }
-    
-    
-        //     })(jQuery)
-        // }
-
-
+        const aboutContent = require('../images/about-content.svg');
+        const aboutGrouth = require('../images/about-grouth.svg');
+        const aboutRecognization = require('../images/about-recognization.svg');
 
         return (
-            <div className="container-fluid p-0">
 
-                {/* <header className="header-desktop3 d-none d-lg-block">
-                    <div className="section__content section__content--p35">
-                        <div className="header3-wrap">
-                            <div className="header__logo">
-                                <a href="#">
-                                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                                </a>
+            <div>
+                <div className="container-fluid aboutCoverPic">
+                    <Header2 />
+                    <div className="col-md-6 aboutTopContent">
+                        <h1 className="text-white">About S-Stock</h1>
+                        <p className="text-white">
+                            We sell images. We add over 100,000 new images every day, sourced from photographers and photo agencies in 173 countries. We pay our photographers a higher percentage of the sale than our competitors and it’s easy to get your images online.
+                        </p>
+                    </div>
+                </div>
+                {/* <br /> */}
+                <div style={{ backgroundColor: "#FFF" }} >
+                    <div className="container">
+                        <div className="row aboutSection2">
+                            <div className="col-md-6">
+                                <img src={aboutImage} alt="aboutImage" />
+                                <h2>Our images</h2>
+                                <p>We have a bigger, broader, more unique collection than any other library and every day we supply thousands of creative professionals including designers, marketing departments, news desks, and publishers with images produced by the best professional photographers around.</p>
                             </div>
-                            <div className="header__navbar">
-                                <ul className="list-unstyled">
-                                    <li className="has-sub">
-                                        <a href="#">
-                                            <i className="fas fa-tachometer-alt"></i>Dashboard
-                                    <span className="bot-line"></span>
-                                        </a>
-                                        <ul className="header3-sub-list list-unstyled">
-                                            <li>
-                                                <a href="index.html">Dashboard 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="index2.html">Dashboard 2</a>
-                                            </li>
-                                            <li>
-                                                <a href="index3.html">Dashboard 3</a>
-                                            </li>
-                                            <li>
-                                                <a href="index4.html">Dashboard 4</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i className="fas fa-shopping-basket"></i>
-                                            <span className="bot-line"></span>eCommerce</a>
-                                    </li>
-                                    <li>
-                                        <a href="table.html">
-                                            <i className="fas fa-trophy"></i>
-                                            <span className="bot-line"></span>Features</a>
-                                    </li>
-                                    <li className="has-sub">
-                                        <a href="#">
-                                            <i className="fas fa-copy"></i>
-                                            <span className="bot-line"></span>Pages</a>
-                                        <ul className="header3-sub-list list-unstyled">
-                                            <li>
-                                                <a href="login.html">Login</a>
-                                            </li>
-                                            <li>
-                                                <a href="register.html">Register</a>
-                                            </li>
-                                            <li>
-                                                <a href="forget-pass.html">Forget Password</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li className="has-sub">
-                                        <a href="#">
-                                            <i className="fas fa-desktop"></i>
-                                            <span className="bot-line"></span>UI Elements</a>
-                                        <ul className="header3-sub-list list-unstyled">
-                                            <li>
-                                                <a href="button.html">Button</a>
-                                            </li>
-                                            <li>
-                                                <a href="badge.html">Badges</a>
-                                            </li>
-                                            <li>
-                                                <a href="tab.html">Tabs</a>
-                                            </li>
-                                            <li>
-                                                <a href="card.html">Cards</a>
-                                            </li>
-                                            <li>
-                                                <a href="alert.html">Alerts</a>
-                                            </li>
-                                            <li>
-                                                <a href="progress-bar.html">Progress Bars</a>
-                                            </li>
-                                            <li>
-                                                <a href="modal.html">Modals</a>
-                                            </li>
-                                            <li>
-                                                <a href="switch.html">Switchs</a>
-                                            </li>
-                                            <li>
-                                                <a href="grid.html">Grids</a>
-                                            </li>
-                                            <li>
-                                                <a href="fontawesome.html">FontAwesome</a>
-                                            </li>
-                                            <li>
-                                                <a href="typo.html">Typography</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <div className="col-md-6">
+                                <img src={aboutCustomer} alt="aboutImage" />
+                                <h2>Customer service</h2>
+                                <p>
+                                    We have the best customer service in the industry, our friendly team of image buying experts are on hand to help you out via email, phone or live chat wherever you are in the world.
+                            </p>
+
                             </div>
-                            <div className="header__tool">
-                                <div className="header-button-item has-noti js-item-menu">
-                                    <i className="zmdi zmdi-notifications"></i>
-                                    <div className="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                                        <div className="notifi__title">
-                                            <p>You have 3 Notifications</p>
-                                        </div>
-                                        <div className="notifi__item">
-                                            <div className="bg-c1 img-cir img-40">
-                                                <i className="zmdi zmdi-email-open"></i>
-                                            </div>
-                                            <div className="content">
-                                                <p>You got a email notification</p>
-                                                <span className="date">April 12, 2018 06:50</span>
-                                            </div>
-                                        </div>
-                                        <div className="notifi__item">
-                                            <div className="bg-c2 img-cir img-40">
-                                                <i className="zmdi zmdi-account-box"></i>
-                                            </div>
-                                            <div className="content">
-                                                <p>Your account has been blocked</p>
-                                                <span className="date">April 12, 2018 06:50</span>
-                                            </div>
-                                        </div>
-                                        <div className="notifi__item">
-                                            <div className="bg-c3 img-cir img-40">
-                                                <i className="zmdi zmdi-file-text"></i>
-                                            </div>
-                                            <div className="content">
-                                                <p>You got a new file</p>
-                                                <span className="date">April 12, 2018 06:50</span>
-                                            </div>
-                                        </div>
-                                        <div className="notifi__footer">
-                                            <a href="#">All notifications</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="header-button-item js-item-menu">
-                                    <i className="zmdi zmdi-settings"></i>
-                                    <div className="setting-dropdown js-dropdown">
-                                        <div className="account-dropdown__body">
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-account"></i>Account</a>
-                                            </div>
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-settings"></i>Setting</a>
-                                            </div>
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-money-box"></i>Billing</a>
-                                            </div>
-                                        </div>
-                                        <div className="account-dropdown__body">
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-globe"></i>Language</a>
-                                            </div>
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-pin"></i>Location</a>
-                                            </div>
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-email"></i>Email</a>
-                                            </div>
-                                            <div className="account-dropdown__item">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-notifications"></i>Notifications</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="account-wrap">
-                                    <div className="account-item account-item--style2 clearfix js-item-menu">
-                                        <div className="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                        </div>
-                                        <div className="content">
-                                            <a className="js-acc-btn" href="#">john doe</a>
-                                        </div>
-                                        <div className="account-dropdown js-dropdown">
-                                            <div className="info clearfix">
-                                                <div className="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                    </a>
-                                                </div>
-                                                <div className="content">
-                                                    <h5 className="name">
-                                                        <a href="#">john doe</a>
-                                                    </h5>
-                                                    <span className="email">johndoe@example.com</span>
-                                                </div>
-                                            </div>
-                                            <div className="account-dropdown__body">
-                                                <div className="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i className="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div className="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i className="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div className="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i className="zmdi zmdi-money-box"></i>Billing</a>
-                                                </div>
-                                            </div>
-                                            <div className="account-dropdown__footer">
-                                                <a href="#">
-                                                    <i className="zmdi zmdi-power"></i>Logout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+
+                        <div className="row aboutSection3">
+                            <h1>Who we are</h1>
+                            <p>Launched in 2018, S-Stock is the leading online network for photographers with over 15 million members worldwide. Photographers come to S-Stock to discover and share incredible photos, gain meaningful exposure, compete in photo contests, and license their photos through our exclusive distribution partners.</p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div className="aboutSection5" style={{ backgroundColor: "#027a95" }}>
+                    <div className="container">
+                        <h2>Our commitment to photographers</h2>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <img src={aboutContent} alt="aboutContent" className="responsive-img image_8" /><br />
+                                <h3>Content</h3>
+                                <p>We believe that great content should speak for itself and we take pride in helping all photographers showcase their incredible work—it’s at the core of everything we do.</p>
+                            </div>
+                            <div className="col-md-4">
+                                <img src={aboutGrouth} alt="aboutGrouth" className="responsive-img image_8" /><br />
+                                <h3>Growth</h3>
+                                <p>The creative journey doesn’t have an end; there’s always room for improvement. We’re committed to creating a platform that challenges you to keep learning, and step outside of your comfort zone.</p>
+                            </div>
+                            <div className="col-md-4">
+                                <img src={aboutRecognization} alt="aboutRecognization" className="responsive-img image_8" /><br />
+                                <h3>Recognition</h3>
+                                <p>You work hard as a photographer and we know the importance of being recognized for your work and skills. We’re constantly building ways to ensure our photographers get the recognition they deserve.</p>
                             </div>
                         </div>
                     </div>
-                </header>
+                </div>
+                <div className="container-fluid aboutSection4">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h3>Our contributors think we’re great too</h3>
+                                <p>
+                                    We’re easy to work with, we’re non-exclusive and we don’t tie our contributors in with long-term contracts. We don’t edit our collection either so our contributors can choose what they want to sell.
 
-                <header className="header-mobile header-mobile-2 d-block d-lg-none">
-                    <div className="header-mobile__bar">
-                        <div className="container-fluid">
-                            <div className="header-mobile-inner">
-                                <a className="logo" href="index.html">
-                                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                                </a>
-                                <button className="hamburger hamburger--slider" type="button">
-                                    <span className="hamburger-box">
-                                        <span className="hamburger-inner"></span>
-                                    </span>
-                                </button>
+    This leads to a more diverse collection and less hoops for our artists to jump through. But we also believe in a fairer world by giving higher commissions splits than our core competitors.
+
+    Our ‘100% students’ project supports photography students while they study. We give students 100% of the money they make from the sale of their images on S-Stock.
+                                </p>
+
                             </div>
                         </div>
                     </div>
-                    <nav className="navbar-mobile">
-                        <div className="container-fluid">
-                            <ul className="navbar-mobile__list list-unstyled">
-                                <li className="has-sub">
-                                    <a className="js-arrow" href="#">
-                                        <i className="fas fa-tachometer-alt"></i>Dashboard</a>
-                                    <ul className="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                        <li>
-                                            <a href="index.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="index2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a href="index3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="index4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="chart.html">
-                                        <i className="fas fa-chart-bar"></i>Charts</a>
-                                </li>
-                                <li>
-                                    <a href="table.html">
-                                        <i className="fas fa-table"></i>Tables</a>
-                                </li>
-                                <li>
-                                    <a href="form.html">
-                                        <i className="far fa-check-square"></i>Forms</a>
-                                </li>
-                                <li>
-                                    <a href="calendar.html">
-                                        <i className="fas fa-calendar-alt"></i>Calendar</a>
-                                </li>
-                                <li>
-                                    <a href="map.html">
-                                        <i className="fas fa-map-marker-alt"></i>Maps</a>
-                                </li>
-                                <li className="has-sub">
-                                    <a className="js-arrow" href="#">
-                                        <i className="fas fa-copy"></i>Pages</a>
-                                    <ul className="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                        <li>
-                                            <a href="login.html">Login</a>
-                                        </li>
-                                        <li>
-                                            <a href="register.html">Register</a>
-                                        </li>
-                                        <li>
-                                            <a href="forget-pass.html">Forget Password</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li className="has-sub">
-                                    <a className="js-arrow" href="#">
-                                        <i className="fas fa-desktop"></i>UI Elements</a>
-                                    <ul className="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                        <li>
-                                            <a href="button.html">Button</a>
-                                        </li>
-                                        <li>
-                                            <a href="badge.html">Badges</a>
-                                        </li>
-                                        <li>
-                                            <a href="tab.html">Tabs</a>
-                                        </li>
-                                        <li>
-                                            <a href="card.html">Cards</a>
-                                        </li>
-                                        <li>
-                                            <a href="alert.html">Alerts</a>
-                                        </li>
-                                        <li>
-                                            <a href="progress-bar.html">Progress Bars</a>
-                                        </li>
-                                        <li>
-                                            <a href="modal.html">Modals</a>
-                                        </li>
-                                        <li>
-                                            <a href="switch.html">Switchs</a>
-                                        </li>
-                                        <li>
-                                            <a href="grid.html">Grids</a>
-                                        </li>
-                                        <li>
-                                            <a href="fontawesome.html">Fontawesome Icon</a>
-                                        </li>
-                                        <li>
-                                            <a href="typo.html">Typography</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </header>
-                <div className="sub-header-mobile-2 d-block d-lg-none">
-                    <div className="header__tool">
-                        <div className="header-button-item has-noti js-item-menu">
-                            <i className="zmdi zmdi-notifications"></i>
-                            <div className="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                                <div className="notifi__title">
-                                    <p>You have 3 Notifications</p>
-                                </div>
-                                <div className="notifi__item">
-                                    <div className="bg-c1 img-cir img-40">
-                                        <i className="zmdi zmdi-email-open"></i>
-                                    </div>
-                                    <div className="content">
-                                        <p>You got a email notification</p>
-                                        <span className="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div className="notifi__item">
-                                    <div className="bg-c2 img-cir img-40">
-                                        <i className="zmdi zmdi-account-box"></i>
-                                    </div>
-                                    <div className="content">
-                                        <p>Your account has been blocked</p>
-                                        <span className="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div className="notifi__item">
-                                    <div className="bg-c3 img-cir img-40">
-                                        <i className="zmdi zmdi-file-text"></i>
-                                    </div>
-                                    <div className="content">
-                                        <p>You got a new file</p>
-                                        <span className="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div className="notifi__footer">
-                                    <a href="#">All notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="header-button-item js-item-menu">
-                            <i className="zmdi zmdi-settings"></i>
-                            <div className="setting-dropdown js-dropdown">
-                                <div className="account-dropdown__body">
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-account"></i>Account</a>
-                                    </div>
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-settings"></i>Setting</a>
-                                    </div>
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-money-box"></i>Billing</a>
-                                    </div>
-                                </div>
-                                <div className="account-dropdown__body">
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-globe"></i>Language</a>
-                                    </div>
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-pin"></i>Location</a>
-                                    </div>
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-email"></i>Email</a>
-                                    </div>
-                                    <div className="account-dropdown__item">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-notifications"></i>Notifications</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="account-wrap">
-                            <div className="account-item account-item--style2 clearfix js-item-menu">
-                                <div className="image">
-                                    <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                </div>
-                                <div className="content">
-                                    <a className="js-acc-btn" href="#">john doe</a>
-                                </div>
-                                <div className="account-dropdown js-dropdown">
-                                    <div className="info clearfix">
-                                        <div className="image">
-                                            <a href="#">
-                                                <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                            </a>
-                                        </div>
-                                        <div className="content">
-                                            <h5 className="name">
-                                                <a href="#">john doe</a>
-                                            </h5>
-                                            <span className="email">johndoe@example.com</span>
-                                        </div>
-                                    </div>
-                                    <div className="account-dropdown__body">
-                                        <div className="account-dropdown__item">
-                                            <a href="#">
-                                                <i className="zmdi zmdi-account"></i>Account</a>
-                                        </div>
-                                        <div className="account-dropdown__item">
-                                            <a href="#">
-                                                <i className="zmdi zmdi-settings"></i>Setting</a>
-                                        </div>
-                                        <div className="account-dropdown__item">
-                                            <a href="#">
-                                                <i className="zmdi zmdi-money-box"></i>Billing</a>
-                                        </div>
-                                    </div>
-                                    <div className="account-dropdown__footer">
-                                        <a href="#">
-                                            <i className="zmdi zmdi-power"></i>Logout</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-                <h1>this is about pages</h1>
+
+                </div>
 
 
+
+
+
+                <Footer />
             </div>
-
 
         );
     }

@@ -62,10 +62,91 @@ class LoginForm extends Component {
 
     }
 
+    loginWithGoogle = () => {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+        firebase.auth().useDeviceLanguage();
+        provider.setCustomParameters({
+            'display': 'popup'
+        });
+
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+
+            console.log("user")
+            console.log(user)
+
+            // var userId = user.uid;
+            // const db = firebase.firestore();
+            // var docRef = db.collection('users').doc(userId);
+            // docRef.set( {
+            //     first_name: user.displayName,
+            //     last_name: "",
+            //     email: user.email,
+            //     password: "",
+            //     confirmPassword: "",
+            //     role: 'user',
+            //     tocken: user.refreshToken,
+            // } , { merge: true });
+
+
+            const db = firebase.firestore();
+            db.collection('users').doc(user.uid).set({
+                first_name: user.displayName,
+                last_name: "",
+                email: user.email,
+                password: "",
+                confirmPassword: "",
+                role: 'user',
+                tocken: user.refreshToken,
+
+            }).then((user) => {
+                swal("Login", "Successfully Logedin", "success")
+                // this.props.history.push({
+                //     pathname: '/'
+                // });
+                // console.log(user)
+            })
+
+
+
+
+            // ...
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            console.log(errorCode)
+            console.log(errorMessage)
+            console.log(email)
+            console.log(credential)
+            swal("Login Failed", errorMessage, "warning");
+            // ...
+        });
+
+
+
+
+
+
+
+    }
+
+
+
 
     loginWithFacebook = () => {
         var provider = new firebase.auth.FacebookAuthProvider();
         provider.addScope('user_birthday');
+        provider.addScope('email');
         firebase.auth().useDeviceLanguage();
         provider.setCustomParameters({
             'display': 'popup'
@@ -78,22 +159,25 @@ class LoginForm extends Component {
             var user = result.user;
 
             const db = firebase.firestore();
-            
+
+            console.log("user")
+            console.log(user);
+
             db.collection('users').doc(user.uid).set({
                 first_name: user.displayName,
                 last_name: "",
-                email: "",
+                email: user.email,
                 password: "",
                 confirmPassword: "",
                 role: 'user',
                 tocken: user.refreshToken,
-                
+
             }).then((user) => {
                 swal("Login", "Successfully Logedin", "success")
                 // window.location.href = "http://localhost:3000"
-                this.props.history.push({
-                    pathname: '/'
-                  });
+                // this.props.history.push({
+                //     pathname: '/'
+                // });
                 console.log(user)
             })
             // ...
@@ -111,7 +195,7 @@ class LoginForm extends Component {
             console.log(email)
             console.log(credential)
 
-            swal("Login Failed", errorMessage , "warning")
+            swal("Login Failed", errorMessage, "warning")
             // ...
         });
     }
@@ -173,8 +257,8 @@ class LoginForm extends Component {
                     <span className="login100-form-social-item flex-c-m bg1 m-r-5" onClick={this.loginWithFacebook} >
                         <i className="fab fa-facebook" aria-hidden="true" ></i>
                     </span>
-                    <span className="login100-form-social-item flex-c-m bg2 m-r-5">
-                        <i className="fab fa-twitter" aria-hidden="true"></i>
+                    <span className="login100-form-social-item flex-c-m bg4 m-r-5" onClick={this.loginWithGoogle} >
+                        <i className="fab fa-google-plus-g"></i>
                     </span>
                 </div>
 
@@ -249,7 +333,7 @@ class RegisterForm extends Component {
                 swal("Login", "Successfully Registered", "success")
 
                 const db = firebase.firestore();
-            
+
                 db.collection('users').doc(responce.user.uid).set({
                     first_name: this.state.first_name,
                     last_name: this.state.last_name,
@@ -296,25 +380,25 @@ class RegisterForm extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col s12">
-
-                            <div className="input-field col s6">
-                                <input onChange={this.handleChange} id="first_name" name="first_name" type="text" className="validate" />
-                                <label htmlFor="first_name">First Name</label>
+                            <div className="row">
+                                <div className="input-field col-sm-12 col-md-6">
+                                    <input onChange={this.handleChange} id="first_name" name="first_name" type="text" className="validate" />
+                                    <label htmlFor="first_name">First Name</label>
+                                </div>
+                                <div className="input-field col-sm-12 col-md-6">
+                                    <input onChange={this.handleChange} id="last_name" type="text" name="last_name" className="validate" />
+                                    <label htmlFor="last_name">Last Name</label>
+                                </div>
                             </div>
-                            <div className="input-field col s6">
-                                <input onChange={this.handleChange} id="last_name" type="text" name="last_name" className="validate" />
-                                <label htmlFor="last_name">Last Name</label>
-                            </div>
-
-                            <div className="input-field col s12">
+                            <div className="input-field col-sm-12 col-md-12">
                                 <input onChange={this.handleChange} id="email" type="text" name="email" className="validate" />
                                 <label htmlFor="email">Email</label>
                             </div>
-                            <div className="input-field col s12">
+                            <div className="input-field col-sm-12 col-md-12">
                                 <input onChange={this.handleChange} id="password" type="password" name="password" className="validate" />
                                 <label htmlFor="password">Password</label>
                             </div>
-                            <div className="input-field col s12">
+                            <div className="input-field col-sm-12 col-md-12">
                                 <input onChange={this.handleChange} id="confirmPassword" type="password" name="confirmPassword" className="validate" />
                                 <label htmlFor="confirmPassword">Re Enter Password</label>
                             </div>
@@ -370,26 +454,27 @@ class Forms extends React.Component {
     }
     render() {
 
-        const logofooter = require('../components/ss-logo-png-4.png');
+        const Logo = require('../images/logo.PNG');
+
 
         return (
             <AuthContext.Consumer>
                 {(authContext) => {
                     console.log(authContext);
                     if (authContext.isAuthenticated) {
-                        // return window.location.href = "http://localhost:3000/user/dashboard";
-                       return this.props.history.push({
+
+                        return this.props.history.push({
                             pathname: '/'
-                          });
+                        });
                     }
                     return (
-                        <div className="Content">
+                        <div>
                             <div className="limiter">
                                 <div className="container-login100">
                                     <div className="wrap-login100">
-                                        <div>
+                                        <div className="FormContent">
                                             <div style={{ textAlign: 'center', backgroundColor: '#f7f7f7', padding: '0', marginBottom: "0" }} >
-                                                <Link to="/" ><img src={logofooter} alt="logo" width="130px" /></Link>
+                                                <Link to="/" ><img src={Logo} alt="logo" width="130px" /></Link>
                                             </div>
                                             {
                                                 this.state.isLoginForm ? <LoginForm /> : <RegisterForm />

@@ -14,6 +14,10 @@ import { AuthContext } from '../../context/AuthContext';
 import { GalleryContext } from '../../context/GalleryContext';
 
 
+// new
+
+import firebase from 'firebase';
+
 
 class AddNewImage extends React.Component {
     state = {
@@ -26,8 +30,16 @@ class AddNewImage extends React.Component {
         fileName: '',
         fileURL: null,
         fileWidth: null,
-        fileHeight: null
+        fileHeight: null,
 
+
+        epsName: null,
+        epsLoadingStatus: null,
+        epsURL: null,
+    }
+
+    componentDidMount = () => {
+        M.Collapsible.init(document.querySelectorAll('.collapsible'));
     }
 
     handleChange = (event) => {
@@ -51,6 +63,8 @@ class AddNewImage extends React.Component {
             src: this.state.fileURL,
             width: this.state.fileWidth,
             height: this.state.fileHeight,
+            epsURL: this.state.epsURL,
+            epsName: this.state.epsName,
         }
         console.log(imageData);
         db.collection("uploads").add(imageData)
@@ -60,7 +74,7 @@ class AddNewImage extends React.Component {
                 gallery.addToList(imageData);
 
                 console.log("Document written with ID: ", docRef.id);
-                this.setState({ title: null, description: null, price: null, fileURL: null, loadingStatus: null, fileName: '' });
+                this.setState({ title: null, description: null, price: null, fileURL: null, loadingStatus: null, fileName: '', epsLoadingStatus:null , epsName: null , epsURL: null });
                 return M.toast({ html: `Successfully Uploaded!`, classes: 'green' })
             })
             .catch((error) => {
@@ -69,14 +83,78 @@ class AddNewImage extends React.Component {
 
     }
 
+    handleEPSFileSelection = (event) => {
+
+        let file = event.target.files[0];
+
+        // this.setState({ epsName: file.name });
+
+        // Create the file metadata
+        var metadata = {
+            contentType: 'image/eps'
+        };
+
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask = storageRef.child('EPSFiles/' + file.name).put(file, metadata);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                // console.log('Upload is ' + progress + '% done');
+                this.setState({ epsLoadingStatus: Math.floor(progress) });
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, (error) => {
+
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+
+
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect error.serverResponse
+                        break;
+                }
+            }, () => {
+                // Upload completed successfully, now we can get the download URL
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    this.setState({ epsURL: downloadURL , epsName: file.name , epsLoadingStatus: null });
+                });
+            });
+
+
+
+
+
+    }
+
+
+
+
+
     handleFileSelection = (event) => {
 
         let file = event.target.files[0]
 
         this.setState({ fileName: file.name, loadingStatus: 'Processing for Optimization' });
 
-        const watermarkImage = require('../../components/ss-logo-png-4.png');
-
+        // const watermarkImage = require('../../components/ss-logo-png-4.png');
+        const watermarkImage = require('../../images/watermark.png');
 
         // for getting image width and height
         var _URL = window.URL || window.webkitURL;
@@ -335,6 +413,15 @@ class AddNewImage extends React.Component {
 
     }
 
+    deleteEps = () => {
+        console.log("click");
+        var httpsReference = storage.refFromURL(this.state.epsURL);
+        httpsReference.delete().then(() => {
+            this.setState({ epsURL: null, epsName: null , epsLoadingStatus: null })
+        }).catch(function (error) {
+            console.log(error)
+        });
+    }
 
     deleteFile = () => {
         var httpsReference = storage.refFromURL(this.state.fileURL);
@@ -346,8 +433,8 @@ class AddNewImage extends React.Component {
 
     }
 
-    downloadImage = () => {
 
+    downloadImage = () => {
         var url = this.state.fileURL;
         var fileName = this.state.fileName;
 
@@ -368,7 +455,6 @@ class AddNewImage extends React.Component {
 
     }
 
-
     render() {
         return (
             <AuthContext.Consumer>
@@ -383,7 +469,7 @@ class AddNewImage extends React.Component {
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-lg-10 col-md-12 m-auto m-30 ">
-                                                    <div className="card-panel">
+                                                    <div className="card-panel1">
                                                         <div className="row m-t-10">
                                                             <div className="col-md-6">
                                                                 <div className="input-field col-12">
@@ -416,10 +502,10 @@ class AddNewImage extends React.Component {
                                                                         <div className="switch">
                                                                             <label>
                                                                                 Free
-                                                    <input type="checkbox" name="isStatusApply" onChange={this.toggleButton} />
+                                                                            <input type="checkbox" name="isStatusApply" onChange={this.toggleButton} />
                                                                                 <span className="lever"></span>
                                                                                 Sell
-                                                </label>
+                                                                            </label>
                                                                         </div>
                                                                         <br />
                                                                         {this.state.isStatusApply !== false ?
@@ -440,30 +526,68 @@ class AddNewImage extends React.Component {
                                                             </div>
                                                             <div className="col-md-6 p-t-50">
 
-                                                                {
-                                                                    this.state.fileURL !== null
-                                                                        ?
-                                                                        <div>
-                                                                            {/* <div className="card-panel"> */}
-                                                                            <img src={this.state.fileURL} alt="" style={{ maxWidth: '100%' }} />
-                                                                            <br /><br />
-                                                                            <button className="btn red waves-effect waves-red" onClick={this.deleteFile}>Delete</button>
-                                                                            <button className="btn waves-effect waves-green" onClick={this.downloadImage} >Download </button>
-                                                                            {/* </div> */}
-                                                                        </div>
-                                                                        :
-                                                                        <div>
-                                                                            <input type="file" name="photo" onChange={this.handleFileSelection} /><br /><br />
-                                                                            <label htmlFor="photo">Make sure file size must be less then 5MB before Uploading for better Results</label>
-                                                                            {this.state.loadingStatus !== null ?
-                                                                                <div>
-                                                                                    {this.state.loadingStatus}
-                                                                                    <div className='progress'><div className='indeterminate'></div></div>
-                                                                                </div>
-                                                                                :
-                                                                                <div></div>}
-                                                                        </div>
-                                                                }
+                                                                <ul className="collapsible">
+                                                                    <li>
+                                                                        <div className="collapsible-header"><i className="material-icons">insert_drive_file</i>Upload EPS</div>
+                                                                        <div className="collapsible-body"><span>
+                                                                            {
+                                                                                this.state.epsName !== null
+                                                                                    ?
+                                                                                    <div>
+                                                                                        <div className="collection">
+                                                                                            <span className="collection-item"><span className="badge red white-text" style={{cursor:"pointer"}} onClick={this.deleteEps}><i className="material-icons">delete</i> </span> {this.state.epsName} </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    :
+                                                                                    <div>
+                                                                                        <input type="file" name="epsFile" id="epsFile" onChange={this.handleEPSFileSelection} /><br /><br />
+                                                                                        {this.state.epsLoadingStatus !== null ?
+                                                                                            <div>
+                                                                                                <label htmlFor="epsFile">Uploading: {this.state.epsLoadingStatus}%</label>
+                                                                                                <div className="progress">
+                                                                                                    <div className="determinate" style={{width: `${this.state.epsLoadingStatus}%` }}></div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            :
+                                                                                            <div></div>}
+                                                                                    </div>
+                                                                            }
+                                                                        </span></div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div className="collapsible-header"><i className="material-icons">image</i>Upload JPEG</div>
+                                                                        <div className="collapsible-body"><span>
+                                                                            {
+                                                                                this.state.fileURL !== null
+                                                                                    ?
+                                                                                    <div>
+                                                                                        <img src={this.state.fileURL} alt="" style={{ maxWidth: '100%' }} />
+                                                                                        <br /><br />
+                                                                                        <button className="btn red waves-effect waves-red" onClick={this.deleteFile}>Delete</button>
+                                                                                        <button className="btn waves-effect waves-green" onClick={this.downloadImage} >Download </button>
+                                                                                    </div>
+                                                                                    :
+                                                                                    <div>
+                                                                                        <input type="file" name="photo" onChange={this.handleFileSelection} /><br /><br />
+                                                                                        <label htmlFor="photo">Make sure file size must be less then 5MB before Uploading for better Results</label>
+                                                                                        {this.state.loadingStatus !== null ?
+                                                                                            <div>
+                                                                                                {this.state.loadingStatus}
+                                                                                                <div className='progress'><div className='indeterminate'></div></div>
+                                                                                            </div>
+                                                                                            :
+                                                                                            <div></div>}
+                                                                                    </div>
+                                                                            }
+
+
+
+                                                                        </span></div>
+                                                                    </li>
+                                                                </ul>
+
+
+
                                                             </div>
                                                             <br /><br />
                                                             <div className="divider" tabIndex="-1"></div>

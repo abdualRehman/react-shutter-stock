@@ -32,7 +32,7 @@ class AdminHeader extends React.Component {
 
     render() {
 
-        const logofooter = require('../../components/ss-logo-png-4.png');
+        const Logo = require('../../images/logo.PNG');
         // const personImage = require('../../images/personImage.png')
         const personImage = require('../../images/person-male.png')
         return (
@@ -46,7 +46,7 @@ class AdminHeader extends React.Component {
                             <nav className="grey darken-3" >
                                 <div className="container">
                                     <div className="nav-wrapper" >
-                                        <Link to="/" className="brand-logo"> <img src={logofooter} alt="logo" width="60px" /></Link>
+                                        <Link to="/" className="brand-logo"> <img src={Logo} alt="logo" width="40px" /></Link>
                                         <Link to="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons">menu</i></Link>
                                         <ul className="right hide-on-med-and-down">
                                             <li><Link to="/user/dashboard"><i className="fa fa-tachometer-alt"></i> Dashboard</Link></li>
@@ -71,7 +71,7 @@ class AdminHeader extends React.Component {
                             <ul className="sidenav" id="mobile-demo">
                                 <li className="center">
                                     <Link to="/">
-                                        <img src={logofooter} alt="logo" width="60px" />
+                                        <img src={Logo} alt="logo" width="40px" />
                                     </Link>
                                 </li>
                                 <li></li>

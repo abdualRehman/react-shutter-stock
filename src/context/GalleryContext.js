@@ -25,7 +25,6 @@ export default class GalleryContextProvider extends Component {
             });
 
             this.setState({ photos: photos });
-
         });
 
     }

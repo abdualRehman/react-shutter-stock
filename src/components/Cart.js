@@ -9,8 +9,32 @@ import { OrderContext } from '../context/OrderContext';
 import { db } from '../config/firebase';
 
 
+// new code
+import StripeCheckout from 'react-stripe-checkout';
+import axios from 'axios';
+
+import JSZip from 'jszip';
+import JSZipUtils from 'jszip-utils';
+import FileSaver from 'filesaver.js-npm';
+
+import TCO from '2co-react';
+
+require('dotenv').config({ path: "../../.env" })
+console.log(process.env.API_KEY);
+
+
+
+
 const cart = localStorage.getItem('cartItems');
 const totalCartItems = cart ? JSON.parse(cart) : [];
+
+
+// function openCard (){
+//     return (
+
+//     )
+// }
+
 
 class Cart extends React.Component {
     constructor(props) {
@@ -21,6 +45,13 @@ class Cart extends React.Component {
             address: '',
             postcode: '',
             totalPrice: null,
+            startDownload: false,
+            downloadStatus: null,
+
+            CCnumber: null,
+            CCexpiry: "",
+            CCcvc: ""
+
         }
     }
 
@@ -40,7 +71,7 @@ class Cart extends React.Component {
                 price = price + Number(item.price);
             });
             this.setState({ items: totalCartItems, totalPrice: price });
-
+            console.log(totalCartItems)
         }
     }
     deleteCartItem = (itemId) => {
@@ -70,7 +101,7 @@ class Cart extends React.Component {
             M.toast({ html: `"Postsode" is Required!`, classes: 'red' });
         }
         if (state && address && postcode) {
-            if (this.state.items !== [] && authContext.isAuthenticated !== false ) {
+            if (this.state.items !== [] && authContext.isAuthenticated !== false) {
                 var date = new Date();
                 var orderDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 
@@ -93,29 +124,29 @@ class Cart extends React.Component {
                         if (willDelete) {
 
                             db.collection("orders").add(orderData)
-                            .then((docRef) => {
-                                orderData.id = docRef.id
-        
-                                orderContext.addToList(orderData);
-        
-        
-                                console.log("Document written with ID: ", docRef.id);
-        
-                                this.setState({ postcode: '', address: '', state: '', items: [], totalPrice: null });
-        
-                                localStorage.removeItem('cartItems');
-        
-                            })
-                            .catch((error) => {
-                                console.error("Error adding document: ", error);
-                            });
+                                .then((docRef) => {
+                                    orderData.id = docRef.id
+
+                                    orderContext.addToList(orderData);
+
+
+                                    console.log("Document written with ID: ", docRef.id);
+
+                                    this.setState({ postcode: '', address: '', state: '', items: [], totalPrice: null });
+
+                                    localStorage.removeItem('cartItems');
+
+                                })
+                                .catch((error) => {
+                                    console.error("Error adding document: ", error);
+                                });
 
 
                             swal("Order Placed!", "Your order successfully placed ", "success");
                         }
                     });
 
-            }else{
+            } else {
                 swal("Something Wrong!", "Please Check Login and Cart Items ", "warning");
             }
 
@@ -124,7 +155,153 @@ class Cart extends React.Component {
     }
 
 
+    downloadZip = () => {
+
+        console.log(this.state.items.length);
+        var files = this.state.items;
+
+        var zip = new JSZip();
+        var count = 0;
+        var zipFilename = "EPS.zip";
+
+        // files.forEach( (file) => {
+        //     JSZipUtils.getBinaryContent(file.image , (err, data) => {
+        //         if (err) {
+        //             throw err;
+        //         }
+        //         zip.file(count + ".EPS", data, { binary: true });
+        //         count++;
+        //         if (count == files.length) {
+        //             zip.generateAsync({ type: 'blob' }, (metadata) => {
+
+        //                 if(metadata.currentFile !== null){
+        //                     this.setState({startDownload: true , downloadStatus: Math.floor(metadata.percent)})
+        //                 }else{
+        //                     this.setState({startDownload: false , downloadStatus: null })
+        //                 }
+
+        //             }).then(function (content) {
+        //                 FileSaver.saveAs(content, zipFilename);
+        //             });
+        //         }
+        //     },(e) => {
+        //         console.log("progress")
+        //         console.log(e)
+
+        //     }
+
+        //     );
+        // });
+
+
+
+        // alternative way
+
+        let length = this.state.items.length
+
+        for (let i = 0; i < length; i++) {
+            setTimeout(function () {
+                var url = files[i].epsURL;
+                var fileName = files[i].epsName;
+                var tag = document.createElement('a');
+                tag.href = url;
+                tag.download = fileName;
+                document.body.appendChild(tag);
+                tag.click();
+                document.body.removeChild(tag);
+            }, i * 5000)
+        }
+
+    }
+
+
+
+
+
+
+
+
+    returnToken = async (token) => {
+        console.log(token);
+
+
+        const headers = {
+            'content-type': 'application/json',
+                'accept': 'application/json'
+        };
+
+        const responce = await axios.post('http://localhost:4000/order', {
+            token,
+        }, {
+            headers: headers
+        });
+
+        console.log(responce);
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    handleTocken = async (token) => {
+        console.log(token);
+        const product = {
+            name: "Product Name Send",
+            price: this.state.totalPrice
+        }
+
+        // const responce =  await axios.post('https://us-central1-shutterstock-d60e1.cloudfunctions.net/app/checkout', {
+        const responce = await axios.post('http://localhost:4000/checkout', {
+            token,
+            product,
+        });
+
+        console.log(responce);
+        const { status } = responce.data;
+        if (status == "success") {
+            console.log("Success! Check email for Details");
+            this.downloadZip();
+            M.toast({ html: `Success! Check email for Details`, classes: 'green' });
+        } else {
+            console.log("Something Went Wrong!");
+            M.toast({ html: `Something Went Wrong!`, classes: 'red' });
+
+        }
+
+
+    }
+
     render() {
+
+        const CARD_ELEMENT_OPTIONS = {
+            style: {
+                base: {
+                    color: "#32325d",
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: "antialiased",
+                    fontSize: "16px",
+                    "::placeholder": {
+                        color: "#aab7c4",
+                    },
+                },
+                invalid: {
+                    color: "#fa755a",
+                    iconColor: "#fa755a",
+                },
+            },
+        };
+
+
+
         return (
             <AuthContext.Consumer>
                 {(auth) => {
@@ -215,66 +392,15 @@ class Cart extends React.Component {
                                                     <div className="col-sm-10 col-lg-4 col-xl-5 m-lr-auto m-b-50  border-gray">
                                                         <div className="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
                                                             <h4 className="mtext-109 cl2 p-b-30">
-                                                                Cart Totals
-						            </h4>
+                                                                Cart totalCartItems
+                                                                </h4>
 
-                                                            <div className="flex-w flex-t bor12 p-b-13">
-                                                                <div className="size-208">
-                                                                    <span className="stext-110 cl2">
-                                                                        Subtotal:
-								</span>
-                                                                </div>
 
-                                                                <div className="size-209">
-                                                                    Rs:/ {this.state.totalPrice}
-                                                                    <span className="mtext-110 cl2" id="subTotal">
-
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="flex-w flex-t bor12 p-t-15 p-b-30">
-                                                                <div className="size-208 w-full-ssm">
-                                                                    <span className="stext-110 cl2">
-                                                                        Shipping:
-								</span>
-                                                                </div>
-
-                                                                <div className="size-209 p-r-18 p-r-0-sm w-full-ssm">
-                                                                    <p className="stext-111 cl6 p-t-2">
-                                                                        There are no shipping methods available. Please double check your address, or
-                                                                        contact us if you need any help.
-								</p>
-
-                                                                    <div className="p-t-15">
-                                                                        <span className="stext-112 cl8">
-                                                                            Calculate Shipping
-									</span>
-
-                                                                        <div className="bor8 bg0 m-b-12">
-                                                                            <input className="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                                                                id="state" onChange={this.handleChange}
-                                                                                placeholder="State /  country" />
-                                                                        </div>
-                                                                        <div className="bor8 bg0 m-b-12">
-                                                                            <input className="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="address" id="address" onChange={this.handleChange}
-                                                                                placeholder="Address" />
-                                                                        </div>
-
-                                                                        <div className="bor8 bg0 m-b-22">
-                                                                            <input className="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode" id="postcode" onChange={this.handleChange}
-                                                                                placeholder="Postcode / Zip" />
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr />
                                                             <div className="flex-w flex-t p-t-27 p-b-33">
                                                                 <div className="size-208">
                                                                     <span className="mtext-101 cl2">
                                                                         Total:
-								            </span>
+                                                                    </span>
                                                                 </div>
 
                                                                 <div className="size-209 p-t-1">
@@ -285,10 +411,75 @@ class Cart extends React.Component {
                                                                 </div>
                                                             </div>
 
+
+                                                            {this.state.startDownload ?
+                                                                <div>
+                                                                    Downloading : {this.state.downloadStatus}%
+                                                                    <div className="progress">
+                                                                        <div className="determinate" style={{ "width": `${this.state.downloadStatus}%` }}></div>
+                                                                    </div>
+                                                                </div>
+                                                                : null
+                                                            }
+
+
+
+
+                                                            <hr />
                                                             {/* <button onClick="createOrder" className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"> */}
-                                                            <button onClick={() => { this.createOrder(auth, orderContext) }} className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+
+                                                            {/* <button onClick={() => { this.createOrder(auth, orderContext) }} className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                                                                 Order Now
-						            </button>
+						                                    </button> */}
+
+
+                                                            {/* stripe */}
+
+                                                            {/* { !auth.isAuthenticated ? <label htmlFor="button"> You have to login first for Payout...</label>: null }
+                                                            <StripeCheckout stripeKey="pk_test_J1X251SjBiZCftLaKL1bTrdq00abAPYrUZ" token={this.handleTocken}
+                                                                name="Degital product image"
+                                                                amount={this.state.totalPrice * 100}
+                                                                opened={()=>{ return auth.isAuthenticated ? true : <div> { swal("Something Wrong!", "You have to login first!", "warning")} </div>  }}
+                                                                disabled={ !auth.isAuthenticated ? true : false }
+                                                            /> */}
+
+                                                            {/* <StripeCheckout stripeKey="pk_test_J1X251SjBiZCftLaKL1bTrdq00abAPYrUZ" token={this.handleTocken}
+                                                                name="Degital product image"
+                                                                className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                                                                amount={this.state.totalPrice * 100 }
+                                                                opened={()=>{ return auth.isAuthenticated ? true : <div> { swal("Something Wrong!", "You have to login first!", "warning")} </div>  }}
+                                                            /> */}
+
+                                                            {/* 2ckeckout */}
+                                                            <TCO sellerId="250345511986"
+                                                                publishableKey="42CC3DDD-66AF-4707-BB65-0ACA2530B140"
+                                                                sandbox={false}
+                                                                showForm
+                                                                // showModal
+                                                                onChange={this.handleChange}
+                                                                showLoading
+                                                                returnToken={this.returnToken}
+
+                                                            />
+
+                                                            {/* <button onClick={(e) => {
+                                                                e.preventDefault();
+                                                                return (
+                                                                    <TCO sellerId="250345511986"
+                                                                        publishableKey="42CC3DDD-66AF-4707-BB65-0ACA2530B140"
+                                                                        sandbox={false}
+                                                                        showForm
+                                                                        showModal
+                                                                        showLoading
+                                                                        returnToken={this.returnToken}
+                                                                    />
+                                                                )
+                                                            }} >Open Model</button> */}
+
+
+
+                                                            {/* <button className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" onClick={this.downloadZip} >Click me</button> */}
+
                                                         </div>
                                                     </div>
                                                 </div>

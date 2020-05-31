@@ -103,7 +103,7 @@ export default class SearchResult extends React.Component {
                     <Gallery photos={this.state.photos} direction="row" renderImage={(item) => {
                         return (
                             <figure className="snip0016 caption" style={{ margin: item.margin, minHeight: item.photo.height, width: item.photo.width, ...cont }} key={item.index} >
-                                <img className="gallery" alt={item.index} {...item.photo} style={{ height: "100%", width: "100%" }} />
+                                <img className="gallery" alt={item.index} src={item.photo.src}  style={{ height: "100%", width: "100%" }} />
                                 <figcaption>
                                     {!item.photo.price_status ?
                                         <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
@@ -113,11 +113,11 @@ export default class SearchResult extends React.Component {
                                         <p>{item.photo.description}</p>
                                     </div>
                                     <div className="links">
-                                        <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.photo.id}`, state: item.photo }}  >Download / Details</Link>
+                                        <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.photo.id}`, state: item.photo }}><i class="small material-icons left">file_download</i>Download</Link>&nbsp;&nbsp;&nbsp;
                                         <a href="" className="waves-effect waves-light btn" onClick={(e) => {
                                             e.preventDefault();
                                             this.openLightbox(item.index)
-                                        }}>Preview</a>
+                                        }}><i class="small material-icons left ">visibility</i>Preview </a>
                                     </div>
                                 </figcaption>
                             </figure>

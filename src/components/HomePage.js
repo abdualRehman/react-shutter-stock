@@ -52,8 +52,7 @@ class HomePage extends React.Component {
                                 <div className="secondCard">
                                     <div className="card-content white-text text-lighten-2">
                                         <span className="card-title">About</span>
-                                        <p className="white-text">I am a very simple card. I am good at containing small bits of information.
-                                        I am convenient because I require little markup to use effectively.</p>
+                                        <p className="white-text">S-Stock is represented by a dedicated and talented team of individuals with professional working experience in designing. The core team consists of the founder of S-Stock, Nasim Mansurov, and Editor in Chief, Spencer Cox.</p>
                                     </div>
                                 </div>
                             </div>
@@ -66,10 +65,8 @@ class HomePage extends React.Component {
                     <h3><b> Shutterstock powers creativity for global brands</b></h3>
                     <div className="row">
 
-                        <div className="col-sm-8 creativity">
+                        <div className="creativity">
                             <ul style={{ listStyle: 'none', display: 'flex' }}>
-
-
                                 <li>
                                     <img className="responsive-img" src={googlePic} alt="google" />
                                 </li>
@@ -111,10 +108,6 @@ class HomePage extends React.Component {
                                 <div className="card-image waves-effect">
                                     <img className="responsive-img" height="100px" src={card1} alt="card1" />
                                     <div className="card-stacked">
-                                        {/* <div className="card-content">
-                                            <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                            <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                        </div> */}
                                         <div className="card-action">
                                             <h2>Photos</h2>
                                             <p>Lorem ipsum dolotam quod numquam aliquam dicta nulla reprehenderit asperiores dolore Molestiae</p>
@@ -129,9 +122,6 @@ class HomePage extends React.Component {
                                 <div className="card-image waves-effect">
                                     <img src={card2} alt="card2" />
                                     <div className="card-stacked">
-                                        {/* <div className="card-content">
-                                            <p>I am a very simple card. I am good at containing small bits of information.</p>
-                                        </div> */}
                                         <div className="card-action">
                                             <h2>Footage</h2>
                                             <p>Lorem ipsum dolor sit amet, consecteturdmw totam quod numquliquam dicta nlla reprehenderit asperiores dolore Molestiae</p>

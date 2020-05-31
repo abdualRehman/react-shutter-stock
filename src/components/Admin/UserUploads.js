@@ -98,7 +98,7 @@ export default class UserUploads extends React.Component {
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-lg-10 col-md-12 m-auto m-30 ">
-                                                    <div className="card-panel">
+                                                    <div className="card-panel1">
                                                         <h3>ALL UPLOADS</h3>
 
                                                         <div className="table-responsive table-responsive-data2">
@@ -122,7 +122,7 @@ export default class UserUploads extends React.Component {
                                                                                     </div>
                                                                                     </td>
                                                                                     <td className="desc" >{photo.title}</td>
-                                                                                    <td>
+                                                                                    <td style={{padding:"5px"}} >
                                                                                         {photo.description}
                                                                                     </td>
                                                                                     <td> {photo.price_status ? `Rs:- ${photo.price}` : "Free"} </td>

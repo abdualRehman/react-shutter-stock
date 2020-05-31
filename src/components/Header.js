@@ -42,11 +42,13 @@ class Header extends React.Component {
         const scrollY = window.scrollY
         if (scrollY > 20) {
             $('.nav').addClass('solid');
+            // console.log(">20")
             // $('.nav').removeClass('transparent');
 
         } else {
             $('.nav').removeClass('solid');
             // $('.nav').addClass('transparent');
+            // console.log("noting")
         }
 
 
@@ -54,7 +56,7 @@ class Header extends React.Component {
 
 
     render() {
-        const logofooter = require('./ss-logo-png-4.png');
+        const Logo = require('../images/logo.PNG');
 
         const properties = {
             duration: 5000,
@@ -98,13 +100,13 @@ class Header extends React.Component {
 
                     return (
                         <div>
-                            <div className="container-fluid p-0" onScroll={this.handleScroll}>
+                            <div className="container-fluid p-0" onScroll={this.handleScroll} >
                                 <div className="navbar navbar-fixed">
-                                    <nav className="transparent z-depth-0 valign-wrapper black-text" id="home" style={{ height: '100px', top: '10px' }}>
+                                    <nav className="transparent z-depth-0 valign-wrapper black-text" id="home" style={{ height: '100px', top: '10px', width:"100%" }}>
                                         {/* <nav className="black-text solid" id="home" style={{ height: 'auto', top: '10px' }}> */}
-                                        <div className="nav container">
+                                        <div className="nav container-fluid">
                                             <div className="nav-wrapper" style={{ width: '100%', paddingRight: '50px' }} >
-                                                <Link to="/" className="brand-logo1 p-l-50" style={{ marginTop: "-10px" }} > <img src={logofooter} alt="logo" width="90px" /></Link>
+                                                <Link to="/" className="brand-logo1 p-l-50" style={{ marginTop: "-10px" }} > <img src={Logo} alt="logo" width="72px" /></Link>
                                                 <Link to="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons text-black">menu</i></Link>
                                                 <ul className="right hide-on-med-and-down">
                                                     <li className="right" style={{ color: 'black' }}><Link to="/login"><button className="waves-effect waves-light btn p-2" style={{ textTransform: 'none', letterSpacing: '2px' }} >Join</button></Link></li>
@@ -130,7 +132,7 @@ class Header extends React.Component {
                                     <ul className="sidenav" id="mobile-demo">
                                         <li className="center">
                                             <Link to="/">
-                                                <img src={logofooter} alt="logo" width="60px" />
+                                                <img src={Logo} alt="logo" width="60px" />
                                             </Link>
                                         </li>
                                         <li><Link to="/"> <b>Home</b></Link></li>
@@ -150,7 +152,7 @@ class Header extends React.Component {
 
                                 </div>
 
-                                <section>
+                                {/* <section>
                                     <Slideshow />
                                 </section>
                                 <div className="container-fluid">
@@ -173,7 +175,7 @@ class Header extends React.Component {
                                         </div>
 
                                     </div>
-                                </div>
+                                </div> */}
 
 
                             </div>
