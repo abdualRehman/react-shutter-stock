@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import Header2 from './Header2'
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
@@ -15,12 +15,27 @@ import { UserContext } from '../context/UserContext';
 
 class PhotoDetails extends React.Component {
 
+    static contextType = GalleryContext;
+
     constructor(props) {
         super(props);
         this.state = {
             viewerIsOpen: false,
             customBoxIsOpen: false,
-            details: {},
+            details: {
+                category:"",
+                description: "",
+                epsName: "",
+                epsURL: "",
+                height:  null,
+                id: "",
+                price: "",
+                price_status: false,
+                src: "",
+                title: "",
+                user_id: "",
+                width: null
+            },
             height: '',
             width: '',
             creatorDetails: {},
@@ -34,14 +49,37 @@ class PhotoDetails extends React.Component {
             top: 0,
             behavior: "smooth"
         });
-    }
 
-
-    componentWillMount() {
         var details = this.props.location.state
-        console.log(details);
-        this.setState({ details: details })
+
+        const galleryData  = this.context;
+        if(details === "undefined" || !details ){
+            setTimeout(()=>{               
+                // console.log(galleryData);
+                var imageData = galleryData.findById(this.props.match.params.id)
+                // console.log(imageData);
+                if(imageData){
+                    this.setState({ details: imageData })
+                }else{
+                    this.setState({ details: this.state.details });
+                    console.log("wrong url");
+                    this.props.history.push({
+                        pathname: `/404Eroor`
+                    });
+                }
+            }, 5000);
+
+        }else{
+            this.setState({ details: details })
+            // console.log(this.state.details)
+
+        }
+     
+
     }
+
+
+
 
 
     openLightbox = () => {
@@ -156,7 +194,7 @@ class PhotoDetails extends React.Component {
             cartId: cartID,
             creatorId: this.state.details.user_id,
             epsName: this.state.details.epsName,
-            epsURL : this.state.details.epsURL
+            epsURL: this.state.details.epsURL
         };
 
         var existing = localStorage.getItem('cartItems');
@@ -171,25 +209,31 @@ class PhotoDetails extends React.Component {
 
 
     }
-    findName = (userContext) => {
-
-        if (userContext.users.length !== 0) {
-            var id = this.state.details.user_id;
-            var data = userContext.findById(id);
-            return data.email
-        }
-
-    }
+    // findName = (userContext) => {
+    //     if (userContext.users.length !== 0) {
+    //         var id = this.state.details.user_id;
+    //         var data = userContext.findById(id);
+    //         return data.email
+    //     }
+    // }
+    
 
     render() {
-        const images = [{ src: this.state.details.src }]
+        const images = this.state.details.src !== "" ? [{ src: this.state.details.src }] : [];
+        // const images = [{ src: "" }];
+        const loadingImage = require('../images/loading.gif');
+
+        console.log(this.state.details);
+
+
         return (
             <GalleryContext.Consumer>
                 {(gallery) => {
+                    
                     return (
                         <UserContext.Consumer>
                             {(userContext) => {
-
+                                
                                 return (
                                     <div>
                                         <Header2 />
@@ -200,7 +244,7 @@ class PhotoDetails extends React.Component {
                                                     Home
 				                    <i className="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
                                                 </Link>
-                                                <Link to="/images" className="stext-109 cl8 hov-cl1 trans-04">
+                                                <Link to="/images/all" className="stext-109 cl8 hov-cl1 trans-04">
                                                     Images
 				                    <i className="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
                                                 </Link>
@@ -215,7 +259,7 @@ class PhotoDetails extends React.Component {
                                                 <div className="col-md-7">
                                                     <div className="details-image">
                                                         {/* {gallery.photos.find(this.findDetails)} */}
-                                                        <img src={this.state.details.src} alt="imagedetails" />
+                                                        <img src={this.state.details.src === "" ? loadingImage : this.state.details.src } style={{marginRight:"40%"}} alt="imagedetails" />
 
                                                         <button onClick={this.openLightbox} ><i className="fas 3x fa-binoculars"></i></button>
                                                     </div>
@@ -225,7 +269,7 @@ class PhotoDetails extends React.Component {
                                                         <div className="detailSectionSinup">
                                                             <div>
                                                                 <div>
-                                                                    Created by: {this.findName(userContext)}
+                                                                    {/* Created by: {this.findName(userContext)} */}
                                                                 </div>
                                                                 <br />
                                                                 <div>

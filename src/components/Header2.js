@@ -12,6 +12,7 @@ class Header2 extends React.Component {
 
     componentDidMount = () => {
         M.Sidenav.init(document.querySelectorAll('.sidenav'), { 'edge': 'left' });
+        window.scrollTo(0, 0)
     }
 
     logout = () => {
@@ -46,8 +47,11 @@ class Header2 extends React.Component {
                                                  
 
                                                     <li><Link to="/"> <b>Home</b></Link></li>
-                                                    <li><Link to="/images"> <b>Images</b> </Link></li>
-                                                    <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    <li><Link to="/images/all"> <b>Images</b> </Link></li>
+                                                    {auth.user.role === "admin" ? 
+                                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    : null }
+                                                  
                                                     <li><Link to="/cart"><b>Cart</b></Link></li>
                                                  
                                                     <li className="right">
@@ -75,8 +79,10 @@ class Header2 extends React.Component {
                                             </Link>
                                         </li>
                                         <li><Link to="/"> <b>Home</b></Link></li>
-                                        <li><Link to="/images"> <b>Images</b> </Link></li>
-                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                        <li><Link to="/images/all"> <b>Images</b> </Link></li>
+                                        {auth.user.role === "admin" ? 
+                                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    : null }
                                         <li><Link to="/cart"><b>Cart</b></Link></li>
                                         <li className="right">
                                             <Link to="#" style={{ height: 'auto', width: '60px' }}></Link>

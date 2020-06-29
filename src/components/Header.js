@@ -24,6 +24,7 @@ class Header extends React.Component {
     componentDidMount = () => {
         // this._handleScroll();
         window.addEventListener('scroll', this.handleScroll);
+        window.scrollTo(0, 0);
         // $(".button-collapse").sideNav();
         M.Sidenav.init(document.querySelectorAll('.sidenav'), { 'edge': 'left' });
 
@@ -116,8 +117,10 @@ class Header extends React.Component {
                                                             : <Link to="#" > <b onClick={this.logout} >Logout</b></Link>}
                                                     </li>
                                                     <li><Link to="/"> <b>Home</b></Link></li>
-                                                    <li><Link to="/images"> <b>Images</b> </Link></li>
-                                                    <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    <li><Link to="/images/all"> <b>Images</b> </Link></li>
+                                                    {auth.user.role === "admin" ? 
+                                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    : null }
                                                     <li><Link to="/cart"><b>Cart</b></Link></li>
                                                     <li className="right">
                                                         <Link to="#" style={{ height: 'auto', width: '60px' }}></Link>
@@ -136,8 +139,10 @@ class Header extends React.Component {
                                             </Link>
                                         </li>
                                         <li><Link to="/"> <b>Home</b></Link></li>
-                                        <li><Link to="/images"> <b>Images</b> </Link></li>
-                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                        <li><Link to="/images/all"> <b>Images</b> </Link></li>
+                                        {auth.user.role === "admin" ? 
+                                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                    : null}
                                         <li><Link to="/cart"><b>Cart</b></Link></li>
                                         <li className="right">
                                             <Link to="#" style={{ height: 'auto', width: '60px' }}></Link>

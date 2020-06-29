@@ -237,13 +237,6 @@ class Cart extends React.Component {
         });
 
         console.log(responce);
-
-
-
-
-
-
-
     }
 
 

@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { GalleryContext } from '../../context/GalleryContext';
 import swal from 'sweetalert';
 import Footer from './Footer';
+import Header from './Header';
 
 
 import M from 'materialize-css';
@@ -95,6 +96,7 @@ export default class UserUploads extends React.Component {
                             {(gallery) => {
                                 return (
                                     <div>
+                                        <Header />
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-lg-10 col-md-12 m-auto m-30 ">
@@ -114,7 +116,7 @@ export default class UserUploads extends React.Component {
                                                                 </thead>
                                                                 <tbody>
                                                                     {gallery.photos.map((photo) => {
-                                                                        if (photo.user_id === auth.user.uid) {
+                                                                         if (photo.user_id === auth.user.uid) {
                                                                             
                                                                             return <tr key={photo.id} className="tr-shadow">
                                                                                     <td> <div className="how-itemcart1">

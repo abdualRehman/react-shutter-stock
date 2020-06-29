@@ -14,25 +14,25 @@ class Footer extends React.Component {
                         <div className="container">
                             <div className="row" >
                                 <div className="col-md-4">
-                                    <h5 className="white-text">Buying from S-Stock</h5>
+                                    <h5 className="white-text">Browse by Category</h5>
                                     <ul>
                                         <li>
-                                            <Link to="/images"> Browse by category </Link>
+                                            <Link to="/images/ornamentsAndBaroque"> Ornaments And Baroque </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images"> Fresh picks </Link>
+                                            <Link to="/images/texture"> Texture </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images"> Footage gallery </Link>
+                                            <Link to="/images/pattren"> Pattren </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images"> Live news feed </Link>
+                                            <Link to="/images/degitalTextileDesign"> Degital Textile Design </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images"> Customer help </Link>
+                                            <Link to="/images/botanicalFlowersAndLeaves"> Botanical Flowers And Leaves </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images">Investor relations</Link>
+                                            <Link to="/images/all">All Above</Link>
                                         </li>
                                     </ul>
 
@@ -44,13 +44,16 @@ class Footer extends React.Component {
                                             <Link to="/"> Home </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images"> Stock photos </Link>
+                                            <Link to="/images/all"> Stock photos </Link>
                                         </li>
                                         <li>
                                             <Link to="/about-us">About us </Link>
                                         </li>
                                         <li>
-                                            <Link to=""> Meet the team </Link>
+                                            <Link to="/terms"> Terms &#38; Conditions </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/privacy"> Privacy Policy </Link>
                                         </li>
                                         {/* <li>
                                             <Link to=""> Footage </Link>
@@ -92,12 +95,13 @@ class Footer extends React.Component {
                                     <h5 className="white-text">Customers</h5>
                                     <ul>
                                         <li>
-                                          <Link to="">+44 (0)1236 843620</Link>
+                                          <Link to="">+92 306 6134468</Link>
                                         </li>
                                         <li>
                                         <a href="mailto:help@sstock.com">help@sstock.com</a>
                                         </li>
                                     </ul>
+                                  
 
                                 </div>
                                 {/* <div className="col-md-3">

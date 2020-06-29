@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import swal from 'sweetalert';
 import Footer from './Footer';
+import Header from './Header';
 
 
 
@@ -100,6 +101,7 @@ export default class Orders extends React.Component {
                                                 
 
                                                 <div>
+                                                    <Header />
                                                     <div className="container">
                                                         <div className="row">
                                                             <div className="col-lg-10 col-md-12 m-auto m-10 ">

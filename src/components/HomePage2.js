@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 import { GalleryContext } from '../context/GalleryContext';
+import ImageMasonry from 'react-image-masonry';
 
 import M from 'materialize-css';
 // import $ from 'jquery';
@@ -10,7 +11,7 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 
 class HomePage2 extends React.Component {
-    
+
     constructor(props, context) {
         super(props, context);
         this.searchResult = this.searchResult.bind(this);
@@ -27,10 +28,16 @@ class HomePage2 extends React.Component {
 
         var result = galleryContext.searchByTitle(searchFor);
 
+        // this.props.history.push({
+        //     pathname: '/search',
+        //     search: `?query=${this.state.search}`,
+        //     state: { detail: result, keywords: this.state.search }
+        // });
         this.props.history.push({
-            pathname: '/search',
+            // hash: `${this.state.search}`,
+            pathname: `/search/all/${this.state.search}`,
             search: `?query=${this.state.search}`,
-            state: { detail: result, keywords: this.state.search }
+
         });
 
     }
@@ -43,6 +50,7 @@ class HomePage2 extends React.Component {
 
     componentDidMount = () => {
         M.Parallax.init(document.querySelectorAll('.parallax'));
+        M.Materialbox.init(document.querySelectorAll('.materialboxed'));
     }
 
     render() {
@@ -52,14 +60,46 @@ class HomePage2 extends React.Component {
         const artist2 = require('../images/artist2.jpg');
         const artist3 = require('../images/artist3.jpg');
         const artist4 = require('../images/artist4.jpg');
+
+        const botanicalFlowersAndLeaves = require('../images/categories/botanicalFlowersAndLeaves.jpg');
+        const degitalTextileDesign = require('../images/categories/degitalTextileDesign.jpg');
+        const ornamentsAndBaroque = require('../images/categories/ornamentsAndBaroque.jpg');
+        const pattern = require('../images/categories/pattern.jpg');
+        const texture = require('../images/categories/texture.jpg');
+
+        const categoryArray = [
+            {
+                src: botanicalFlowersAndLeaves,
+                name: 'Botanical Flowers And Leaves',
+                keyword: "botanicalFlowersAndLeaves"
+            },
+            {
+                src: pattern,
+                name: 'Pattern',
+                keyword: "pattren"
+            },
+            {
+                src: ornamentsAndBaroque,
+                name: 'Ornaments And Baroque',
+                keyword: "ornamentsAndBaroque"
+
+            },
+            {
+                src: degitalTextileDesign,
+                name: 'Degital Textile Design',
+                keyword: "degitalTextileDesign"
+
+            },
+            {
+                src: texture,
+                name: 'Texture',
+                keyword: "texture"
+            },
+        ]
         return (
             <GalleryContext.Consumer>
                 {(galleryContext) => {
                     return (
-
-
-
-
                         <div>
                             <div className="homePageSection1">
                                 <div className="container-fluid1">
@@ -104,27 +144,62 @@ class HomePage2 extends React.Component {
                             <div className="container">
                                 <div className="row">
                                     <div className="container1">
+                                        <br /><br />
                                         <h2>Explore New S-Stock Collection</h2>
                                         <p>of creative assets & royalty-free stock assets.</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
+
+
                                 <div className="container">
 
 
-                                    <figure className="snip1321"><img src={image} alt="sq-sample26" />
-                                        <figcaption><i className="ion-upload"></i>
-                                            {/* <h4>Inverness</h4> */}
-                                            <button className="collectionButton">Details</button>
-                                            <h4>McKenzie</h4>
-                                        </figcaption><a href="#"></a>
-                                    </figure>
+                                    <div className="row">
+
+                                        {/* <div className="masonry" style={{ width: "100%", margin: "0px", padding: "0px" }} > */}
+
+                                            {categoryArray.map((item, index) => {
+                                                return (
+                                                    <div key={index} className="col-xs-12 col-sm-6 col-lg-4" >
+                                                        <div className="card">
+                                                            <div className="card-image">
+                                                                <figure className="snip1321" >
+                                                                    <img className="responsive-img" style={{height:"300px"}} src={item.src} alt="sq-sample26" />
+                                                                    <figcaption><i className="ion-upload"></i>
+                                                                        <Link to={`/images/${item.keyword}`}>
+                                                                            <button className="collectionButton">Details</button>
+                                                                        </Link> <br />
+                                                                        <h4>{item.name}</h4>
+                                                                    </figcaption>
+                                                                </figure>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    // <div className="brick" key={index}  >
+                                                    //     <figure className="snip0016 snip1321">
+                                                    //         <img className="gallery" alt={index} src={item.src} />
+                                                    //         <figcaption>
+                                                    //             <i className="ion-upload"></i>
+                                                    //                         <Link to={`/images/${item.keyword}`}>
+                                                    //                          <button className="collectionButton">Details</button>
+                                                    //                         </Link> <br />
+                                                    //                      <h4>{item.name}</h4>
+                                                    //         </figcaption>
+                                                    //     </figure>
+                                                    // </div>
+
+                                                )
+                                            })}
+                                        {/* </div> */}
+
+
+                                    </div>
+
 
                                     <br /> <br />
                                     <hr style={{ border: "1px solid lightgray" }} />
-
-
                                 </div>
                             </div>
 
@@ -192,7 +267,7 @@ class HomePage2 extends React.Component {
                                                         <div className="col-sm-12">
                                                             <br />
                                                             By creating an account, I agree to S-Stock's
-                                            <Link to="">Website terms</Link>.
+                                            <Link to="/terms">Website terms</Link> &#38; <Link to="/privacy">Privacy Policy</Link>.
                                             </div>
                                                         <hr />
                                                         Already have an account? <Link to="/login">Log in</Link>

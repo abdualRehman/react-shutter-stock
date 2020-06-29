@@ -680,13 +680,6 @@ nav#home ul a {
   /* width: 100%;
   margin: auto; 
   margin-top:-70px; */
-
-/* apna */
-
-
-
-
-
 }
 
 h3 {
@@ -857,22 +850,28 @@ figure.snip0016 figcaption::before {
   right: 30px;
   bottom: 30px;
   left: 100%;
-  border-left: 4px solid rgba(255, 255, 255, 0.8);
+  /* border-left: 4px solid rgba(255, 255, 255, 0.8); */
+  /* border-left: 4px solid rgba(24, 22, 22, 0.8); */
   content: '';
   opacity: 0;
-  background-color: rgba(255, 255, 255, 0.5);
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  /* background-color: rgba(87, 84, 84, 0.5);
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   -webkit-transition-delay: 0.6s;
-  transition-delay: 0.6s;
+  transition-delay: 0.6s; */
 }
-figure.snip0016 h2,
+/* figure.snip0016 h2,
 figure.snip0016 p {
   margin: 0 0 5px;
   opacity: 0;
   -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
   transition: opacity 0.35s,-webkit-transform 0.35s,-moz-transform 0.35s,-o-transform 0.35s,transform 0.35s;
-}
+} */
+
+
+
+
 figure.snip0016 h2 {
   word-spacing: -0.15em;
   font-weight: 300;
@@ -900,7 +899,7 @@ figure.snip0016 .links {
 }
 figure.snip0016 .links a {
   /* margin-left: 10px; */
-  margin-right: 15px;
+  /* margin-right: 15px; */
   display: inline-block;
 }
 figure.snip0016:hover img {
@@ -908,13 +907,15 @@ figure.snip0016:hover img {
   opacity: 0.3;
 }
 figure.snip0016:hover .links  {
-  background-color: #000000;
-  opacity: 0.5;
-  width: 100%;
-  transform: translateX(-15px);
-  margin:10;
-  padding: 20px;
-  padding-right: 10px;
+  /* background-color: #000000; */
+  /* opacity: 0.5; */
+  /* width: 100%; */
+  width: auto;
+  transform: translateX(-3em);
+  /* transform: translateX(-15px); */
+  /* margin:10; */
+  /* padding: 20px; */
+  /* padding-right: 10px; */
   display: inline-block;
 }
 figure.snip0016:hover figcaption h2 {
@@ -933,7 +934,7 @@ figure.snip0016:hover figcaption p, figcaption a {
 }
 figure.snip0016:hover figcaption::before {
   background: rgba(255, 255, 255, 0);
-  left: 30px;
+  /* left: 30px; */
   opacity: 1;
   -webkit-transition-delay: 0s;
   transition-delay: 0s;
@@ -1121,7 +1122,7 @@ figure.snip0016:hover figcaption::before {
 }
 .search-nav{
   background-color: currentColor;
-  border-radius: 20px;
+  border-radius: 8px;
   border: 2px solid darkslategray;
   box-shadow: 1px 3px lightgrey;
 }
@@ -1130,7 +1131,7 @@ figure.snip0016:hover figcaption::before {
   font-family: monospace;
 }
 .input-field input[type=search]:focus:not(.browser-default){
-  border-radius: 20px;
+  border-radius: 8px;
 }
 .input-field label:hover {
     cursor: pointer;
@@ -1223,7 +1224,8 @@ h1 {
 
 .masonry { /* Masonry container */
   column-count: 3;
-  column-gap: 1em;
+  /* column-gap: 1em; */
+  column-gap: 5px;
 }
 
 /* .item { 
@@ -1246,9 +1248,15 @@ h1 {
 /* The Masonry Container */
 
 .masonry {
-  margin: 1.5em auto;
-  column-gap: 1.5em;
+  /* margin: 1em auto;
+  column-gap: 1em; */
+  margin: 5px auto;
+  column-gap: 5px;
 }
+/* .masonry.bordered {
+  column-rule: 1px solid #eee;
+  column-gap: 50px;
+} */
 
 /* The Masonry Brick */
 /* .item {
@@ -1298,7 +1306,8 @@ h1 {
 .homePageSection1{
   background-position: 50% -25px;
   height: 600px;
-  background-image: url(./images/home.jpg);
+  /* background-image: url(./images/home.jpg); */
+  background-image: url(./images/coverPic.jpg);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1340,12 +1349,14 @@ figure.snip1321 {
   font-family: 'Raleway', Arial, sans-serif;
   position: relative;
   overflow: hidden;
-  margin: 10px;
+  /* margin: 10px; 
   min-width: 230px;
   max-width: 315px;
-  width: 100%;
+  width: 100%; */
+  padding: 2px;
   color: #000000;
   /* color: white; */
+  margin: 0px;
   text-align: center;
   -webkit-perspective: 50em;
   perspective: 50em;
@@ -1357,7 +1368,7 @@ figure.snip1321 * {
   transition: all 0.2s ease-out;
 }
 figure.snip1321 img {
-  max-width: 100%;
+  /* max-width: 100%; */
   vertical-align: top;
 }
 figure.snip1321 figcaption {
@@ -1375,6 +1386,7 @@ figure.snip1321 h2,
 figure.snip1321 h4 , figure.snip1321 button {
   margin: 0;
   color:white;
+  
 }
 figure.snip1321 h2 {
   font-weight: 600;
@@ -1382,6 +1394,7 @@ figure.snip1321 h2 {
 
 figure.snip1321 button {
   font-weight: 400;
+  width: fit-content;
   background: transparent;
   border: 2px solid white;
   color: white;
@@ -1605,6 +1618,7 @@ figure.snip1321.hover:after {
   background-image: url(./images/contact-us.jpg);
   min-height: 500px;
   height: fit-content;
+  padding:0px;
   background-attachment: scroll;
   background-size: cover;
   background-position: center;
@@ -1629,8 +1643,88 @@ input[type=text]:not(.browser-default):focus:not([readonly]) , textarea.material
   background-color: #474759;
   color: white;
 }
+.termsSection1{
+  /* background-image: url(./images/termsAndConditions.jpg); */
+  background-image: url(./images/terms2.jpg);
+  height: fit-content;
+  min-height: 300px;
+  padding: 0px;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+.termsSection2 , .privacySection2{
+  padding-top: 60px;
+  padding-bottom: 72px;
+  margin: auto;
+  width: 80%;
+}
+.termsSection2>h1{
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.WqSo3 h2 {
+  line-height: 1.2;
+  margin: 0;
+  /* font-size: 15px; */
+  font-size: 25px;
+}
+.WqSo3 p {
+  margin: 16px 15px;
+}
+.WqSo3 ul {
+  padding: 5px 40px;
+}
+.WqSo3 ul li {
+  padding: 10px;
+  list-style: upper-latin;
+}
+
+.privacySection1{
+    background-image: url(./images/privacy2.jpg);
+    height: fit-content;
+    min-height: 350px;
+    padding: 0px;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
 
 
+.privacySection2>h1{
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.2;
+    font-size: 28px;
+}
+.privacyList p{
+  margin: 16px 15px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  color:black;
+  font-family: -apple-system,BlinkMacSystemFont,San Francisco,Helvetica Neue,Helvetica,Ubuntu,Roboto,Noto,Segoe UI,Arial,sans-serif;
+}
+.WqSo3{
+  margin-top: 50px;
+}
+.WqSo3 a {
+  color: #767676;
+  transition: color .1s ease-in-out,opacity .1s ease-in-out;
+  -webkit-text-decoration-skip: ink;
+  text-decoration-skip-ink: auto;
+  text-decoration: underline;
+}
+
+.dropdown-content li>span {
+  color: lightslategray;
+}
+
+.container1{
+  padding: 40px 0px;
+}
 
 /* stripe css */
 /* .StripeElement {

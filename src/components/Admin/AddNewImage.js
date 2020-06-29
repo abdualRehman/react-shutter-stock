@@ -4,6 +4,7 @@ import { db, storage, storageRef } from '../../config/firebase';
 import watermark from 'watermarkjs';
 import ImageCompressor from 'image-compressor.js';
 import Footer from './Footer';
+import Header from './Header';
 
 
 // import Jimp from 'jimp';
@@ -24,6 +25,7 @@ class AddNewImage extends React.Component {
         title: "",
         description: "",
         price: null,
+        category: "",
         loadingStatus: null,
         isWatermarkApply: false,
         isStatusApply: false,
@@ -40,6 +42,7 @@ class AddNewImage extends React.Component {
 
     componentDidMount = () => {
         M.Collapsible.init(document.querySelectorAll('.collapsible'));
+        M.FormSelect.init(document.querySelectorAll('select'));
     }
 
     handleChange = (event) => {
@@ -53,10 +56,16 @@ class AddNewImage extends React.Component {
     submitData = (auth, gallery) => {
         if (this.state.title === "" || this.state.description === "") {
             return M.toast({ html: `"Title" And "Description" Required!`, classes: 'red' })
+        }else if(this.state.category === ""){
+            return M.toast({html: "Please Choose Category" , classes: "red" })
+
+        }else if(this.state.fileURL === null || this.state.epsURL === null ){
+            return M.toast({html: "Please Insert Both Files .EPS + .JPG" , classes: "red" });
         }
         var imageData = {
             title: this.state.title,
             description: this.state.description,
+            category: this.state.category,
             price_status: this.state.isStatusApply,
             price: this.state.price,
             user_id: auth.user.uid,
@@ -74,7 +83,7 @@ class AddNewImage extends React.Component {
                 gallery.addToList(imageData);
 
                 console.log("Document written with ID: ", docRef.id);
-                this.setState({ title: null, description: null, price: null, fileURL: null, loadingStatus: null, fileName: '', epsLoadingStatus:null , epsName: null , epsURL: null });
+                this.setState({ title: null, description: null, price: null, fileURL: null, loadingStatus: null, fileName: '', epsLoadingStatus: null, epsName: null, epsURL: null });
                 return M.toast({ html: `Successfully Uploaded!`, classes: 'green' })
             })
             .catch((error) => {
@@ -111,29 +120,37 @@ class AddNewImage extends React.Component {
                     case firebase.storage.TaskState.RUNNING: // or 'running'
                         console.log('Upload is running');
                         break;
+                    default:
+                        console.log("Something Wrong Please Refresh the page and try again!");
                 }
             }, (error) => {
 
                 switch (error.code) {
                     case 'storage/unauthorized':
-                        // User doesn't have permission to access the object
+                        // User doesn't have permission to access the object;
+                        M.toast({html: "User doesn't have permission to access the object" , classes: "red" })
+
                         break;
 
                     case 'storage/canceled':
                         // User canceled the upload
+                        M.toast({html: "User canceled the upload" , classes: "red" });
                         break;
 
 
 
                     case 'storage/unknown':
                         // Unknown error occurred, inspect error.serverResponse
+                        M.toast({html: "Unknown error occurred" , classes: "red" });
                         break;
+                    default:
+                        alert("Something Wrong Please Refresh the page and try again!");
                 }
             }, () => {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                     console.log('File available at', downloadURL);
-                    this.setState({ epsURL: downloadURL , epsName: file.name , epsLoadingStatus: null });
+                    this.setState({ epsURL: downloadURL, epsName: file.name, epsLoadingStatus: null });
                 });
             });
 
@@ -142,10 +159,6 @@ class AddNewImage extends React.Component {
 
 
     }
-
-
-
-
 
     handleFileSelection = (event) => {
 
@@ -417,7 +430,7 @@ class AddNewImage extends React.Component {
         console.log("click");
         var httpsReference = storage.refFromURL(this.state.epsURL);
         httpsReference.delete().then(() => {
-            this.setState({ epsURL: null, epsName: null , epsLoadingStatus: null })
+            this.setState({ epsURL: null, epsName: null, epsLoadingStatus: null })
         }).catch(function (error) {
             console.log(error)
         });
@@ -456,6 +469,7 @@ class AddNewImage extends React.Component {
     }
 
     render() {
+        
         return (
             <AuthContext.Consumer>
                 {(AuthContext) => {
@@ -466,6 +480,7 @@ class AddNewImage extends React.Component {
                                 // console.log(gallery);
                                 return (
                                     <div>
+                                        <Header />
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-lg-10 col-md-12 m-auto m-30 ">
@@ -481,6 +496,19 @@ class AddNewImage extends React.Component {
                                                                     <textarea id="description" name="description" value={this.state.description || ''} onChange={this.handleChange} className="materialize-textarea"></textarea>
                                                                     <label htmlFor="description">Description</label>
                                                                 </div>
+
+                                                                <div className="input-field col-12">
+                                                                    <select name="category" value={this.state.category || ''} onChange={this.handleChange} >
+                                                                        <option value="" disabled >Choose Your Option</option>
+                                                                        <option value="ornamentsAndBaroque">Ornaments And Baroque</option>
+                                                                        <option value="texture">Texture</option>
+                                                                        <option value="pattren">Pattern</option>
+                                                                        <option value="degitalTextileDesign">Degital Textile Design</option>
+                                                                        <option value="botanicalFlowersAndLeaves">Botanical Flowers And Leaves</option>
+                                                                    </select>
+                                                                    <label>Select Category</label>
+                                                                </div>
+                                                             
                                                                 <div className="row">
                                                                     <label htmlFor="information" className="green-text" >First Make Sure All Changes Then Upload Your Photo!</label>
                                                                     <hr />
@@ -535,7 +563,7 @@ class AddNewImage extends React.Component {
                                                                                     ?
                                                                                     <div>
                                                                                         <div className="collection">
-                                                                                            <span className="collection-item"><span className="badge red white-text" style={{cursor:"pointer"}} onClick={this.deleteEps}><i className="material-icons">delete</i> </span> {this.state.epsName} </span>
+                                                                                            <span className="collection-item"><span className="badge red white-text" style={{ cursor: "pointer" }} onClick={this.deleteEps}><i className="material-icons">delete</i> </span> {this.state.epsName} </span>
                                                                                         </div>
                                                                                     </div>
                                                                                     :
@@ -545,7 +573,7 @@ class AddNewImage extends React.Component {
                                                                                             <div>
                                                                                                 <label htmlFor="epsFile">Uploading: {this.state.epsLoadingStatus}%</label>
                                                                                                 <div className="progress">
-                                                                                                    <div className="determinate" style={{width: `${this.state.epsLoadingStatus}%` }}></div>
+                                                                                                    <div className="determinate" style={{ width: `${this.state.epsLoadingStatus}%` }}></div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             :
@@ -593,9 +621,9 @@ class AddNewImage extends React.Component {
                                                             <div className="divider" tabIndex="-1"></div>
 
                                                             {/* <button className={`btn green lighten-1 float-right ${this.state.loadingStatus !== 'all done' ? 'disabled' : ''} `} 
-                                            onClick={()=>{
-                                                this.submitData(AuthContext)
-                                            }} >Create</button> */}
+                                                            onClick={()=>{
+                                                                this.submitData(AuthContext)
+                                                            }} >Create</button> */}
                                                             <button className={`btn green lighten-1 float-right`}
                                                                 onClick={() => {
                                                                     this.submitData(AuthContext, gallery)

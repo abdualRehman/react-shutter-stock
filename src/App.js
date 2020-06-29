@@ -1,15 +1,16 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
 import HomePage2 from './components/HomePage2';
 
-import Header from './components/Header'
-import Footer from './components/Footer'
+
 import Forms from './components/LoginForm'
 import Contact from './components/Contact'
 import About from './components/About';
+import Terms from './components/Terms';
+import Privacy from './components/Privacy';
 
 // import HomePage from './components/HomePage';
 
@@ -21,10 +22,13 @@ import Cart from './components/Cart';
 import SearchResult from './components/SearchResult';
 
 
+import Error from './components/Error';
 
-import UserDashboard from './components/UserDashboard';
+
 import M from 'materialize-css';
 
+
+import PrivateRoute from './PrivateRoute';
 
 // admin dashboard data
 
@@ -56,36 +60,46 @@ class App extends React.Component {
           <OrderContextProvider>
             <UserContextProvider>
               <BrowserRouter>
-                <div className="App">
 
-                  {/* <Header /> */}
-                  {this.state.isAuth === true ? '' : <Header />}
-                  <Route exact path="/" component={HomePage2} ></Route>
-                  {/* <Route exact path="/" component={HomePage} ></Route> */}
-                  <Route path="/login" component={Forms} ></Route>
-                  <Route path="/images" component={Images} ></Route>
+                <div className="App" style={{ overflowX: "hidden" }}>
 
-                  <Route path="/search" component={SearchResult} ></Route>
+                 
 
-                  <Route path="/details/:id" component={PhotoDetails} ></Route>
-                  <Route path="/cart" component={Cart} ></Route>
-                  <Route path="/about-us" component={About} ></Route>
-                  <Route path="/contact-us" component={Contact} ></Route>
+                  <Switch>
 
+                    <Route exact path="/" component={HomePage2} ></Route>
+                    {/* <Route exact path="/" component={HomePage} ></Route> */}
+                    <Route exact path="/login" component={Forms} ></Route>
+                    <Route exact path="/images/:category" component={Images} ></Route>
 
-                  {/* <Route path="/contact" component={AdminHeader} ></Route> */}
+                    <Route exact path="/search/:category/:keyword" component={SearchResult} ></Route>
 
-                  {/* for user dashboard */}
-                  <Route path="/user" component={UserDashboard} ></Route>
-                  {/* <Route extact path="/user/contact" component={Contact} ></Route> */}
-                  <Route path="/user/dashboard" component={Dashboard} ></Route>
-                  <Route path="/user/add-new-image" component={AddImage} ></Route>
-                  <Route path="/user/uploads" component={UserUploads} ></Route>
-                  <Route path="/user/orders" component={Orders} ></Route>
-                  {/* <Footer /> */}
-                  {this.state.isAuth === true ? '' : <Footer />}
+                    <Route exact path="/details/:id" component={PhotoDetails} ></Route>
+                    <Route exact path="/cart" component={Cart} ></Route>
+                    <Route exact path="/about-us" component={About} ></Route>
+                    <Route exact path="/contact-us" component={Contact} ></Route>
+                    <Route exact path="/terms" component={Terms} ></Route>
+                    <Route exact path="/privacy" component={Privacy} ></Route>
+
+                    
+
+                    {/* <Route path="/contact" component={AdminHeader} ></Route> */}
+
+                    {/* for user dashboard */}
+                   
+                    <PrivateRoute exact path="/user/dashboard" component={Dashboard} ></PrivateRoute>
+                    <PrivateRoute exact path="/user/add-new-image" component={AddImage} ></PrivateRoute>
+                    <PrivateRoute exact path="/user/uploads" component={UserUploads} ></PrivateRoute>
+                    <PrivateRoute exact path="/user/orders" component={Orders} ></PrivateRoute>
+
+                    <Route path="/*" component={Error} ></Route>
+
+                  </Switch>
+
+               
 
                 </div>
+
               </BrowserRouter>
             </UserContextProvider>
           </OrderContextProvider>

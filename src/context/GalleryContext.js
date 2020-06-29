@@ -91,17 +91,40 @@ export default class GalleryContextProvider extends Component {
             });
     }
 
-    searchByTitle = (search) => {
+    searchByTitle = (keyword) => {
+        var photos = this.state.photos;
+        return photos.filter(function(photo) {
+            return photo.title.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
+        })
+    }
+
+    searchByCategory = (categoryName) => {
         var photos = this.state.photos;
 
         return photos.filter(function(photo) {
-            return photo.title.toLowerCase().indexOf(search.toLowerCase()) !== -1
+            return photo.category.toLowerCase().indexOf(categoryName.toLowerCase()) !== -1
         })
+    }
+
+    searchByCategoryAndKeyword = (keyword , category) => {
+        var sortByCategory;
+        if(category !== "all"){
+            sortByCategory = this.searchByCategory(category);
+        }else{
+            sortByCategory = this.state.photos
+        }
+
+        var sortByTitle =  sortByCategory.filter((item)=>{
+           return  item.title.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
+        });
+
+        return sortByTitle;
+
     }
 
     render() {
         return (
-            <GalleryContext.Provider value={{ ...this.state, addToList: this.addToList, findById: this.findById, UpdatePhotoData: this.UpdatePhotoData, deletePhoto: this.deletePhoto , searchByTitle : this.searchByTitle }} >
+            <GalleryContext.Provider value={{ ...this.state, addToList: this.addToList, findById: this.findById, UpdatePhotoData: this.UpdatePhotoData, deletePhoto: this.deletePhoto , searchByTitle : this.searchByTitle , searchByCategory: this.searchByCategory , searchByCategoryAndKeyword: this.searchByCategoryAndKeyword }} >
                 {this.props.children}
             </GalleryContext.Provider>
         )

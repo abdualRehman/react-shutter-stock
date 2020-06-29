@@ -32,12 +32,15 @@ class Images extends React.Component {
             // Panigation
             todos: null,
             currentPage: 1,
-            todosPerPage: 6,
-            upperPageBound: 3,
+            // todosPerPage: 6,   real
+            // upperPageBound: 3, real
+            todosPerPage: 50,
+            upperPageBound: 25,
             lowerPageBound: 0,
             isPrevBtnActive: 'disabled',
             isNextBtnActive: '',
-            pageBound: 3
+            // pageBound: 3, real
+            pageBound: 25
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -51,6 +54,7 @@ class Images extends React.Component {
     componentDidUpdate = () => {
         // $("ul li.active").removeClass('active');
         // $('ul li#' + this.state.currentPage).addClass('active');
+        window.scrollTo(0, 0);
         $("ul li.active").removeClass('active');
         $('ul li.' + this.state.currentPage).addClass('active');
     }
@@ -143,6 +147,17 @@ class Images extends React.Component {
     };
 
 
+    // filter by category
+
+    filterImages = (data) => {
+        const categoryName = this.props.match.params.category;
+        if( categoryName !== "all"){
+            return data.searchByCategory(categoryName);
+        }else{
+            return data.photos;
+        }
+    }
+
 
     render() {
         const FreeLabel = require('../images/free.png');
@@ -156,13 +171,13 @@ class Images extends React.Component {
         };
 
 
-
-
         return (
             <GalleryContext.Consumer>
                 {(gallery) => {
 
-                    const todos = gallery.photos;
+                   
+                    const todos = this.filterImages(gallery);
+
                     const { currentPage, todosPerPage, upperPageBound, lowerPageBound, isPrevBtnActive, isNextBtnActive } = this.state;
                     // Logic for displaying current todos
                     const indexOfLastTodo = currentPage * todosPerPage;
@@ -170,7 +185,7 @@ class Images extends React.Component {
                     const currentTodos = todos.slice(indexOfFirstTodo, indexOfLastTodo);
 
 
-                    // currently working
+                    // currently workingtodos
                     const renderTodos = currentTodos.map((item, index) => {
                         return (
                             <div className="brick" key={index} >
@@ -181,16 +196,12 @@ class Images extends React.Component {
                                         {!item.price_status ?
                                             <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
                                             : null}
-                                        <div className="details">
-                                            <h2>{item.title}</h2>
-                                            <p>{item.description}</p>
-                                        </div>
                                         <div className="links">
-                                            <Link className="waves-effect waves-light btn black" to={{ pathname: `/details/${item.id}`, state: item }}><i className="small material-icons left">file_download</i>Download</Link>&nbsp;&nbsp;&nbsp;
-                                                <a href="" className="waves-effect waves-light btn light-blue" onClick={(e) => {
+                                            <Link className="waves-effect waves-light btn green m-l-10" to={{ pathname: `/details/${item.id}`, state: item }}><i className="small material-icons">file_download</i></Link>
+                                                <a href="" className="waves-effect waves-light btn bg-info text-white m-l-10" onClick={(e) => {
                                                 e.preventDefault();
                                                 this.openLightbox(indexOfFirstTodo + index)
-                                            }}><i className="small material-icons left ">visibility</i>Preview </a>
+                                            }}><i className="small material-icons">visibility</i> </a>
                                         </div>
                                     </figcaption>
                                 </figure>
@@ -406,7 +417,7 @@ class Images extends React.Component {
 
                                 {gallery.photos.length !== 0 ?
                                     <div>
-                                        <div className="masonry bordered" style={{width:"100%" , margin:"0px" , padding:"0px"}}>
+                                        <div className="masonry" style={{width:"100%" , margin:"0px" , padding:"0px"}}>
                                             {renderTodos}
                                         </div>
                                         <br />
@@ -465,11 +476,17 @@ class Images extends React.Component {
                                     <Modal onClose={this.closeLightbox}>
                                         <Carousel
                                             currentIndex={this.state.currentImage}
-                                            views={gallery.photos.map(x => ({
-                                                ...x,
-                                                srcset: x.src,
-                                                caption: x.title
-                                            }))}
+                                                views={this.props.match.params.category !== "all" ? gallery.searchByCategory(this.props.match.params.category).map(x => ({
+                                                    ...x,
+                                                    srcset: x.src,
+                                                    caption: x.title
+                                                })) :  
+                                                gallery.photos.map(x => ({
+                                                    ...x,
+                                                    srcset: x.src,
+                                                    caption: x.title
+                                                }))
+                                            }
                                         />
                                     </Modal>
                                 ) : null}
