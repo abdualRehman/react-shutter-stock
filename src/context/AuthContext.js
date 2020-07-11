@@ -32,6 +32,7 @@ export default class AuthContextProvider extends Component {
                         // this.nameOfUser = user.data();
                         var data = user.data();
                         data.uid = currentUser.uid;
+                        localStorage.setItem( "userRole" ,  data.role);
                         this.setState({isAuthenticated: true , user : data});
 
                         console.log(this.state.user);
@@ -42,6 +43,7 @@ export default class AuthContextProvider extends Component {
 
             }else{
                 console.log("user loged out");
+                localStorage.removeItem("userRole");
                 this.setState({isAuthenticated:false , user : {} });
             }
         })

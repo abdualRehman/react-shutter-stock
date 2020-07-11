@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import Header2 from './Header2'
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
@@ -23,11 +23,11 @@ class PhotoDetails extends React.Component {
             viewerIsOpen: false,
             customBoxIsOpen: false,
             details: {
-                category:"",
+                category: "",
                 description: "",
                 epsName: "",
                 epsURL: "",
-                height:  null,
+                height: null,
                 id: "",
                 price: "",
                 price_status: false,
@@ -52,15 +52,15 @@ class PhotoDetails extends React.Component {
 
         var details = this.props.location.state
 
-        const galleryData  = this.context;
-        if(details === "undefined" || !details ){
-            setTimeout(()=>{               
+        const galleryData = this.context;
+        if (details === "undefined" || !details) {
+            setTimeout(() => {
                 // console.log(galleryData);
                 var imageData = galleryData.findById(this.props.match.params.id)
                 // console.log(imageData);
-                if(imageData){
+                if (imageData) {
                     this.setState({ details: imageData })
-                }else{
+                } else {
                     this.setState({ details: this.state.details });
                     console.log("wrong url");
                     this.props.history.push({
@@ -69,12 +69,12 @@ class PhotoDetails extends React.Component {
                 }
             }, 5000);
 
-        }else{
+        } else {
             this.setState({ details: details })
             // console.log(this.state.details)
 
         }
-     
+
 
     }
 
@@ -216,7 +216,7 @@ class PhotoDetails extends React.Component {
     //         return data.email
     //     }
     // }
-    
+
 
     render() {
         const images = this.state.details.src !== "" ? [{ src: this.state.details.src }] : [];
@@ -229,11 +229,11 @@ class PhotoDetails extends React.Component {
         return (
             <GalleryContext.Consumer>
                 {(gallery) => {
-                    
+
                     return (
                         <UserContext.Consumer>
                             {(userContext) => {
-                                
+
                                 return (
                                     <div>
                                         <Header2 />
@@ -253,24 +253,26 @@ class PhotoDetails extends React.Component {
 			                        </span>
                                             </div>
                                         </div>
-                                        <div className="container">
+                                        <div className="container imageDetailSection">
                                             <div className="row">
 
-                                                <div className="col-md-7">
+                                                <div className="col-sm-6">
                                                     <div className="details-image">
                                                         {/* {gallery.photos.find(this.findDetails)} */}
-                                                        <img src={this.state.details.src === "" ? loadingImage : this.state.details.src } style={{marginRight:"40%"}} alt="imagedetails" />
+                                                        <img src={this.state.details.src === "" ? loadingImage : this.state.details.src} style={{ marginRight: "40%" }} alt="imagedetails" />
 
                                                         <button onClick={this.openLightbox} ><i className="fas 3x fa-binoculars"></i></button>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-5">
+                                                <div className="col-sm-6">
                                                     <div className="container">
                                                         <div className="detailSectionSinup">
                                                             <div>
                                                                 <div>
                                                                     {/* Created by: {this.findName(userContext)} */}
-                                                                </div>
+                                                                    <h2>{this.state.details.title}</h2>
+                                                                    <p>{this.state.details.description}</p>
+                                                                </div> 
                                                                 <br />
                                                                 <div>
                                                                     Format: */EPS
@@ -339,14 +341,14 @@ class PhotoDetails extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row">
+                                            {/* <div className="row">
                                                 <div className="col-md-12">
                                                     <h1>{this.state.details.title}</h1>
                                                     <br />
                                                     <p>{this.state.details.description}</p>
                                                     <br />
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <ModalGateway>
                                             {this.state.viewerIsOpen ? (

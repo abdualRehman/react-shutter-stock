@@ -40,7 +40,7 @@ class Header2 extends React.Component {
                                     <nav className="transparent z-depth-0 valign-wrapper black-text" id="home" style={{ height: '100px', top: '10px' }}>
                                         <div className="solid container-fluid" style={{ transform: "translateX(30px)" }}>
                                             <div className="nav-wrapper" style={{ width: '100%', paddingRight: '50px' }} >
-                                                <Link to="/" className="brand-logo1 p-l-50" style={{ marginTop: "-10px" }} > <img src={Logo} alt="logo" width="72px" /></Link>
+                                                <Link to="/" className="brand-logo1 p-l-50"  > <img src={Logo} alt="logo" /></Link>
                                                 <Link to="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons text-black">menu</i></Link>
                                                 <ul className="right hide-on-med-and-down">
 
@@ -74,8 +74,8 @@ class Header2 extends React.Component {
 
                                     <ul className="sidenav" id="mobile-demo">
                                         <li className="center">
-                                            <Link to="/">
-                                                <img src={Logo} alt="logo" width="60px" />
+                                            <Link to="/" className="brand-logo1" style={{ "display": "contents"}} >
+                                                <img src={Logo} alt="logo" />
                                             </Link>
                                         </li>
                                         <li><Link to="/"> <b>Home</b></Link></li>

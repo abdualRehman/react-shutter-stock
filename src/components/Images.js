@@ -187,8 +187,9 @@ class Images extends React.Component {
 
                     // currently workingtodos
                     const renderTodos = currentTodos.map((item, index) => {
+                        // console.log(item)
                         return (
-                            <div className="brick" key={index} >
+                            <div className="brick" key={index} style={{"maxHeight": `${item.height}`, "maxWidth": `${item.width}` }} >
                                 <figure className="snip0016 caption" style={{...cont}} >
                                     {item.src ?   
                                     <img className="gallery" alt={index} src={item.src} /> : <img className="gallery" alt={index} src={FreeLabel} />   }

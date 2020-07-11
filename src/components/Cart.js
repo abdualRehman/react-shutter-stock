@@ -19,6 +19,8 @@ import FileSaver from 'filesaver.js-npm';
 
 import TCO from '2co-react';
 
+import '../App.css';
+
 require('dotenv').config({ path: "../../.env" })
 console.log(process.env.API_KEY);
 
@@ -292,9 +294,7 @@ class Cart extends React.Component {
                 },
             },
         };
-
-
-
+        
         return (
             <AuthContext.Consumer>
                 {(auth) => {
@@ -322,9 +322,9 @@ class Cart extends React.Component {
                                         <div className="bg0 p-t-75 p-b-85">
                                             <div className="container">
                                                 <div className="row" >
-                                                    <div className="col-lg-8 col-xl-7 m-lr-auto m-b-50">
-                                                        <div className="m-l-25 m-r--38 m-lr-0-xl p-2  border-gray">
-                                                            <div className="wrap-table-shopping-cart ">
+                                                    <div className="col-md-8 col-sm-5 col-xs-12 p-2">
+                                                        <div className="p-2 border-gray">
+                                                            <div className="wrap-table-shopping-cart" style={{overflow:"auto"}}>
                                                                 <table className="table-shopping-cart">
                                                                     <thead>
                                                                         <tr className="table_head">
@@ -382,8 +382,8 @@ class Cart extends React.Component {
                                                         </div>
                                                     </div>
 
-                                                    <div className="col-sm-10 col-lg-4 col-xl-5 m-lr-auto m-b-50  border-gray">
-                                                        <div className="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+                                                    <div className="col-md-4 col-sm-7 col-xs-12 p-2">
+                                                        <div className="p-3 border-gray">
                                                             <h4 className="mtext-109 cl2 p-b-30">
                                                                 Cart totalCartItems
                                                                 </h4>
@@ -397,7 +397,7 @@ class Cart extends React.Component {
                                                                 </div>
 
                                                                 <div className="size-209 p-t-1">
-                                                                    Rs:/ {this.state.totalPrice}
+                                                                     {this.state.totalPrice}$
                                                                     <span className="mtext-110 cl2" id="grandTotal">
 
                                                                     </span>

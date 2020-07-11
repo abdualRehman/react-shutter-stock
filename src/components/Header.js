@@ -107,7 +107,7 @@ class Header extends React.Component {
                                         {/* <nav className="black-text solid" id="home" style={{ height: 'auto', top: '10px' }}> */}
                                         <div className="nav container-fluid">
                                             <div className="nav-wrapper" style={{ width: '100%', paddingRight: '50px' }} >
-                                                <Link to="/" className="brand-logo1 p-l-50" style={{ marginTop: "-10px" }} > <img src={Logo} alt="logo" width="72px" /></Link>
+                                                <Link to="/" className="brand-logo1 p-l-50" > <img src={Logo} alt="logo" /></Link>
                                                 <Link to="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons text-black">menu</i></Link>
                                                 <ul className="right hide-on-med-and-down">
                                                     <li className="right" style={{ color: 'black' }}><Link to="/login"><button className="waves-effect waves-light btn p-2" style={{ textTransform: 'none', letterSpacing: '2px' }} >Join</button></Link></li>
@@ -134,8 +134,8 @@ class Header extends React.Component {
 
                                     <ul className="sidenav" id="mobile-demo">
                                         <li className="center">
-                                            <Link to="/">
-                                                <img src={Logo} alt="logo" width="60px" />
+                                            <Link to="/" className="brand-logo1" style={{ "display": "contents"}}>
+                                                <img src={Logo} alt="logo" />
                                             </Link>
                                         </li>
                                         <li><Link to="/"> <b>Home</b></Link></li>

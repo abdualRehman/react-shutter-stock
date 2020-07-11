@@ -13,7 +13,7 @@ class Footer extends React.Component {
                     <div className="container-fluid footerLinks">
                         <div className="container">
                             <div className="row" >
-                                <div className="col-md-4">
+                                <div className="col-sm-4 col-xs-6">
                                     <h5 className="white-text">Browse by Category</h5>
                                     <ul>
                                         <li>
@@ -37,7 +37,7 @@ class Footer extends React.Component {
                                     </ul>
 
                                 </div>
-                                <div className="col-md-4">
+                                <div className="col-sm-4 col-xs-6">
                                     <h5 className="white-text">Company</h5>
                                     <ul>
                                         <li>
@@ -73,7 +73,7 @@ class Footer extends React.Component {
                                     </ul>
 
                                 </div>
-                                <div className="col-md-4">
+                                <div className="col-sm-4 col-xs-6">
                                     <h5 className="white-text">Get in touch</h5>
                                     <ul>
                                         <li>
@@ -94,8 +94,8 @@ class Footer extends React.Component {
                                     </ul>
                                     <h5 className="white-text">Customers</h5>
                                     <ul>
-                                        <li>
-                                          <Link to="">+92 306 6134468</Link>
+                                        <li className="grey-text">
+                                          +92310 7078901
                                         </li>
                                         <li>
                                         <a href="mailto:help@sstock.com">help@sstock.com</a>

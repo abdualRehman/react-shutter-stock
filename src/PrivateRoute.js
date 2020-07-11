@@ -11,10 +11,10 @@ const PrivateRoute = ( { component: RouteComponent , ...rest }) => {
         <Route 
             {...rest}
                 render={routeProps => 
-                user.role === "admin" ? (
+                user.role === "admin" || localStorage.getItem("userRole") === "admin" ?  (
                     <RouteComponent {...routeProps} />
                 ) : (
-                    <Redirect to={"/404Error"} />
+                    <Redirect to={"/"} />
                 ) }
         
         />

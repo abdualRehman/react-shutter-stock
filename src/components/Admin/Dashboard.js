@@ -11,6 +11,9 @@ import { GalleryContext } from '../../context/GalleryContext';
 
 export default class Dashboard extends React.Component {
     render() {
+        const add = (a , b) => {
+            return Number(a) + Number(b.totalPrice)
+        }
         return (
 
             <AuthContext.Consumer>
@@ -77,44 +80,45 @@ export default class Dashboard extends React.Component {
                                                                     <div className="container">
                                                                         <div className="row">
                                                                             <div className="col-md-6 col-lg-3">
-                                                                                <div className="statistic__item statistic__item--green">
+                                                                                <div className="statistic__item statistic__item--white">
 
 
 
-                                                                                    <h2 className="number">{userContext.users.length}</h2>
-                                                                                    <span className="desc">total members</span>
+                                                                                    <h2 className="number grey-text">{userContext.users.length}</h2>
+                                                                                    <span className="desc grey-text">total members</span>
                                                                                     <div className="icon">
                                                                                         <i className="zmdi zmdi-account-o"></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-md-6 col-lg-3">
-                                                                                <div className="statistic__item statistic__item--orange">
-                                                                                    <h2 className="number">{ordersContext.orders.length}</h2>
-                                                                                    <span className="desc">orders</span>
+                                                                                <div className="statistic__item statistic__item--white">
+                                                                                    <h2 className="number grey-text">{ordersContext.orders.length}</h2>
+                                                                                    <span className="desc grey-text">orders</span>
                                                                                     <div className="icon">
                                                                                         <i className="zmdi zmdi-shopping-cart"></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-md-6 col-lg-3">
-                                                                                <div className="statistic__item statistic__item--blue">
-                                                                                    <h2 className="number">{gallery.photos.length}</h2>
-                                                                                    <span className="desc">Photos</span>
+                                                                                <div className="statistic__item statistic__item--white">
+                                                                                    <h2 className="number grey-text">{gallery.photos.length}</h2>
+                                                                                    <span className="desc grey-text">Photos</span>
                                                                                     <div className="icon">
                                                                                         <i className="zmdi zmdi-calendar-note"></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="col-md-6 col-lg-3">
-                                                                                <div className="statistic__item statistic__item--red">
+                                                                                <div className="statistic__item statistic__item--white">
 
-                                                                                    <h2 className="number">RS:{ordersContext.orders.map((order) => {
-
-                                                                                        var totalPrice = + order.totalPrice;
+                                                                                    {/* <h2 className="number grey-text">RS:{ordersContext.orders.map((order) => {
+                                                                                        var totalPrice = totalPrice + order.totalPrice;
+                                                                                        console.log(+order.totalPrice);
                                                                                         return totalPrice;
-                                                                                    })}</h2>
-                                                                                    <span className="desc">total earnings</span>
+                                                                                    })}</h2> */}
+                                                                                    <h2 className="number grey-text">RS:{ordersContext.orders.reduce(add,0)}</h2>
+                                                                                    <span className="desc grey-text">total earnings</span>
                                                                                     <div className="icon">
                                                                                         <i className="zmdi zmdi-money"></i>
                                                                                     </div>
