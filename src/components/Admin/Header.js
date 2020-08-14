@@ -70,19 +70,19 @@ class AdminHeader extends React.Component {
 
                             <ul className="sidenav" id="mobile-demo">
                                 <li className="center">
-                                    <Link to="/">
+                                    <Link className="sidenav-close" to="/">
                                         <img src={Logo} alt="logo" width="40px" />
                                     </Link>
                                 </li>
                                 <li></li>
-                                <li><Link to="/user/dashboard"><i className="fa fa-tachometer-alt"></i> Dashboard</Link></li>
-                                <li><Link to="/user/add-new-image"><i className="fa fa-plus"></i> Add Images</Link></li>
-                                <li><Link to="/user/uploads"><i className="fa fa-upload"></i> Uploaded Images</Link></li>
-                                <li><Link to="/user/orders"><i className="fa fa-cart-arrow-down"></i>Orders</Link></li>
+                                <li><Link className="sidenav-close" to="/user/dashboard"><i className="fa fa-tachometer-alt"></i> Dashboard</Link></li>
+                                <li><Link className="sidenav-close" to="/user/add-new-image"><i className="fa fa-plus"></i> Add Images</Link></li>
+                                <li><Link className="sidenav-close" to="/user/uploads"><i className="fa fa-upload"></i> Uploaded Images</Link></li>
+                                <li><Link className="sidenav-close" to="/user/orders"><i className="fa fa-cart-arrow-down"></i>Orders</Link></li>
                                 {/* <li><Link to="#" className='dropdown-trigger' style={{ height: 'auto', width: '60px' }} data-target='dropdown3' ><i className="fa fa-user"></i>User</Link></li> */}
                                 <li>
                                     <div className="account-dropdown__item" onClick={this.logout}>
-                                        <Link to="#">
+                                        <Link className="sidenav-close" to="#">
                                             <i className="zmdi zmdi-power" ></i>Logout
                                         </Link>
                                     </div>

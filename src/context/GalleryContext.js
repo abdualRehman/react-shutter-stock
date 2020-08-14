@@ -53,13 +53,13 @@ export default class GalleryContextProvider extends Component {
             .then(() => {
                 console.log("Document successfully updated!");
 
-                let newPhotos = this.state.photos.map(( p , i) => {
-                    if ( photo.id === p.id)
+                let newPhotos = this.state.photos.map((p, i) => {
+                    if (photo.id === p.id)
 
                         p.title = photo.title
-                        p.description = photo.description
-                        p.price = photo.price
-                        p.price_status = photo.price_status
+                    p.description = photo.description
+                    p.price = photo.price
+                    p.price_status = photo.price_status
                     return p
                 })
 
@@ -93,38 +93,79 @@ export default class GalleryContextProvider extends Component {
 
     searchByTitle = (keyword) => {
         var photos = this.state.photos;
-        return photos.filter(function(photo) {
+        return photos.filter(function (photo) {
             return photo.title.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
         })
+        // return photos.filter(function(photo) {
+        //    return photo.keyword.filter((photoTag)=>{
+        //         return photoTag.toLowerCase.indexOf(keyword.toLowerCase()) !== -1
+        //     });
+        // })
     }
 
     searchByCategory = (categoryName) => {
         var photos = this.state.photos;
-
-        return photos.filter(function(photo) {
+        return photos.filter(function (photo) {
             return photo.category.toLowerCase().indexOf(categoryName.toLowerCase()) !== -1
         })
     }
 
-    searchByCategoryAndKeyword = (keyword , category) => {
+    searchByCategoryAndKeyword = (keyword, category) => {
         var sortByCategory;
-        if(category !== "all"){
+        var resultData = [];
+        if (category !== "all") {
             sortByCategory = this.searchByCategory(category);
-        }else{
+        } else {
             sortByCategory = this.state.photos
         }
 
-        var sortByTitle =  sortByCategory.filter((item)=>{
-           return  item.title.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
-        });
+        if (sortByCategory.length > 0) {
 
-        return sortByTitle;
+            for (var i = 0; i < sortByCategory.length; i++) {
+                sortByCategory[i].keywords.filter((photoTag) => {
+                    if (photoTag.tag.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
+                        resultData.push(sortByCategory[i]);
+                    }
+                });
+            }
+        }
 
+        return resultData;
+
+    }
+
+    SearchSimilarImages = (keywordArray) => {
+        var photos = this.state.photos;
+      
+        var resultData = [];
+
+        if (photos.length > 0 && keywordArray ) {
+        
+            for (var i = 0; i < photos.length; i++) {
+
+                photos[i].keywords.filter((photoTag) => {
+                    for(var j = 0; j< keywordArray.length; j++ ){
+                        if (photoTag.tag.toLowerCase().indexOf(keywordArray[j].tag.toLowerCase()) !== -1) {
+                            resultData.push(photos[i]);
+                            i++;
+                            // break;
+                            
+                        }
+                        break;
+                    }
+                });
+                // i++;
+            }
+        } else {
+            return [];
+        }
+
+        return resultData;
     }
 
     render() {
         return (
-            <GalleryContext.Provider value={{ ...this.state, addToList: this.addToList, findById: this.findById, UpdatePhotoData: this.UpdatePhotoData, deletePhoto: this.deletePhoto , searchByTitle : this.searchByTitle , searchByCategory: this.searchByCategory , searchByCategoryAndKeyword: this.searchByCategoryAndKeyword }} >
+            <GalleryContext.Provider value={{ ...this.state, addToList: this.addToList, findById: this.findById, UpdatePhotoData: this.UpdatePhotoData, deletePhoto: this.deletePhoto, searchByTitle: this.searchByTitle, searchByCategory: this.searchByCategory, searchByCategoryAndKeyword: this.searchByCategoryAndKeyword, SearchSimilarImages: this.SearchSimilarImages }} >
                 {this.props.children}
             </GalleryContext.Provider>
         )

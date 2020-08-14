@@ -3,7 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 import { GalleryContext } from '../context/GalleryContext';
-import ImageMasonry from 'react-image-masonry';
+// import ImageMasonry from 'react-image-masonry';
 
 import M from 'materialize-css';
 // import $ from 'jquery';
@@ -24,15 +24,6 @@ class HomePage2 extends React.Component {
     searchResult = (galleryContext) => {
 
 
-        var searchFor = this.state.search;
-
-        var result = galleryContext.searchByTitle(searchFor);
-
-        // this.props.history.push({
-        //     pathname: '/search',
-        //     search: `?query=${this.state.search}`,
-        //     state: { detail: result, keywords: this.state.search }
-        // });
         this.props.history.push({
             // hash: `${this.state.search}`,
             pathname: `/search/all/${this.state.search}`,
@@ -54,7 +45,6 @@ class HomePage2 extends React.Component {
     }
 
     render() {
-        const image = require("../images/art2.jpg");
         const paralex1 = require('../images/signup.jpg');
         const artist1 = require('../images/artist1.webp');
         const artist2 = require('../images/artist2.jpg');

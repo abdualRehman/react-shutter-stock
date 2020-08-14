@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useContext , WithContext } from 'react';
 import Header2 from './Header2';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
@@ -7,19 +7,21 @@ import swal from 'sweetalert';
 import { AuthContext } from '../context/AuthContext';
 import { OrderContext } from '../context/OrderContext';
 import { db } from '../config/firebase';
-
+import { GalleryContext } from '../context/GalleryContext';
 
 // new code
-import StripeCheckout from 'react-stripe-checkout';
+// import StripeCheckout from 'react-stripe-checkout';
 import axios from 'axios';
 
 import JSZip from 'jszip';
-import JSZipUtils from 'jszip-utils';
-import FileSaver from 'filesaver.js-npm';
+// import JSZipUtils from 'jszip-utils';
+// import FileSaver from 'filesaver.js-npm';
 
-import TCO from '2co-react';
+// import TCO from '2co-react';
 
-import '../App.css';
+
+import { PayPalButton } from "react-paypal-button-v2";
+
 
 require('dotenv').config({ path: "../../.env" })
 console.log(process.env.API_KEY);
@@ -39,10 +41,13 @@ const totalCartItems = cart ? JSON.parse(cart) : [];
 
 
 class Cart extends React.Component {
+    static contextType = GalleryContext;
     constructor(props) {
         super(props)
         this.state = {
             items: [],
+            showAlert:"none",
+
             state: '',
             address: '',
             postcode: '',
@@ -52,7 +57,8 @@ class Cart extends React.Component {
 
             CCnumber: null,
             CCexpiry: "",
-            CCcvc: ""
+            CCcvc: "",
+            showLoading: true,
 
         }
     }
@@ -65,23 +71,25 @@ class Cart extends React.Component {
 
     componentDidMount = () => {
         const cart = localStorage.getItem('cartItems');
-        const totalCartItems = cart ? JSON.parse(cart) : [];
+        var totalCartItems = cart ? JSON.parse(cart) : [];
 
         if (Array.isArray(totalCartItems) !== false || totalCartItems.length !== 0) {
             var price = 0;
             totalCartItems.map((item) => {
                 price = price + Number(item.price);
+                return true;
             });
             this.setState({ items: totalCartItems, totalPrice: price });
             console.log(totalCartItems)
+
         }
     }
     deleteCartItem = (itemId) => {
         var index = totalCartItems.findIndex(function (list) {
             return list.cartId === itemId;
         });
-        totalCartItems.splice(index, 1);
 
+        totalCartItems.splice(index, 1);
         localStorage.setItem('cartItems', JSON.stringify(totalCartItems));
         this.componentDidMount();
     }
@@ -158,49 +166,16 @@ class Cart extends React.Component {
 
 
     downloadZip = () => {
-
-        console.log(this.state.items.length);
-        var files = this.state.items;
-
-        var zip = new JSZip();
-        var count = 0;
-        var zipFilename = "EPS.zip";
-
-        // files.forEach( (file) => {
-        //     JSZipUtils.getBinaryContent(file.image , (err, data) => {
-        //         if (err) {
-        //             throw err;
-        //         }
-        //         zip.file(count + ".EPS", data, { binary: true });
-        //         count++;
-        //         if (count == files.length) {
-        //             zip.generateAsync({ type: 'blob' }, (metadata) => {
-
-        //                 if(metadata.currentFile !== null){
-        //                     this.setState({startDownload: true , downloadStatus: Math.floor(metadata.percent)})
-        //                 }else{
-        //                     this.setState({startDownload: false , downloadStatus: null })
-        //                 }
-
-        //             }).then(function (content) {
-        //                 FileSaver.saveAs(content, zipFilename);
-        //             });
-        //         }
-        //     },(e) => {
-        //         console.log("progress")
-        //         console.log(e)
-
-        //     }
-
-        //     );
-        // });
-
-
-
-        // alternative way
-
-        let length = this.state.items.length
-
+        var array = this.state.items;
+        const gallery = this.context;
+        var files = [];
+        array.forEach((item)=>{
+            files.push(gallery.findById(item.productId));
+            return true;
+        })
+        
+        let length = files.length;
+        
         for (let i = 0; i < length; i++) {
             setTimeout(function () {
                 var url = files[i].epsURL;
@@ -214,6 +189,37 @@ class Cart extends React.Component {
             }, i * 5000)
         }
 
+        // ----------------------------------------------------
+        // alternative way
+
+        // var zip = new JSZip();
+        // var count = 0;
+        // var zipFilename = "EPS.zip";
+        // files.forEach( (file) => {
+        //     JSZipUtils.getBinaryContent(file.image , (err, data) => {
+        //         if (err) {
+        //             throw err;
+        //         }
+        //         zip.file(count + ".EPS", data, { binary: true });
+        //         count++;
+        //         if (count == files.length) {
+        //             zip.generateAsync({ type: 'blob' }, (metadata) => {
+        //                 if(metadata.currentFile !== null){
+        //                     this.setState({startDownload: true , downloadStatus: Math.floor(metadata.percent)})
+        //                 }else{
+        //                     this.setState({startDownload: false , downloadStatus: null })
+        //                 }
+        //             }).then(function (content) {
+        //                 FileSaver.saveAs(content, zipFilename);
+        //             });
+        //         }
+        //     },(e) => {
+        //         console.log("progress")
+        //         console.log(e)
+        //     }
+        //     );
+        // });
+
     }
 
 
@@ -223,78 +229,72 @@ class Cart extends React.Component {
 
 
 
-    returnToken = async (token) => {
-        console.log(token);
+    // returnToken = async (token) => {
+    //     console.log(token);
 
 
-        const headers = {
-            'content-type': 'application/json',
-                'accept': 'application/json'
-        };
+    //     const headers = {
+    //         'content-type': 'application/json',
+    //         'accept': 'application/json'
+    //     };
 
-        const responce = await axios.post('http://localhost:4000/order', {
-            token,
-        }, {
-            headers: headers
-        });
+    //     const responce = await axios.post('http://localhost:4000/order', {
+    //         token,
+    //     }, {
+    //         headers: headers
+    //     });
 
-        console.log(responce);
-    }
+    //     console.log(responce);
+    // }
+
+    // handleTocken = async (token) => {
+    //     console.log(token);
+    //     const product = {
+    //         name: "Product Name Send",
+    //         price: this.state.totalPrice
+    //     }
+
+    //     const responce = await axios.post('http://localhost:4000/checkout', {
+    //         token,
+    //         product,
+    //     });
+
+    //     console.log(responce);
+    //     const { status } = responce.data;
+    //     if (status === "success") {
+    //         console.log("Success! Check email for Details");
+    //         this.downloadZip();
+    //         M.toast({ html: `Success! Check email for Details`, classes: 'green' });
+    //     } else {
+    //         console.log("Something Went Wrong!");
+    //         M.toast({ html: `Something Went Wrong!`, classes: 'red' });
+
+    //     }
+
+
+    // }
 
 
 
 
-
-
-
-    handleTocken = async (token) => {
-        console.log(token);
-        const product = {
-            name: "Product Name Send",
-            price: this.state.totalPrice
-        }
-
-        // const responce =  await axios.post('https://us-central1-shutterstock-d60e1.cloudfunctions.net/app/checkout', {
-        const responce = await axios.post('http://localhost:4000/checkout', {
-            token,
-            product,
-        });
-
-        console.log(responce);
-        const { status } = responce.data;
-        if (status == "success") {
-            console.log("Success! Check email for Details");
+    handlePayment = (details) => {
+        console.log(details);
+        if (details.status === "COMPLETED") {
             this.downloadZip();
-            M.toast({ html: `Success! Check email for Details`, classes: 'green' });
-        } else {
-            console.log("Something Went Wrong!");
-            M.toast({ html: `Something Went Wrong!`, classes: 'red' });
+            this.setState({showAlert:"block"})
 
+            return swal("Success", "Downloading will start one by one", "success");
+        } else {
+            return alert("Something went wrong");
         }
 
 
     }
+
+
 
     render() {
 
-        const CARD_ELEMENT_OPTIONS = {
-            style: {
-                base: {
-                    color: "#32325d",
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSmoothing: "antialiased",
-                    fontSize: "16px",
-                    "::placeholder": {
-                        color: "#aab7c4",
-                    },
-                },
-                invalid: {
-                    color: "#fa755a",
-                    iconColor: "#fa755a",
-                },
-            },
-        };
-        
         return (
             <AuthContext.Consumer>
                 {(auth) => {
@@ -324,7 +324,7 @@ class Cart extends React.Component {
                                                 <div className="row" >
                                                     <div className="col-md-8 col-sm-5 col-xs-12 p-2">
                                                         <div className="p-2 border-gray">
-                                                            <div className="wrap-table-shopping-cart" style={{overflow:"auto"}}>
+                                                            <div className="wrap-table-shopping-cart" style={{ overflow: "auto" }}>
                                                                 <table className="table-shopping-cart">
                                                                     <thead>
                                                                         <tr className="table_head">
@@ -336,7 +336,7 @@ class Cart extends React.Component {
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="cartTable">
-                                                                        {this.state.items.map((item) => {
+                                                                        {this.state.items.map((item , index) => {
                                                                             return (
                                                                                 <tr key={item.cartId} className="table_row">
                                                                                     <td className="column-1">
@@ -373,12 +373,20 @@ class Cart extends React.Component {
                                                                 </table>
                                                             </div>
 
+
                                                             <div className="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
                                                                 <div className="flex-w flex-m m-r-20 m-tb-5">
 
                                                                 </div>
 
                                                             </div>
+
+                                                        </div>
+
+                                                        <div className="alert" style={{display:this.state.showAlert }} >
+                                                            <span onClick={()=>this.setState({showAlert: "none "})} className="closebtn">&times;</span>
+                                                            Press <b>"Allow"</b> to Download Multiple files if needed! <br /><br/>
+                                                            <b>Note: </b>Don't Refresh or Reload the page during downloads. These files will not be Redownload. 
                                                         </div>
                                                     </div>
 
@@ -397,7 +405,7 @@ class Cart extends React.Component {
                                                                 </div>
 
                                                                 <div className="size-209 p-t-1">
-                                                                     {this.state.totalPrice}$
+                                                                    {this.state.totalPrice}$
                                                                     <span className="mtext-110 cl2" id="grandTotal">
 
                                                                     </span>
@@ -444,7 +452,7 @@ class Cart extends React.Component {
                                                             /> */}
 
                                                             {/* 2ckeckout */}
-                                                            <TCO sellerId="250345511986"
+                                                            {/* <TCO sellerId="250345511986"
                                                                 publishableKey="42CC3DDD-66AF-4707-BB65-0ACA2530B140"
                                                                 sandbox={false}
                                                                 showForm
@@ -452,7 +460,15 @@ class Cart extends React.Component {
                                                                 onChange={this.handleChange}
                                                                 showLoading
                                                                 returnToken={this.returnToken}
-
+                                                            /> */}
+                                                            {this.state.showLoading ? <span>Loading Button...</span> : null}
+                                                            <PayPalButton
+                                                                amount={this.state.totalPrice}
+                                                                shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                                                onSuccess={this.handlePayment}
+                                                                onError={(err) => alert(err)}
+                                                                catchError={(err) => alert(err)}
+                                                                onButtonReady={() => this.setState({ showLoading: false })}
                                                             />
 
                                                             {/* <button onClick={(e) => {
@@ -478,6 +494,7 @@ class Cart extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <Footer />
                                     </div>

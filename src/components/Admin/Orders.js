@@ -157,8 +157,11 @@ export default class Orders extends React.Component {
 
 
                                                                                     };
+                                                                                
+                                                                                    return true;
 
-                                                                                })}
+                                                                                }
+                                                                                )}
 
 
                                                                             </tbody>

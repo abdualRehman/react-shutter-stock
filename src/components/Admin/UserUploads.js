@@ -127,7 +127,7 @@ export default class UserUploads extends React.Component {
                                                                                     <td style={{padding:"5px"}} >
                                                                                         {photo.description}
                                                                                     </td>
-                                                                                    <td> {photo.price_status ? `Rs:- ${photo.price}` : "Free"} </td>
+                                                                                    <td> {photo.price_status ? `${photo.price}$` : "Free"} </td>
                                                                                     <td>
                                                                                         <div className="table-data-feature">
                                                                                             <button className="item modal-trigger" onClick={() => this.editPhoto(photo.id, gallery)} data-target="modal1"
@@ -144,6 +144,7 @@ export default class UserUploads extends React.Component {
                                                                             
 
                                                                         }
+                                                                        return true;
                                                                     })}
 
 
@@ -191,7 +192,7 @@ export default class UserUploads extends React.Component {
                                                             <br />
                                                             {this.state.isStatusApply !== false ?
                                                                 <div>
-                                                                    <b>Rs:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
+                                                                    <b>Dollars:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
                                                                     <label htmlFor="price">Enter Price</label>
                                                                     <hr />
                                                                 </div>

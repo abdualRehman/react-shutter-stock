@@ -2,7 +2,9 @@ import React from 'react';
 import '../../App.css';
 import { db, storage, storageRef } from '../../config/firebase';
 import watermark from 'watermarkjs';
-import ImageCompressor from 'image-compressor.js';
+// import ImageCompressor from 'image-compressor.js';
+import ImageCompressor from 'compressorjs';
+
 import Footer from './Footer';
 import Header from './Header';
 
@@ -27,22 +29,52 @@ class AddNewImage extends React.Component {
         price: null,
         category: "",
         loadingStatus: null,
-        isWatermarkApply: false,
+        isWatermarkApply: true,
         isStatusApply: false,
         fileName: '',
         fileURL: null,
         fileWidth: null,
         fileHeight: null,
-
+        keywords:null,
 
         epsName: null,
         epsLoadingStatus: null,
         epsURL: null,
     }
 
+    handleKeyword = (event) => {
+
+        this.setState({keywords: event[0].M_Chips.chipsData});
+
+        console.log(this.state.keywords);
+    }
+  
     componentDidMount = () => {
+        var options = {
+            autocompleteOptions: {
+                data: {
+                    'Texture': null,
+                    'Ornament': null,
+                    'Baroque': null,
+                    'Patterns': null,
+                    'Botanical': null,
+                    'Flowers': null,
+                    'Leaves': null,
+                    'Digital': null,
+                    'Textile Designs': null,
+                },
+                limit: Infinity,
+                minLength: 1,
+
+            },
+            onChipAdd: this.handleKeyword,
+            onChipDelete:this.handleKeyword,
+        }
+
         M.Collapsible.init(document.querySelectorAll('.collapsible'));
         M.FormSelect.init(document.querySelectorAll('select'));
+        M.Chips.init(document.querySelectorAll('.chips'), options);
+
     }
 
     handleChange = (event) => {
@@ -54,13 +86,13 @@ class AddNewImage extends React.Component {
     }
 
     submitData = (auth, gallery) => {
-        if (this.state.title === "" || this.state.description === "") {
-            return M.toast({ html: `"Title" And "Description" Required!`, classes: 'red' })
-        }else if(this.state.category === ""){
-            return M.toast({html: "Please Choose Category" , classes: "red" })
+        if (this.state.title === "" ) {
+            return M.toast({ html: `"Title" Required!`, classes: 'red' })
+        } else if (this.state.category === "") {
+            return M.toast({ html: "Please Choose Category", classes: "red" })
 
-        }else if(this.state.fileURL === null || this.state.epsURL === null ){
-            return M.toast({html: "Please Insert Both Files .EPS + .JPG" , classes: "red" });
+        } else if (this.state.fileURL === null || this.state.epsURL === null) {
+            return M.toast({ html: "Please Insert Both Files .EPS + .JPG", classes: "red" });
         }
         var imageData = {
             title: this.state.title,
@@ -72,6 +104,7 @@ class AddNewImage extends React.Component {
             src: this.state.fileURL,
             width: this.state.fileWidth,
             height: this.state.fileHeight,
+            keywords: this.state.keywords,
             epsURL: this.state.epsURL,
             epsName: this.state.epsName,
         }
@@ -128,20 +161,20 @@ class AddNewImage extends React.Component {
                 switch (error.code) {
                     case 'storage/unauthorized':
                         // User doesn't have permission to access the object;
-                        M.toast({html: "User doesn't have permission to access the object" , classes: "red" })
+                        M.toast({ html: "User doesn't have permission to access the object", classes: "red" })
 
                         break;
 
                     case 'storage/canceled':
                         // User canceled the upload
-                        M.toast({html: "User canceled the upload" , classes: "red" });
+                        M.toast({ html: "User canceled the upload", classes: "red" });
                         break;
 
 
 
                     case 'storage/unknown':
                         // Unknown error occurred, inspect error.serverResponse
-                        M.toast({html: "Unknown error occurred" , classes: "red" });
+                        M.toast({ html: "Unknown error occurred", classes: "red" });
                         break;
                     default:
                         alert("Something Wrong Please Refresh the page and try again!");
@@ -154,6 +187,107 @@ class AddNewImage extends React.Component {
                 });
             });
 
+
+
+
+
+    }
+
+    handleImageSelection = (event) => {
+        let file = event.target.files[0];
+        var _URL = window.URL || window.webkitURL;
+        const i = new Image();
+        i.onload = () => {
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+                console.log({
+                    width: i.width,
+                    height: i.height,
+                    data: reader.result
+                });
+            }
+            this.setState({ fileWidth: Math.round(i.width / 300), fileHeight: Math.round(i.height / 300) });
+        };
+        i.src = _URL.createObjectURL(file);
+
+        const options = {
+            init(img) {
+                img.crossOrigin = 'anonymous'
+            }
+        };
+        var watermarkImage = require('../../images/UntitledCopy.png');
+
+        this.setState({ loadingStatus: "Uploading" });
+
+        if (this.state.isWatermarkApply === true) {
+
+            new ImageCompressor(file, {
+                quality: 0.6,
+                width: 550,
+                // width:1000,
+                convertSize: 50000000,
+                strict: true,
+                checkOrientation: true,
+                success: (beforeFile) => {
+
+                    watermark([beforeFile, watermarkImage], options)
+                        .blob(watermark.image.center(0.5))
+                        .then((blob) => {
+
+                            this.setState({ loadingStatus: "Optimization" })
+
+                            storageRef.child(`images/${file.name}`).put(blob).then((snapshot) => {
+
+                                console.log('Uploaded a blob or file!');
+                                // console.log(snapshot);
+                                snapshot.ref.getDownloadURL().then((downloadURL) => {
+                                    console.log('File available at', downloadURL);
+                                    this.setState({ fileURL: downloadURL, loadingStatus: "all done" });
+                                });
+                            }).catch((e) => {
+                                console.log(e);
+
+                            });
+
+                        });
+
+                }
+            });
+
+
+        } else {
+
+            new ImageCompressor(file, {
+                quality: .6,
+                width: 550,
+                // width:1000,
+                convertSize: 50000000,
+                strict: true,
+                checkOrientation: true,
+                success: (result) => {
+
+                    this.setState({ loadingStatus: "Optimization" })
+
+                    storageRef.child(`images/${file.name}`).put(result).then((snapshot) => {
+                        snapshot.ref.getDownloadURL().then((downloadURL) => {
+                            console.log('File available at', downloadURL);
+                            this.setState({ fileURL: downloadURL, loadingStatus: "all done" });
+                        });
+
+                    }).catch((e) => {
+                        console.log(e);
+
+                    });
+
+                    this.setState({ loadingStatus: "Storing In Database" })
+
+                },
+                error(e) {
+                    console.log(e.message);
+                },
+            });
+        }
 
 
 
@@ -469,7 +603,7 @@ class AddNewImage extends React.Component {
     }
 
     render() {
-        
+
         return (
             <AuthContext.Consumer>
                 {(AuthContext) => {
@@ -508,7 +642,15 @@ class AddNewImage extends React.Component {
                                                                     </select>
                                                                     <label>Select Category</label>
                                                                 </div>
-                                                             
+                                                                {/* <!-- Default with no input (automatically generated)  --> */}
+                                                                <label htmlFor="keywords" >Keywords</label>
+                                                                <div className="chips chips-autocomplete" ></div>
+
+                                                                {/* <!-- Customizable input  --> */}
+                                                                {/* <div className="chips" >
+                                                                    <input className="custom-class" onChipAdd={(data)=>{console.log(data)}} />
+                                                                </div> */}
+
                                                                 <div className="row">
                                                                     <label htmlFor="information" className="green-text" >First Make Sure All Changes Then Upload Your Photo!</label>
                                                                     <hr />
@@ -518,7 +660,7 @@ class AddNewImage extends React.Component {
                                                                         <div className="switch">
                                                                             <label>
                                                                                 None
-                                                                        <input type="checkbox" name="isWatermarkApply" onChange={this.toggleButton} />
+                                                                        <input type="checkbox" name="isWatermarkApply" onChange={this.toggleButton} defaultChecked />
                                                                                 <span className="lever"></span>
                                                                                 Apply
                                                                         </label>
@@ -538,15 +680,18 @@ class AddNewImage extends React.Component {
                                                                         <br />
                                                                         {this.state.isStatusApply !== false ?
                                                                             <div>
-                                                                                <b>Rs:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
+                                                                                <b>Dollars:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
                                                                                 <label htmlFor="price">Enter Price</label>
                                                                                 <hr />
                                                                             </div>
                                                                             : null}
 
 
+
                                                                     </div>
                                                                     <div className="col-4">
+
+
 
                                                                     </div>
                                                                 </div>
@@ -596,8 +741,8 @@ class AddNewImage extends React.Component {
                                                                                     </div>
                                                                                     :
                                                                                     <div>
-                                                                                        <input type="file" name="photo" onChange={this.handleFileSelection} /><br /><br />
-                                                                                        <label htmlFor="photo">Make sure file size must be less then 5MB before Uploading for better Results</label>
+                                                                                        {/* <input type="file" name="photo" onChange={this.handleFileSelection} /><br /><br /> */}
+                                                                                        <input type="file" name="photo" onChange={this.handleImageSelection} /><br /><br />
                                                                                         {this.state.loadingStatus !== null ?
                                                                                             <div>
                                                                                                 {this.state.loadingStatus}

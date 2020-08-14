@@ -73,7 +73,7 @@ class LoginForm extends Component {
 
         firebase.auth().signInWithPopup(provider).then(function (result) {
             // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
+            // var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
 
@@ -154,7 +154,7 @@ class LoginForm extends Component {
 
         firebase.auth().signInWithPopup(provider).then((result) => {
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            var token = result.credential.accessToken;
+            // var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
 
@@ -218,7 +218,7 @@ class LoginForm extends Component {
 
 
                 <div className="input-field col s12">
-                    <input onBlur={this.checkValue} onChange={this.handleChange} id="email" type="text" name="email" className="validate" />
+                    <input onBlur={this.checkValue} onChange={this.handleChange} id="email" type="email" name="email" className="validate" />
                     <label htmlFor="email">Email</label>
                 </div>
                 <div className="input-field col s12">
@@ -355,7 +355,7 @@ class RegisterForm extends Component {
                 var errorCode = error.code;
                 var errorMessage = error.message;
 
-                if (errorCode == 'auth/weak-password') {
+                if (errorCode === 'auth/weak-password') {
                     alert('The password is too weak.');
                 }
                 swal("Error", errorMessage, "warning");
@@ -377,10 +377,10 @@ class RegisterForm extends Component {
                     Register
             </span>
 
-                <div className="container">
+                <div className="container register-fields">
                     <div className="row">
-                        <div className="col s12">
-                            <div className="row">
+                        {/* <div className="col s12">
+                            <div className="row"> */}
                                 <div className="input-field col-sm-12 col-md-6">
                                     <input onChange={this.handleChange} id="first_name" name="first_name" type="text" className="validate" />
                                     <label htmlFor="first_name">First Name</label>
@@ -389,7 +389,7 @@ class RegisterForm extends Component {
                                     <input onChange={this.handleChange} id="last_name" type="text" name="last_name" className="validate" />
                                     <label htmlFor="last_name">Last Name</label>
                                 </div>
-                            </div>
+                            {/* </div> */}
                             <div className="input-field col-sm-12 col-md-12">
                                 <input onChange={this.handleChange} id="email" type="text" name="email" className="validate" />
                                 <label htmlFor="email">Email</label>
@@ -420,7 +420,7 @@ class RegisterForm extends Component {
                                     <span className="focus-input100"></span>
                                     <span className="label-input100">Confirm Password</span>
                                 </div> */}
-                        </div>
+                        {/* </div> */}
                     </div>
 
 
@@ -474,7 +474,7 @@ class Forms extends React.Component {
                                     <div className="wrap-login100">
                                         <div className="FormContent">
                                             <div style={{ textAlign: 'center', backgroundColor: '#f7f7f7', padding: '0', marginBottom: "0" }} >
-                                                <Link to="/" ><img src={Logo} alt="logo" width="130px" /></Link>
+                                                <Link to="/" ><img src={Logo} className="responsive-img" alt="logo" width="130px" /></Link>
                                             </div>
                                             {
                                                 this.state.isLoginForm ? <LoginForm /> : <RegisterForm />

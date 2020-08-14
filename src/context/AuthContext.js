@@ -35,7 +35,7 @@ export default class AuthContextProvider extends Component {
                         localStorage.setItem( "userRole" ,  data.role);
                         this.setState({isAuthenticated: true , user : data});
 
-                        console.log(this.state.user);
+                        // console.log(this.state.user);
                     }
                 })
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Header2 from './Header2'
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
-import M from 'materialize-css';
+
 
 import Jimp from 'jimp';
 import swal from 'sweetalert';
@@ -12,6 +12,7 @@ import { GalleryContext } from '../context/GalleryContext';
 import { UserContext } from '../context/UserContext';
 
 
+import Gallery from 'react-photo-masonry';
 
 class PhotoDetails extends React.Component {
 
@@ -43,11 +44,11 @@ class PhotoDetails extends React.Component {
     }
 
     componentDidMount = () => {
-        M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), { closeOnClick: false, coverTrigger: false, constrainWidth: false, alignment: "left" });
-        M.Collapsible.init(document.querySelectorAll('.collapsible'));
+        // M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), { closeOnClick: false, coverTrigger: false, constrainWidth: false, alignment: "left" });
+        // M.Collapsible.init(document.querySelectorAll('.collapsible'));
         window.scrollTo({
             top: 0,
-            behavior: "smooth"
+            // behavior: "smooth"
         });
 
         var details = this.props.location.state
@@ -59,10 +60,10 @@ class PhotoDetails extends React.Component {
                 var imageData = galleryData.findById(this.props.match.params.id)
                 // console.log(imageData);
                 if (imageData) {
-                    this.setState({ details: imageData })
+                    this.setState({ details: imageData });
+                    console.log(imageData);
                 } else {
                     this.setState({ details: this.state.details });
-                    console.log("wrong url");
                     this.props.history.push({
                         pathname: `/404Eroor`
                     });
@@ -193,8 +194,6 @@ class PhotoDetails extends React.Component {
             productId: this.state.details.id,
             cartId: cartID,
             creatorId: this.state.details.user_id,
-            epsName: this.state.details.epsName,
-            epsURL: this.state.details.epsURL
         };
 
         var existing = localStorage.getItem('cartItems');
@@ -222,9 +221,6 @@ class PhotoDetails extends React.Component {
         const images = this.state.details.src !== "" ? [{ src: this.state.details.src }] : [];
         // const images = [{ src: "" }];
         const loadingImage = require('../images/loading.gif');
-
-        console.log(this.state.details);
-
 
         return (
             <GalleryContext.Consumer>
@@ -271,8 +267,11 @@ class PhotoDetails extends React.Component {
                                                                 <div>
                                                                     {/* Created by: {this.findName(userContext)} */}
                                                                     <h2>{this.state.details.title}</h2>
-                                                                    <p>{this.state.details.description}</p>
-                                                                </div> 
+                                                                    <p>{this.state.details.description}</p><br/>
+                                                                    <p>Width: {this.state.details.width}In</p>
+                                                                    <p>Height: {this.state.details.height}In</p>
+
+                                                                </div>
                                                                 <br />
                                                                 <div>
                                                                     Format: */EPS
@@ -341,14 +340,30 @@ class PhotoDetails extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* <div className="row">
+                                            <div className="row">
                                                 <div className="col-md-12">
-                                                    <h1>{this.state.details.title}</h1>
+                                                    <h2>Similar Images</h2>
                                                     <br />
-                                                    <p>{this.state.details.description}</p>
-                                                    <br />
+                                                    {this.state.src !== "" ?
+                                                        <div>
+                                                            <Gallery photos={gallery.SearchSimilarImages(this.state.details.keywords)} direction="row" renderImage={(item) => {
+                                                                return (
+                                                                    <figure className="snip0016 caption" onClick={()=>{
+                                                                        this.props.history.push({
+                                                                            pathname: `/details/${item.photo.id}`,
+                                                                            state: item.photo,
+                                                                        });
+                                                                        window.location.reload(false);
+                                                                    } } style={{ margin: item.margin, height: "max-content", maxWidth: "212px" }} key={item.index} >
+                                                                        <img className="gallery" alt={item.index} src={item.photo.src} style={{ height: "100%", width: "100%" }} />
+                                                                    </figure>
+                                                                )
+                                                            }} />
+                                                        </div>
+                                                        : null}
+
                                                 </div>
-                                            </div> */}
+                                            </div>
                                         </div>
                                         <ModalGateway>
                                             {this.state.viewerIsOpen ? (

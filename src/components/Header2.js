@@ -74,25 +74,25 @@ class Header2 extends React.Component {
 
                                     <ul className="sidenav" id="mobile-demo">
                                         <li className="center">
-                                            <Link to="/" className="brand-logo1" style={{ "display": "contents"}} >
+                                            <Link  to="/" className="brand-logo1 sidenav-close" style={{ "display": "contents"}} >
                                                 <img src={Logo} alt="logo" />
                                             </Link>
                                         </li>
-                                        <li><Link to="/"> <b>Home</b></Link></li>
-                                        <li><Link to="/images/all"> <b>Images</b> </Link></li>
+                                        <li><Link className="sidenav-close" to="/"> <b>Home</b></Link></li>
+                                        <li><Link className="sidenav-close" to="/images/all"> <b>Images</b> </Link></li>
                                         {auth.user.role === "admin" ? 
-                                                        <li><Link to="/user/dashboard"><b>Upload</b></Link></li>
+                                                        <li><Link className="sidenav-close" to="/user/dashboard"><b>Upload</b></Link></li>
                                                     : null }
-                                        <li><Link to="/cart"><b>Cart</b></Link></li>
+                                        <li><Link className="sidenav-close" to="/cart"><b>Cart</b></Link></li>
                                         <li className="right">
-                                            <Link to="#" style={{ height: 'auto', width: '60px' }}></Link>
+                                            <Link className="sidenav-close" to="#" style={{ height: 'auto', width: '60px' }}></Link>
                                         </li>
-                                        <li className="right" style={{ color: 'black' }}><Link to="/login"><button className="waves-effect waves-light btn p-2" style={{ textTransform: 'none', letterSpacing: '2px' }} >Join</button></Link></li>
+                                        <li className="right" style={{ color: 'black' }}><Link className="sidenav-close" to="/login"><button className="waves-effect waves-light btn p-2" style={{ textTransform: 'none', letterSpacing: '2px' }} >Join</button></Link></li>
 
                                         <li className="right">
                                             {!auth.isAuthenticated ?
-                                                <Link to="/login"> <b>Login</b></Link>
-                                                : <Link to="#" > <b onClick={this.logout} >Logout</b></Link>}
+                                                <Link className="sidenav-close" to="/login"> <b>Login</b></Link>
+                                                : <Link className="sidenav-close" to="#" > <b onClick={this.logout} >Logout</b></Link>}
                                         </li>
 
                                     </ul>
