@@ -30,6 +30,7 @@
     "react-slideshow-image": "^1.4.0",
     "react-stripe-checkout": "^2.6.3",
     "react-toastify": "^5.5.0",
+    "render-smooth-image-react": "^1.0.0",
     "sweetalert": "^2.1.2",
     "watermarkjs": "^2.1.1"
   },

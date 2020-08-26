@@ -93,6 +93,8 @@ class AddNewImage extends React.Component {
 
         } else if (this.state.fileURL === null || this.state.epsURL === null) {
             return M.toast({ html: "Please Insert Both Files .EPS + .JPG", classes: "red" });
+        }else if(this.state.keywords.length < 1 ){
+            return M.toast({html: "Please Enter At Least 1 keyword" , classes: "red" });
         }
         var imageData = {
             title: this.state.title,
@@ -646,10 +648,6 @@ class AddNewImage extends React.Component {
                                                                 <label htmlFor="keywords" >Keywords</label>
                                                                 <div className="chips chips-autocomplete" ></div>
 
-                                                                {/* <!-- Customizable input  --> */}
-                                                                {/* <div className="chips" >
-                                                                    <input className="custom-class" onChipAdd={(data)=>{console.log(data)}} />
-                                                                </div> */}
 
                                                                 <div className="row">
                                                                     <label htmlFor="information" className="green-text" >First Make Sure All Changes Then Upload Your Photo!</label>

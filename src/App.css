@@ -820,6 +820,7 @@ h3 {
 /* custom editng */
 .masonry .brick:hover img {
   opacity: 1;
+
 }
 
 figure.snip0016 {
@@ -1027,6 +1028,7 @@ figure.snip0016:hover .links  {
 
 .how-itemcart1 img {
   width: 100%;
+  height: 80px;
 }
 
 .how-itemcart1::after {

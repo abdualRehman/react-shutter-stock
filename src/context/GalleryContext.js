@@ -139,10 +139,10 @@ export default class GalleryContextProvider extends Component {
       
         var resultData = [];
 
-        if (photos.length > 0 && keywordArray ) {
         
-            for (var i = 0; i < photos.length; i++) {
 
+        if (photos.length > 0 && keywordArray ) {
+            for (var i = 0; i < photos.length; i++) {
                 photos[i].keywords.filter((photoTag) => {
                     for(var j = 0; j< keywordArray.length; j++ ){
                         if (photoTag.tag.toLowerCase().indexOf(keywordArray[j].tag.toLowerCase()) !== -1) {

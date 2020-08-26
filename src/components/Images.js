@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 // import ImageMasonry from 'react-image-masonry';
 
 import Carousel, { Modal, ModalGateway } from "react-images";
+import RenderSmoothImage from 'render-smooth-image-react';
+import 'render-smooth-image-react/build/style.css';
 
 // for import images
 import { GalleryContext } from '../context/GalleryContext';
@@ -192,7 +194,9 @@ class Images extends React.Component {
                             <div className="brick" key={index} style={{"maxHeight": `${item.height}`, "maxWidth": `${item.width}` }} >
                                 <figure className="snip0016 caption" style={{...cont}} >
                                     {item.src ?   
-                                    <img className="gallery" alt={index} src={item.src} /> : <img className="gallery" alt={index} src={FreeLabel} />   }
+                                     <RenderSmoothImage src={item.src} alt={`"${index}"`}  />
+                                    // <img className="gallery" alt={index} src={item.src} />
+                                    : <img className="gallery" alt={index} src={FreeLabel} />   }
                                     <figcaption>
                                         {!item.price_status ?
                                             <span className="freeLabel"><img src={FreeLabel} alt="Free" /></span>
@@ -206,7 +210,7 @@ class Images extends React.Component {
                                         </div> */}
                                         <div className="caption">
                                             <Link className="text-grey grey-lighten-5" to={{ pathname: `/details/${item.id}`, state: item }}><i className="small material-icons">file_download</i></Link>
-                                                <a href="!#" className="text-white" onClick={(e) => {
+                                                <a href="#" className="text-white" onClick={(e) => {
                                                 e.preventDefault();
                                                 this.openLightbox(indexOfFirstTodo + index)
                                             }}><i className="small material-icons">visibility</i> </a>
@@ -325,36 +329,36 @@ class Images extends React.Component {
                     const renderPageNumbers = pageNumbers.map(number => {
                         if (number === 1 && currentPage === 1) {
                             return (
-                                <li key={number} className='active' id={number}><a href='!#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
+                                <li key={number} className='active' id={number}><a href='#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
                             )
                         }
                         else if ((number < upperPageBound + 1) && number > lowerPageBound) {
                             return (
-                                <li key={number} className={`${number}`} id={number}><a href='!#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
+                                <li key={number} className={`${number}`} id={number}><a href='#' id={number} onClick={() => this.handleClick(number, todos)}>{number}</a></li>
                             )
                         }
                     });
                     let pageIncrementBtn = null;
                     if (pageNumbers.length > upperPageBound) {
-                        pageIncrementBtn = <li className=''><a href='!#' onClick={() => this.btnIncrementClick(todos)}> &hellip; </a></li>
+                        pageIncrementBtn = <li className=''><a href='#' onClick={() => this.btnIncrementClick(todos)}> &hellip; </a></li>
                     }
                     let pageDecrementBtn = null;
                     if (lowerPageBound >= 1) {
-                        pageDecrementBtn = <li className=''><a href='!#' onClick={() => this.btnDecrementClick(todos)}> &hellip; </a></li>
+                        pageDecrementBtn = <li className=''><a href='#' onClick={() => this.btnDecrementClick(todos)}> &hellip; </a></li>
                     }
                     let renderPrevBtn = null;
                     if (isPrevBtnActive === 'disabled') {
                         renderPrevBtn = <li className={isPrevBtnActive}><span id="btnPrev"> <i className="material-icons">chevron_left</i> </span></li>
                     }
                     else {
-                        renderPrevBtn = <li className={isPrevBtnActive}><a href='!#' id="btnPrev" onClick={() => this.btnPrevClick(todos)}> <i className="material-icons">chevron_left</i> </a></li>
+                        renderPrevBtn = <li className={isPrevBtnActive}><a href='#' id="btnPrev" onClick={() => this.btnPrevClick(todos)}> <i className="material-icons">chevron_left</i> </a></li>
                     }
                     let renderNextBtn = null;
                     if (isNextBtnActive === 'disabled') {
                         renderNextBtn = <li className={isNextBtnActive}><span id="btnNext"> <i className="material-icons">chevron_right</i> </span></li>
                     }
                     else {
-                        renderNextBtn = <li className={isNextBtnActive}><a href='!#' id="btnNext" onClick={() => this.btnNextClick(todos)}> <i className="material-icons">chevron_right</i> </a></li>
+                        renderNextBtn = <li className={isNextBtnActive}><a href='#' id="btnNext" onClick={() => this.btnNextClick(todos)}> <i className="material-icons">chevron_right</i> </a></li>
                     }
 
 

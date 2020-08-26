@@ -98,7 +98,7 @@ class Footer extends React.Component {
                                           +92310 7078901
                                         </li>
                                         <li>
-                                        <a href="mailto:help@sstock.com">help@sstock.com</a>
+                                        <a href="mailto:support@sstock.com.pk">support@sstock.com.pk</a>
                                         </li>
                                     </ul>
                                   
@@ -147,7 +147,7 @@ class Footer extends React.Component {
                         <div className="footer-copyright">
                             <div className="container">
                             <hr style={{borderBottom: "1px solid #474759"}} />
-                                © 2003-2020 S-Stock, Inc.
+                                © 20013-2020 S-Stock, Inc.
                         <div className="grey-text text-lighten-4 right">
                                     <ul className="footerIcons">
                                         <li> <Link to=""> <i className="fab fa-2x fa-facebook-square"></i> </Link>  </li>

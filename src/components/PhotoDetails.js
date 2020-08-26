@@ -10,6 +10,8 @@ import swal from 'sweetalert';
 import Carousel, { Modal, ModalGateway } from "react-images";
 import { GalleryContext } from '../context/GalleryContext';
 import { UserContext } from '../context/UserContext';
+import RenderSmoothImage from 'render-smooth-image-react';
+import 'render-smooth-image-react/build/style.css';
 
 
 import Gallery from 'react-photo-masonry';
@@ -221,6 +223,14 @@ class PhotoDetails extends React.Component {
         const images = this.state.details.src !== "" ? [{ src: this.state.details.src }] : [];
         // const images = [{ src: "" }];
         const loadingImage = require('../images/loading.gif');
+        const cont = {
+            backgroundColor: "#eee",
+            cursor: "pointer",
+            overflow: "hidden",
+            position: "relative",
+            display: "flex"
+        };
+
 
         return (
             <GalleryContext.Consumer>
@@ -255,7 +265,7 @@ class PhotoDetails extends React.Component {
                                                 <div className="col-sm-6">
                                                     <div className="details-image">
                                                         {/* {gallery.photos.find(this.findDetails)} */}
-                                                        <img src={this.state.details.src === "" ? loadingImage : this.state.details.src} style={{ marginRight: "40%" }} alt="imagedetails" />
+                                                        <img src={this.state.details.src === "" ? loadingImage : this.state.details.src} style={{ marginRight: "40%", maxHeight: "400px", display: "block", margin: "auto" }} alt="imagedetails" />
 
                                                         <button onClick={this.openLightbox} ><i className="fas 3x fa-binoculars"></i></button>
                                                     </div>
@@ -267,12 +277,15 @@ class PhotoDetails extends React.Component {
                                                                 <div>
                                                                     {/* Created by: {this.findName(userContext)} */}
                                                                     <h2>{this.state.details.title}</h2>
-                                                                    <p>{this.state.details.description}</p><br/>
-                                                                    <p>Width: {this.state.details.width}In</p>
-                                                                    <p>Height: {this.state.details.height}In</p>
+                                                                    <p>{this.state.details.description}</p><br />
+                                                                    <p>Width: <b> {this.state.details.width} - inches </b></p>
+                                                                    <p>Height: <b> {this.state.details.height} - inches </b></p>
 
                                                                 </div>
                                                                 <br />
+                                                                <div>
+                                                                    Resolution: 300 DPI
+                                                                </div>
                                                                 <div>
                                                                     Format: */EPS
                                                                 </div>
@@ -346,7 +359,7 @@ class PhotoDetails extends React.Component {
                                                     <br />
                                                     {this.state.src !== "" ?
                                                         <div>
-                                                            <Gallery photos={gallery.SearchSimilarImages(this.state.details.keywords)} direction="row" renderImage={(item) => {
+                                                            {/* <Gallery photos={gallery.SearchSimilarImages(this.state.details.keywords)} direction="column" renderImage={(item) => {
                                                                 return (
                                                                     <figure className="snip0016 caption" onClick={()=>{
                                                                         this.props.history.push({
@@ -358,7 +371,36 @@ class PhotoDetails extends React.Component {
                                                                         <img className="gallery" alt={item.index} src={item.photo.src} style={{ height: "100%", width: "100%" }} />
                                                                     </figure>
                                                                 )
-                                                            }} />
+                                                            }} /> */}
+
+                                                            {gallery.SearchSimilarImages(this.state.details.keywords).map((item, index) => {
+
+                                                                if (item) {
+                                                                    return (
+                                                                        <div className="brick" onClick={() => {
+                                                                            this.props.history.push({
+                                                                                pathname: `/details/${item.id}`,
+                                                                                state: item,
+                                                                            });
+                                                                            window.location.reload(false);
+                                                                        }} style={{ width: "fit-content", display: "inline-flex" }} key={index} >
+                                                                            <figure className="snip0016 caption" style={{ ...cont }} >
+                                                                                {/* <img className="gallery" alt={index} src={item.src} style={{"maxHeight": `200px` }} /> */}
+                                                                                <div className="gallery" style={{maxHeight: `400px`, width:"150px" }} >
+                                                                                    <RenderSmoothImage src={item.src} alt={`"${index}"`}  />
+                                                                                </div>
+                                                                            </figure>
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            })}
+
+
+
+
+
+
+
                                                         </div>
                                                         : null}
 
