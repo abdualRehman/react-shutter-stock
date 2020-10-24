@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 
 const cors = require("cors");
 const express = require("express");
-var stripe = require('stripe')('sk_test_Qe0Bi8tp9lG78snWi1Crhwzx00FIjJOh9N');
+var stripe = require('stripe')('sk_test_51HUbFjJ1ZaNMwlyfzuniZXsQBWQmeG7HU5gKdBKvtwmzCtDZm6ay84JhJq0V0cobySSJPhM1LKBumPoXiqsEAtP300dwXjKuAs');
 const uuid = require("uuid/v4");
 
 
@@ -11,46 +11,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-
-
-// app.post("/checkout", async ( req: any , res: any ) => {
-//     console.log("Request: " + req.body );
-//     let error;
-//     let status;
-
-//     try{
-//         const {product , token } = req.body;
-
-//         const customer = await stripe.customers.create({
-//             email: token.email , 
-//             source : token.id
-//         });
-
-//         const idempotency_key = uuid();
-//         const charge = await stripe.charges.create({
-//             amount: product.price * 100 ,
-//             currency: "usd",
-//             customer: customer.id,
-//             receipt_email: token.email,
-//             description: `Purchased the ${product.name}`,
-//             shipping: {
-//                 name: token.card.name
-//             }
-//         }
-//         ,{
-//             idempotency_key
-//         }
-//         );
-
-//         console.log("Charge: ", { charge } );
-//         status = "success";
-//     }catch (error){
-//         console.error("Error:" , error );
-//         status = "failure";
-//     }
-//     res.json({ error, status });
-// });
 
 
 
@@ -74,10 +34,6 @@ app.post("/checkout", async ( req:any , res :any ) => {
             customer: customer.id,
             receipt_email: token.email,
             description: `Purchased the ${product.name}`,
-            // shipping: {
-            //     name: token.card.name,
-            //     address: "Not Defined"
-            // }
         }
         ,{
             idempotencyKey

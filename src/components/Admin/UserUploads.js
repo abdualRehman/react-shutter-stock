@@ -44,7 +44,7 @@ export default class UserUploads extends React.Component {
             description: details.description,
             price: details.price,
             isStatusApply: details.price_status,
-            fileURL: details.src,
+            fileURL: details.freeSrc,
             id: details.id
         });
     }
@@ -61,17 +61,15 @@ export default class UserUploads extends React.Component {
                     gallery.deletePhoto(id);
                     swal("Deleted!", "Your imaginary file has been deleted!", "success");
                 }
-        });
+            });
 
 
     }
 
     updatePhoto = (gallery) => {
         let updateData = {
-            description: this.state.description,
             title: this.state.title,
             price: this.state.price,
-            price_status: this.state.isStatusApply,
             id: this.state.id
         }
 
@@ -109,39 +107,37 @@ export default class UserUploads extends React.Component {
                                                                     <tr>
                                                                         <th>Image</th>
                                                                         <th>Title</th>
-                                                                        <th>Description</th>
+
                                                                         <th>Price</th>
                                                                         <th></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     {gallery.photos.map((photo) => {
-                                                                         if (photo.user_id === auth.user.uid) {
-                                                                            
+                                                                        if (photo.user_id === auth.user.uid) {
+
                                                                             return <tr key={photo.id} className="tr-shadow">
-                                                                                    <td> <div className="how-itemcart1">
-                                                                                        <img src={photo.src} alt="IMG" />
+                                                                                <td> <div className="how-itemcart1">
+                                                                                    <img src={photo.freeSrc} alt="IMG" />
+                                                                                </div>
+                                                                                </td>
+                                                                                <td className="desc" >{photo.title}</td>
+
+                                                                                <td>$ {photo.price}-USD</td>
+                                                                                <td>
+                                                                                    <div className="table-data-feature">
+                                                                                        <button className="item modal-trigger" onClick={() => this.editPhoto(photo.id, gallery)} data-target="modal1"
+                                                                                            title="Edit">
+                                                                                            <i className="zmdi zmdi-edit"></i>
+                                                                                        </button>
+                                                                                        <button className="item" data-toggle="tooltip" onClick={() => this.deletePhoto(photo.id, gallery)} data-placement="top"
+                                                                                            title="Delete">
+                                                                                            <i className="zmdi zmdi-delete"></i>
+                                                                                        </button>
                                                                                     </div>
-                                                                                    </td>
-                                                                                    <td className="desc" >{photo.title}</td>
-                                                                                    <td style={{padding:"5px"}} >
-                                                                                        {photo.description}
-                                                                                    </td>
-                                                                                    <td> {photo.price_status ? `${photo.price}$` : "Free"} </td>
-                                                                                    <td>
-                                                                                        <div className="table-data-feature">
-                                                                                            <button className="item modal-trigger" onClick={() => this.editPhoto(photo.id, gallery)} data-target="modal1"
-                                                                                                title="Edit">
-                                                                                                <i className="zmdi zmdi-edit"></i>
-                                                                                            </button>
-                                                                                            <button className="item" data-toggle="tooltip" onClick={() => this.deletePhoto(photo.id, gallery)} data-placement="top"
-                                                                                                title="Delete">
-                                                                                                <i className="zmdi zmdi-delete"></i>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            
+                                                                                </td>
+                                                                            </tr>
+
 
                                                                         }
                                                                         return true;
@@ -173,31 +169,15 @@ export default class UserUploads extends React.Component {
                                                         <div className="col-lg-6 col-md-12">
                                                             <input type="text" placeholder="Title" value={this.state.title || ''} name="title" className="validate" onChange={this.handleChange} id="title" />
                                                             <label htmlFor="title">Title</label>
-                                                            <input type="text" placeholder="Description" value={this.state.description || ''} name="description" className="validate" onChange={this.handleChange} id="description" />
-                                                            <label htmlFor="description">Description</label>
+
 
                                                             <hr />
 
-                                                            <label htmlFor="sellStatus">Status</label>
-                                                            <br />
-                                                            <div className="switch">
-                                                                <label>
-                                                                    Free
-                                                                    {/* <input type="checkbox" name="isStatusApply" {...this.state.isStatusApply ? "defaultChecked" : null }  onChange={this.toggleButton} /> */}
-                                                                    <input type="checkbox" name="isStatusApply"  checked={this.state.isStatusApply ? "checked":null } onChange={this.toggleButton} />
-                                                                    <span className="lever"></span>
-                                                                    Sell
-                                                                </label>
+                                                            <div>
+                                                                <b>Dollars:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
+                                                                <label htmlFor="price">Enter Price</label>
+                                                                <hr />
                                                             </div>
-                                                            <br />
-                                                            {this.state.isStatusApply !== false ?
-                                                                <div>
-                                                                    <b>Dollars:-</b> <input type="text" name="price" value={this.state.price || ''} onChange={this.handleChange} className="input-field col-12" placeholder="Enter Price" />
-                                                                    <label htmlFor="price">Enter Price</label>
-                                                                    <hr />
-                                                                </div>
-                                                                : null}
-
 
 
                                                         </div>

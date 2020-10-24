@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import Header2 from './Header2';
+import Header from './Header';
 import Footer from './Footer';
 
 
 export default class Privacy extends Component {
+
+    componentDidMount(){
+        window.scroll(0,0)
+    }
     render() {
         return (
             <div>
+                <Header />
                 <div className="container-fluid privacySection1">
-                    <Header2 />
                     <div className="container">
                         <div className="col-md-12 text-center">
                             {/* <h1 className="white-text" >Privacy Policy</h1> */}

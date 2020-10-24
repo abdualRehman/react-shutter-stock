@@ -34,7 +34,7 @@ class LoginForm extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(context.user.password);
+        
 
         if (this.state.email === "") {
             return alert("Please enter email.");
@@ -53,9 +53,9 @@ class LoginForm extends Component {
             // this.props.history.push({
             //     pathname: '/'
             //   });
-            console.log(user);
+            
         }).catch((error) => {
-            console.log(error);
+            
             swal("Login Failed", "Somthing Wrong!", "warning")
         })
 
@@ -77,8 +77,7 @@ class LoginForm extends Component {
             // The signed-in user info.
             var user = result.user;
 
-            console.log("user")
-            console.log(user)
+    
 
             // var userId = user.uid;
             // const db = firebase.firestore();
@@ -109,7 +108,7 @@ class LoginForm extends Component {
                 // this.props.history.push({
                 //     pathname: '/'
                 // });
-                // console.log(user)
+                
             })
 
 
@@ -124,10 +123,7 @@ class LoginForm extends Component {
             var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
-            console.log(errorCode)
-            console.log(errorMessage)
-            console.log(email)
-            console.log(credential)
+      
             swal("Login Failed", errorMessage, "warning");
             // ...
         });
@@ -160,8 +156,6 @@ class LoginForm extends Component {
 
             const db = firebase.firestore();
 
-            console.log("user")
-            console.log(user);
 
             db.collection('users').doc(user.uid).set({
                 first_name: user.displayName,
@@ -178,7 +172,7 @@ class LoginForm extends Component {
                 // this.props.history.push({
                 //     pathname: '/'
                 // });
-                console.log(user)
+                
             })
             // ...
         }).catch((error) => {
@@ -190,10 +184,7 @@ class LoginForm extends Component {
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
 
-            console.log(errorCode)
-            console.log(errorMessage)
-            console.log(email)
-            console.log(credential)
+        
 
             swal("Login Failed", errorMessage, "warning")
             // ...
@@ -285,7 +276,7 @@ class RegisterForm extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.state);
+        
         var validate = false;
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -316,7 +307,7 @@ class RegisterForm extends Component {
         }
 
         if (validate) {
-            console.log("processing");
+            
             // var newUser = {
             //     first_name: this.state.first_name,
             //     last_name: this.state.last_name,
@@ -347,7 +338,7 @@ class RegisterForm extends Component {
                     // this.props.history.push({
                     //     pathname: '/'
                     //   });
-                    console.log(user)
+                    
                 })
 
             }).catch((error) => {
@@ -460,7 +451,7 @@ class Forms extends React.Component {
         return (
             <AuthContext.Consumer>
                 {(authContext) => {
-                    console.log(authContext);
+                    
                     if (authContext.isAuthenticated) {
 
                         return this.props.history.push({

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import Header2 from './Header2';
+import Header from './Header';
 import Footer from './Footer';
 
 import { db} from "../config/firebase";
@@ -16,6 +16,11 @@ class Contact extends React.Component {
         subject: "",
         message:"",
     }
+
+    componentDidMount(){
+        window.scroll(0,0)
+    }
+
     handleCahnge = (event) => {
         this.setState({[event.target.name]: event.target.value });
     }
@@ -27,7 +32,7 @@ class Contact extends React.Component {
         .then((docRef) => {
             msgData.id = docRef.id;
 
-            console.log(msgData);
+            
 
             console.log("Document written with ID: ", docRef.id);
             this.setState({ name: "", email: "", subject: "", message: "" });
@@ -45,8 +50,8 @@ class Contact extends React.Component {
 
         return (
             <div>
+                <Header />
                 <div className="container-fluid contactUsSection1">
-                    <Header2 />
                     <div className="container aboutTopContent">
                         <div className="col-md-6">
                             <h1 className="text-white">Contact S-Stock</h1>

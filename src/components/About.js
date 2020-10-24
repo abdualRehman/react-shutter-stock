@@ -1,13 +1,15 @@
 import React from 'react';
 // import * as jQuery from 'jquery';
-import Header2 from './Header2';
+import Header from './Header';
 import Footer from './Footer';
 
 class About extends React.Component {
 
 
 
-
+    componentDidMount(){
+        window.scroll(0,0)
+    }
 
     render() {
         const aboutImage = require('../images/about-image.jpg');
@@ -20,8 +22,9 @@ class About extends React.Component {
         return (
 
             <div>
+                <Header />
                 <div className="container-fluid aboutCoverPic">
-                    <Header2 />
+                    
                     <div className="col-md-6 aboutTopContent">
                         <h1 className="text-white">About S-Stock</h1>
                         <p className="text-white">

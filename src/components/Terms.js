@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import Header2 from './Header2';
+import Header from './Header';
 import Footer from './Footer';
 
 
 export default class Terms extends Component {
+    componentDidMount(){
+        window.scroll(0,0)
+    }
     render() {
         return (
             <div>
+                <Header />
                 <div className="container-fluid termsSection1">
-                    <Header2 />
                     <div className="container">
-                        <div className="col-md-12 text-center">
+                        <div className="col-md-12 text-center p-t-50">
                             {/* <h1 className="grey-text text-darken-2 p-t-10" >Terms and Conditions</h1> */}
                             <h1 className="grey-text text-darken-3 p-t-10" >Terms and Conditions</h1>
 

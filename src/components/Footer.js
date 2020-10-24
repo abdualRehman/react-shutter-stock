@@ -17,22 +17,22 @@ class Footer extends React.Component {
                                     <h5 className="white-text">Browse by Category</h5>
                                     <ul>
                                         <li>
-                                            <Link to="/images/ornamentsAndBaroque"> Ornaments And Baroque </Link>
+                                            <Link to="/photos/ornamentsAndBaroque"> Ornaments And Baroque </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/texture"> Texture </Link>
+                                            <Link to="/photos/texture"> Texture </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/pattren"> Pattren </Link>
+                                            <Link to="/photos/pattren"> Pattren </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/degitalTextileDesign"> Degital Textile Design </Link>
+                                            <Link to="/photos/degitalTextileDesign"> Degital Textile Design </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/botanicalFlowersAndLeaves"> Botanical Flowers And Leaves </Link>
+                                            <Link to="/photos/botanicalFlowersAndLeaves"> Botanical Flowers And Leaves </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/all">All Above</Link>
+                                            <Link to="/photos/all">All Above</Link>
                                         </li>
                                     </ul>
 
@@ -44,7 +44,7 @@ class Footer extends React.Component {
                                             <Link to="/"> Home </Link>
                                         </li>
                                         <li>
-                                            <Link to="/images/all"> Stock photos </Link>
+                                            <Link to="/photos/all"> Stock photos </Link>
                                         </li>
                                         <li>
                                             <Link to="/about-us">About us </Link>
@@ -55,21 +55,7 @@ class Footer extends React.Component {
                                         <li>
                                             <Link to="/privacy"> Privacy Policy </Link>
                                         </li>
-                                        {/* <li>
-                                            <Link to=""> Footage </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Music</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Blog</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Royalty free images</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Free image of the week</Link>
-                                        </li> */}
+                                      
                                     </ul>
 
                                 </div>
@@ -79,18 +65,7 @@ class Footer extends React.Component {
                                         <li>
                                             <Link to="/contact-us"> Contact us </Link>
                                         </li>
-                                        {/* <li>
-                                            <Link to=""> Offset </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Premier </Link>
-                                        </li>
-                                        <li>
-                                            <Link to=""> PremiumBeat </Link>
-                                        </li>
-                                        <li>
-                                            <Link to=""> Custom </Link>
-                                        </li> */}
+                                      
                                     </ul>
                                     <h5 className="white-text">Customers</h5>
                                     <ul>
@@ -104,39 +79,7 @@ class Footer extends React.Component {
                                   
 
                                 </div>
-                                {/* <div className="col-md-3">
-                                    <h5 className="white-text">Help</h5>
-                                    <ul>
-                                        <li>
-                                            <Link to=""> Get help </Link>
-                                        </li>
-                                    </ul>
-                                    <h5 className="white-text">Partner</h5>
-                                    <ul>
-                                        <li>
-                                            <Link to=""> Developer </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Affiliate/Reseller </Link>
-                                        </li>
-                                        <li>
-                                            <Link to=""> International reseller </Link>
-                                        </li>
-                                    </ul>
-                                    <h5 className="white-text">Legal</h5>
-                                    <ul>
-                                        <li>
-                                            <Link to="">Terms of use</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">Privacy policy</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="">License agreement</Link>
-                                        </li>
-                                    </ul>
-
-                                </div> */}
+                              
                                 <hr />
                             </div>
                         </div>

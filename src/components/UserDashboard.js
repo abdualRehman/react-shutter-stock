@@ -16,7 +16,7 @@ class UserDashboard extends React.Component {
         return (
             <AuthContext.Consumer>
                 {(authContext) => {
-                    console.log(authContext);
+                    
                     // if (authContext.isAuthenticated == false ) {
                     //     return window.location.href = "http://localhost:3000";
                     // }

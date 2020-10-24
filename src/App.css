@@ -2069,3 +2069,24 @@ input[type=text]:not(.browser-default):focus:not([readonly]) , textarea.material
 .closebtn:hover {
   color: black;
 }
+
+.select-dropdown.dropdown-trigger{
+  background-color: transparent!important;
+  border-bottom: 1px solid darkgrey!important;
+  color: grey!important;
+}
+
+
+
+/* --------------------------------Material ui Css ------------------------ */
+
+.MuiInputBase-input.Header-inputInput-16{
+  outline: none;
+  border: none;
+  padding-left: 12px;
+  margin: auto;
+  background-color: transparent;
+}
+.Header-link-11{
+  color:white
+}
