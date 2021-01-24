@@ -13,7 +13,7 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 import Container from '@material-ui/core/Container';
 
 // import InfiniteScroll from 'react-infinite-scroll-component';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
 
 
 const useStyles = (theme) => ({
@@ -45,9 +45,7 @@ class LoadImages2 extends Component {
     static contextType = GalleryContext;
 
     constructor(props) {
-        // this.loadMore = this.loadMore.bind(this);
         super(props)
-        this.getUpdate = this.getUpdate.bind(this)
         this.state = {
             currentImage: null,
             viewerIsOpen: false,
@@ -66,6 +64,7 @@ class LoadImages2 extends Component {
 
             photos: props.photos,
             entities: null,
+            ref: React.createRef()
 
         }
     }
@@ -80,17 +79,19 @@ class LoadImages2 extends Component {
             threshold: 1.0
         };
         // Create an observer
-        this.observer = new IntersectionObserver(
+        this.observer = new window.IntersectionObserver(
             this.handleObserver.bind(this), //callback
             options
         );
         //Observ the `loadingRef`
+
         this.observer.observe(this.loadingRef);
+        console.log(this)
     }
 
     handleObserver(entities, observer) {
 
-
+        console.log(entities)
         const y = entities[0].boundingClientRect.y;
         if (this.state.prevY > y) {
 
@@ -99,6 +100,7 @@ class LoadImages2 extends Component {
             // this.getUsers(curPage);
             // this.setState({ page: curPage });
             this.getUsers(this.state.page);
+            console.log("run again")
 
         }
         this.setState({ prevY: y });
@@ -124,7 +126,7 @@ class LoadImages2 extends Component {
             if (more) {
                 // const newData = gallery.photos.slice(after, after + perPage);
                 const newData = gallery.slice(page, page + perPage);
-                
+
                 setTimeout(() => {
                     this.setState({
                         loading: false,
@@ -146,13 +148,13 @@ class LoadImages2 extends Component {
 
 
 
-    getUpdate = () => {
-        // this.componentDidMount();
-        
-        // this.setState({ data: [], photos: this.props.photos });
-        // this.getUpdate(this.state.page);
-     
-    }
+    // getUpdate = () => {
+    //     // this.componentDidMount();
+
+    //     // this.setState({ data: [], photos: this.props.photos });
+    //     // this.getUpdate(this.state.page);
+
+    // }
 
 
 
@@ -173,7 +175,7 @@ class LoadImages2 extends Component {
 
         return (
             <>
-                <Container maxWidth="lg">
+                <Container maxWidth="lg" id="imagePage">
                     <Masonry
                         breakpointCols={breakpointColumnsObj}
                         className="my-masonry-grid"
@@ -202,8 +204,7 @@ class LoadImages2 extends Component {
 
                     {!this.state.loading && this.state.more &&
                         <div ref={(loadingRef) => (this.loadingRef = loadingRef)}
-                            style={{ background: "transparent", width: "100%", height: "170px", marginBottom: "30px" }}>
-
+                            style={{ background: "transparent", width: "100%", height: "170px", marginBottom: "100px" }}>
                         </div>
                     }
 

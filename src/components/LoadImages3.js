@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 import './css/LoadImages.css';
@@ -39,9 +40,10 @@ const breakpointColumnsObj = {
 
 
 const perPage = 6;
-function LoadSearchImages(props) {
-    const classes = useStyles();
 
+function LoadImages(props) {
+
+    const classes = useStyles();
 
 
 
@@ -130,6 +132,10 @@ function LoadSearchImages(props) {
 
 
 
+
+
+
+
     const [currentImage, setCurrentImage] = useState(null);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
@@ -142,11 +148,9 @@ function LoadSearchImages(props) {
         setViewerIsOpen(false);
     };
 
-
-
-
     return (
         <>
+
             <Container maxWidth="lg">
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
@@ -175,6 +179,8 @@ function LoadSearchImages(props) {
                     <LoadMore />
                 }
 
+
+
                 {!loading && more &&
                     <div ref={setElement} style={{ background: "transparent", width: "100%", height: "170px", marginBottom: "30px" }}>
 
@@ -194,19 +200,17 @@ function LoadSearchImages(props) {
                             views={data.map(x => ({
                                 ...x,
                                 srcset: x.src,
-                                caption: x.title
+                                caption: x.title,
+
                             }))
                             }
                         />
                     </Modal>
                 ) : null}
             </ModalGateway>
-
-
         </>
     )
-};
-
+}
 
 
 function LoadMore() {
@@ -220,4 +224,5 @@ function LoadMore() {
     )
 }
 
-export default LoadSearchImages;
+
+export default LoadImages;

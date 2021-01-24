@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 
 import { GalleryContext } from '../context/GalleryContext';
 
 import Header from './Header';
-import LoadImages from './LoadImages';
-import LoadImages2 from './LoadImages2';
+// import LoadImages from './LoadImages';
+// import LoadImages2 from './LoadImages2';
+import LoadImages3 from './LoadImages3';
 
 
 
@@ -147,7 +148,7 @@ class LoadAll_Images2 extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.child = React.createRef();
+        // this.child = React.createRef();
         this.state = {
             similarTagsArray: [],
             categoryName: null,
@@ -243,7 +244,7 @@ class LoadAll_Images2 extends Component {
 
             
             if(this.state.sortPhotos.length > 0 ){
-                this.child.current.getUpdate();
+                // this.child.current.getUpdate();
             }
         }
 
@@ -274,7 +275,7 @@ class LoadAll_Images2 extends Component {
 
         setTimeout(()=>{
             this.setState({displaySection: "block"})
-        },1)
+        },2000)
         // window.location.reload(false);
 
 
@@ -337,7 +338,9 @@ class LoadAll_Images2 extends Component {
 
 
                             {this.state.displaySection === "block" &&
-                                <LoadImages2 ref={this.child} photos={this.state.sortPhotos} />
+                                // <LoadImages2 ref={this.child} photos={this.state.sortPhotos} />
+                                <LoadImages3 photos={this.state.sortPhotos} />
+                                // <LoadImages photos={this.state.sortPhotos} />
                             }
 
 

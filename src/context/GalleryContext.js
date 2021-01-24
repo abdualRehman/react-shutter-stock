@@ -226,7 +226,7 @@ export default class GalleryContextProvider extends Component {
         more: true,
         data: [],
         after: 0,
-        perPage: 8,
+        perPage: 6,
     }
 
 
@@ -241,6 +241,8 @@ export default class GalleryContextProvider extends Component {
                 photos.push(photo);
             });
             this.setState({ photos: photos });
+        }).catch((error) => {
+            console.log(error);
         });
 
     }

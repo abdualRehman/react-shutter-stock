@@ -39,7 +39,7 @@ class AdminHeader extends React.Component {
 
             <AuthContext.Consumer>
                 {(authContext) => {
-                    console.log(authContext);
+                    
                     return (
 
                         <div className="container-fluid p-0">

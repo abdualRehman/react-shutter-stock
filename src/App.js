@@ -26,6 +26,7 @@ import HomePage from './components/HomePage';
 import LoadAll_Images2 from './components/LoadAll_Images2';
 import Image_Details from './components/Image_Details';
 import Cart_Items from './components/Cart_Items';
+import adsTxtCode from './components/adsTxtCode';
 
 
 
@@ -33,6 +34,9 @@ import AuthContextProvider from './context/AuthContext';  // For authentication
 import GalleryContextProvider from './context/GalleryContext';  // For Gallery
 import OrderContextProvider from './context/OrderContext';  // For Orders
 import UserContextProvider from './context/UserContext';  // For Users
+
+
+
 
 
 console.log(M)
@@ -79,6 +83,9 @@ class App extends React.Component {
                     <Route exact path="/photos/:category" component={LoadAll_Images2} ></Route>
                     <Route exact path="/photo_details/:id" component={Image_Details} ></Route>
                     <Route exact path="/Cart" component={Cart_Items} ></Route>
+
+
+                    <Route exact path="/ads.txt" component={adsTxtCode} ></Route>
 
                     
 

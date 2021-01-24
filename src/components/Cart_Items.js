@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import StripeCheckout from 'react-stripe-checkout';
+// import StripeCheckout from 'react-stripe-checkout';
 import { PayPalButton } from "react-paypal-button-v2";
 import { GalleryContext } from '../context/GalleryContext';
 import swal from 'sweetalert';

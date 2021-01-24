@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { GalleryContext } from '../context/GalleryContext';
 
 import Header from './Header';
-import LoadImages from './LoadImages';
+// import LoadImages from './LoadImages';
 import LoadImages2 from './LoadImages2';
 
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { GalleryContext } from '../context/GalleryContext';
 import Header from './Header';
-// import LoadSearchImages from './LoadSearchImages';
-import LoadSearchImages2 from './LoadSearchImages2';
+import LoadSearchImages from './LoadSearchImages';
+// import LoadSearchImages2 from './LoadSearchImages2';
 
 
 
@@ -287,7 +287,8 @@ class SearchResults extends Component {
                 }
 
                 {this.state.displaySection === "block" && 
-                    <LoadSearchImages2 photos={this.state.filteredArray} />
+                    // <LoadSearchImages2 photos={this.state.filteredArray} />
+                    <LoadSearchImages photos={this.state.filteredArray} />
                 }
 
                 {/* <div style={{ display: `${this.state.displaySection}` }} >

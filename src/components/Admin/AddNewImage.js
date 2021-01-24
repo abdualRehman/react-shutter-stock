@@ -18,6 +18,9 @@ import { GalleryContext } from '../../context/GalleryContext';
 
 
 // new
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 import firebase from 'firebase';
 
@@ -37,6 +40,8 @@ class AddNewImage extends React.Component {
         pngLoadingStatus: null,
         Images: [],
         completeStatus: "",
+        uploadStatus: false,
+        uploadPercentage:null
     }
 
     handleKeyword = (event) => {
@@ -79,6 +84,8 @@ class AddNewImage extends React.Component {
     }
 
     submitData = (auth, gallery) => {
+
+        
         if (this.state.title === "") {
             return M.toast({ html: `"Title" Required!`, classes: 'red' })
         } else if (this.state.category === "") {
@@ -89,19 +96,30 @@ class AddNewImage extends React.Component {
         }
 
 
+        
+
 
         let totalImages = this.state.Images;
+        var btn = document.getElementById("CreateBtn");
+
+
+        this.setState({ uploadStatus: true , uploadPercentage: null });
+        btn.className += " disabled";
+
+        let oneFilePercentage = 100 / totalImages.length;
 
         let uploadData = (counter) => {
 
             if (counter === totalImages.length) {
                 M.toast({ html: `Successfully Uploaded!`, classes: 'green' });
+                btn.classList.remove("disabled");
                 this.setState({
                     title: null,
                     price: null,
                     pngLoadingStatus: null,
                     Images: [],
                     completeStatus: "",
+                    uploadStatus: false,
                 });
 
             }
@@ -129,12 +147,16 @@ class AddNewImage extends React.Component {
                             gallery.addToList(imageData);
 
 
+                            var itration = counter + 1;
+                            this.setState({
+                                uploadPercentage: Math.floor(oneFilePercentage) * itration
+                            })
+
+
                             console.log("Document written with ID: ", docRef.id);
-                         
+
                             counter++;
                             uploadData(counter);
-
-
                         })
                         .catch((error) => {
                             console.error("Error adding document: ", error);
@@ -163,19 +185,7 @@ class AddNewImage extends React.Component {
         }
 
         let oneFilePercentage = 100 / length;
-        const options = {
-            // quality: 0.92,
-            // type: "image/jpeg",
-            // width: 350,
-            // size: 1000,
-            // accuracy: 0.9,
 
-            quality: 0.7,
-            type: "image/jpeg",
-            width: 250,
-            size: 1000,
-            accuracy: 0.5,
-        }
 
 
 
@@ -184,6 +194,25 @@ class AddNewImage extends React.Component {
 
             setTimeout(async () => {
                 if (counter < 5) {
+
+
+                    const options = {
+                        // quality: 0.92,
+                        // type: "image/jpeg",
+                        // width: 350,
+                        // size: 1000,
+                        // accuracy: 0.9,
+
+                        quality: 0.92,
+                        type: "image/jpeg",
+                        // width: 1000,
+                        height: 1000,
+                        size: 1200,
+                        accuracy: 0.9,
+                    }
+
+
+
 
                     if (counter === list.length) {
                         this.setState({ completeStatus: `Uploading Completed` });
@@ -195,7 +224,7 @@ class AddNewImage extends React.Component {
                     if (imageFile !== "undefined" && imageFile) {
                         this.setState({ completeStatus: `Compressing Images ${counter + 1}` });
 
-                        var imageObj = {
+                        var pixelsHeight, imageObj = {
                             fileWidth: "",
                             fileHeight: "",
                             src: "",
@@ -204,81 +233,114 @@ class AddNewImage extends React.Component {
 
                         var _URL = window.URL || window.webkitURL;
                         const i = new Image();
-                        i.onload = () => {
+                        i.onload = async () => {
                             let reader = new FileReader()
-                            reader.readAsDataURL(imageFile)
+                            reader.readAsDataURL(imageFile);
+                            pixelsHeight = Math.round(i.height);
+                            console.log("height " + Math.round(i.height));
                             imageObj.fileWidth = Math.round(i.width / 300);
                             imageObj.fileHeight = Math.round(i.height / 300);
+
+
+
+
+                            // ----------------------------------------------------------------------------------
+
+
+                            
+                            var kb = imageFile.size / 1000;
+                            if (kb < 1200) {
+
+                                var sizeOpt = kb - 10;
+                                options.size = sizeOpt;
+                                options.quality = 0.5;
+                                options.type = "image/jpeg";
+                                options.height = 1000;
+                            }
+                            
+                            if (pixelsHeight <= 1000) {
+                                
+                                options.height = i.height
+                            }
+
+                            
+
+
+
+                            try {
+                                const res = await imageConversion.compress(imageFile, options);
+
+                                this.setState({ completeStatus: `Stroing Image ${counter + 1} into database` });
+
+                                if (res) {
+
+                                    storageRef.child(`jpeg/${Math.random()}`).put(res).then((snapshot) => {
+
+
+                                        snapshot.ref.getDownloadURL().then((downloadURL) => {
+
+
+                                            this.setState({ completeStatus: `Storing Real Image ${counter + 1}` });
+
+
+                                            let firebasePutString = storageRef.child(`png/${Math.random()}`).put(imageFile);
+
+                                            firebasePutString.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                                                (snapshot) => {
+                                                    var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                                    this.setState({ completeStatus: `Processing ${Math.round(percentage)}` });
+                                                },
+                                                (e) => {
+                                                    console.log(e);
+                                                    M.toast({ html: `Error During Storing Real Image`, classes: 'red' });
+                                                },
+                                                () => {
+                                                    firebasePutString.snapshot.ref.getDownloadURL().then((pngURL) => {
+
+                                                        this.setState({ completeStatus: `Successfully Stored ${counter + 1}` });
+
+                                                        imageObj.src = downloadURL;
+                                                        imageObj.paidSrc = pngURL;
+
+                                                        var itration = counter + 1;
+                                                        this.setState({
+
+                                                            pngLoadingStatus: oneFilePercentage * itration,
+
+                                                            Images: [...this.state.Images, imageObj]
+                                                        });
+
+
+                                                        if (downloadURL) {
+                                                            counter++;
+                                                            start(counter);
+                                                        }
+                                                    })
+                                                });
+
+
+
+
+
+                                        });
+                                    }).catch((e) => {
+                                        console.log(e);
+                                        M.toast({ html: `Error During Storing Compressed Image`, classes: 'red' });
+                                    });
+                                }
+                            } catch (err) {
+                                console.log(err);
+                                M.toast({ html: `Error During Compression Image`, classes: 'red' });
+                            }
+
+
                         };
                         i.src = _URL.createObjectURL(imageFile);
 
 
 
-                        try {
-                            const res = await imageConversion.compress(imageFile, options);
 
-                            this.setState({ completeStatus: `Stroing Image ${counter + 1} into database` });
-
-                            if (res) {
-
-                                storageRef.child(`jpeg/${Math.random()}`).put(res).then((snapshot) => {
-
-
-                                    snapshot.ref.getDownloadURL().then((downloadURL) => {
-
-
-                                        this.setState({ completeStatus: `Storing Real Image ${counter + 1}` });
-
-                                        // storing main file 
-                                        let firebasePutString = storageRef.child(`png/${Math.random()}`).put(imageFile);
-
-                                        firebasePutString.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                                            (snapshot) => {
-                                                var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                                this.setState({ completeStatus: `Processing ${Math.round(percentage)}` });
-                                            },
-                                            (e) => {
-                                                console.log(e);
-                                                M.toast({ html: `Error During Storing Real Image`, classes: 'red' });
-                                            },
-                                            () => {
-                                                firebasePutString.snapshot.ref.getDownloadURL().then((pngURL) => {
-
-                                                    this.setState({ completeStatus: `Successfully Stored ${counter + 1}` });
-
-                                                    imageObj.src = downloadURL;
-                                                    imageObj.paidSrc = pngURL;
-
-                                                    var itration = counter + 1;
-                                                    this.setState({
-                                                        
-                                                        pngLoadingStatus: oneFilePercentage * itration,
-
-                                                        Images: [...this.state.Images, imageObj]
-                                                    });
-
-
-                                                    if (downloadURL) {
-                                                        counter++;
-                                                        start(counter);
-                                                    }
-                                                })
-                                            });
-
-
-
-
-
-                                    });
-                                }).catch((e) => {
-                                    console.log(e);
-                                    M.toast({ html: `Error During Storing Compressed Image`, classes: 'red' });
-                                });
-                            }
-                        } catch (err) {
-                            console.log(err);
-                            M.toast({ html: `Error During Compression Image`, classes: 'red' });
-                        }
+                       
 
                     }
 
@@ -296,7 +358,7 @@ class AddNewImage extends React.Component {
 
 
 
-  
+
 
     downloadImage = () => {
         // var url = this.state.fileURL;
@@ -320,6 +382,11 @@ class AddNewImage extends React.Component {
     }
 
     render() {
+        const disableStyle = {
+            backgroundColor: "#cccccc!important",
+            color: "#666666",
+            cursor: "not-allowed",
+        }
 
         return (
             <AuthContext.Consumer>
@@ -403,10 +470,19 @@ class AddNewImage extends React.Component {
                                                             <br /><br />
                                                             <div className="divider" tabIndex="-1"></div>
 
-                                                            <button className={`btn green lighten-1 float-right`}
+                                                            <button className={`btn green lighten-1 float-right `}
                                                                 onClick={() => {
                                                                     this.submitData(AuthContext, gallery)
-                                                                }} >Create</button>
+                                                                }}
+                                                                id="CreateBtn"
+                                                            >Create</button>
+
+                                                            {this.state.uploadStatus &&
+                                                                <div className="m-l-10">
+                                                                    <CircularProgressWithLabel value={this.state.uploadPercentage} />
+                                                                </div>
+                                                            }
+                                                            
 
                                                         </div>
                                                     </div>
@@ -425,4 +501,42 @@ class AddNewImage extends React.Component {
         )
     }
 }
+
+
+
+
+function CircularProgressWithLabel(props) {
+    return (
+      <Box position="relative" display="inline-flex">
+        <CircularProgress variant="static" {...props} />
+        <Box
+          top={0}
+          left={0}
+          bottom={0}
+          right={0}
+          position="absolute"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+            props.value
+          )}% `}</Typography>
+        </Box>
+      </Box>
+    )
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 export default AddNewImage;

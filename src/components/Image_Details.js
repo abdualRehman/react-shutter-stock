@@ -219,7 +219,7 @@ class Image_Details extends Component {
                 }
 
                 
-            }, 5000);
+            }, 7000);
 
         } else {
 
@@ -250,7 +250,7 @@ class Image_Details extends Component {
 
     downloadImage = () => {
         var url = this.state.details.src;
-        var fileName = this.state.details.title;
+        var fileName = `${this.state.details.title}.jpg`;
 
 
         var xhr = new XMLHttpRequest();//
