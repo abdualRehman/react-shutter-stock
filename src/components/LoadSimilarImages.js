@@ -14,7 +14,7 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 import Container from '@material-ui/core/Container';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     image1: {
         maxHeight: "650px",
         background: "transparent",
@@ -48,7 +48,7 @@ function LoadSimilarImages(props) {
 
   
     
-    const { data, loading, more, load, photos, searchByCategory } = useContext(GalleryContext);
+    const { data, loading, more, load } = useContext(GalleryContext);
     const loader = useRef(load)
     const observer = useRef(
         new IntersectionObserver((entries) => {

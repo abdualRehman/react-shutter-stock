@@ -66,6 +66,11 @@ class Cart_Items extends Component {
 
 
     componentDidMount = () => {
+        this.getInstantData();
+    }
+
+
+    getInstantData = () => {
         const cart = localStorage.getItem('cartItems');
         var totalCartItems = cart ? JSON.parse(cart) : [];
 
@@ -73,24 +78,26 @@ class Cart_Items extends Component {
             var price = 0;
             totalCartItems.map((item) => {
                 price = price + Number(item.price);
-                return true;
+                return;
             });
             this.setState({ items: totalCartItems, totalPrice: price });
-
         }
+        setTimeout(() => {
+            this.setState({ showLoading: true });
+        }, 1000);
     }
 
     deleteCartItem = (index) => {
 
         totalCartItems.splice(index, 1);
         localStorage.setItem('cartItems', JSON.stringify(totalCartItems));
-        this.componentDidMount();
-        this.refs.child.getUpdate();
+        this.getInstantData();
+        // this.refs.child.getUpdate();
     }
 
 
     handlePayment = (details) => {
-        
+
         if (details.status === "COMPLETED") {
             this.downloadZip();
             this.setState({ showAlert: "block" })
@@ -102,19 +109,15 @@ class Cart_Items extends Component {
     }
 
     handleTocken = async (token) => {
-        
         const product = {
             name: "Product Name Send",
             price: this.state.totalPrice
         }
-
         // const responce = await axios.post('http://localhost:4000/checkout', {
         const responce = await axios.post('https://us-central1-shutterstock-d60e1.cloudfunctions.net/app/checkout', {
             token,
             product,
         });
-
-        
         const { status } = responce.data;
         if (status === "success") {
             console.log("Success! Check email for Details");
@@ -124,8 +127,6 @@ class Cart_Items extends Component {
             console.log("Something Went Wrong!");
             M.toast({ html: `Something Went Wrong!`, classes: 'red' });
         }
-
-
     }
 
 
@@ -247,7 +248,7 @@ class Cart_Items extends Component {
                     if (res.iscomplete === true) {
                         fileName = "";
                         fileSrc = "";
-                        
+
                         this.setState({ downloadProgress: 0, dataRate: "KB/s" });
                         i++;
                         downloadFile(i);
@@ -277,11 +278,13 @@ class Cart_Items extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+
+
         return (
             <div style={{ background: "white", height: "100vh" }} >
-    
-                <Header ref="child" />
+
+                {/* <Header ref="child" /> */}
+                <Header />
 
                 <div className="bg0 p-t-75 p-b-85">
                     <div className="container">
@@ -386,16 +389,19 @@ class Cart_Items extends Component {
                                     <hr />
                                     */}
 
-                                    {this.state.showLoading ? <span>Loading Button...</span> : null}
-                                    <PayPalButton
-                                        amount={this.state.totalPrice}
-                                        shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                        onSuccess={this.handlePayment}
-                                        onError={(err) => alert(err)}
-                                        catchError={(err) => alert(err)}
-                                        onButtonReady={() => this.setState({ showLoading: false })}
-                                    />
-
+                                    {this.state.showLoading &&
+                                        <PayPalButton
+                                            amount={this.state.totalPrice}
+                                            shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                            onSuccess={this.handlePayment}
+                                            onError={(err) => alert(err)}
+                                            catchError={(err) => alert(err)}
+                                            onButtonReady={() => this.setState({ showLoading: true })}
+                                        // onButtonReady={() => { setTimeout(() => {
+                                        //     this.setState({ showLoading: false })
+                                        // }, 1000); } }
+                                        />
+                                    }
 
 
 
@@ -415,6 +421,56 @@ class Cart_Items extends Component {
 
 
 
+class RenderPaypal extends Component {
+
+    static contextType = GalleryContext;
+    constructor(props) {
+        super(props)
+        this.state = {
+            items: [],
+            showAlert: "none",
+
+            state: '',
+            address: '',
+            postcode: '',
+            totalPrice: 10,
+            startDownload: false,
+
+            CCnumber: null,
+            CCexpiry: "",
+            CCcvc: "",
+            showLoading: false,
+
+
+            downloadProgress: 0,
+            downloadFile: "",
+            dataRate: "KB/s"
+
+
+        }
+    }
+    handlePayment = (details) => {
+        console.log(details);
+    }
+    render() {
+        return (
+            <>
+                {/* <PayPalButton
+                    amount={this.state.totalPrice}
+                    shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                    onSuccess={this.handlePayment}
+                    onError={(err) => alert(err)}
+                    catchError={(err) => alert(err)}
+                    onButtonReady={() => this.setState({ showLoading: true })}
+                // onButtonReady={() => { setTimeout(() => {
+                //     this.setState({ showLoading: false })
+                // }, 1000); } }
+                /> */}
+            </>
+        )
+    }
+
+}
 
 
 

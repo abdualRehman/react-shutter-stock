@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "Open Sans,sans-serif",
         marginBottom: "10px",
     },
+    my_masonry_grid_column:{
+        padding:theme.spacing(0)
+    }
 
 })
 );
@@ -32,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const breakpointColumnsObj = {
-    default: 3,
+    default: 4,
     700: 2,
     500: 1
 };
@@ -138,7 +141,8 @@ function LoadImages() {
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"
-                    columnClassName="my-masonry-grid_column">
+                    // columnClassName="my-masonry-grid_column">
+                    columnClassName={classes.my_masonry_grid_column}>
                     {data.map((item, index) => {
                         return <div key={index}>
                             <figure className={`snip0016 caption ${classes.image1}`}>

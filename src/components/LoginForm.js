@@ -115,15 +115,11 @@ class LoginForm extends Component {
 
 
             // ...
-        }).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
+        }).catch(function (error) {            
             var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-      
+            // var errorCode = error.code;
+            // var email = error.email;
+            // var credential = error.credential;
             swal("Login Failed", errorMessage, "warning");
             // ...
         });
@@ -176,16 +172,7 @@ class LoginForm extends Component {
             })
             // ...
         }).catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
             var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-
-        
-
             swal("Login Failed", errorMessage, "warning")
             // ...
         });
@@ -278,7 +265,8 @@ class RegisterForm extends Component {
         e.preventDefault()
         
         var validate = false;
-        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        // var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
 
 

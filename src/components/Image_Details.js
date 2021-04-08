@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import Header from './Header';
 import Footer from './Footer';
 
-import { Link } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import Jimp from 'jimp';
+// import Jimp from 'jimp';
 import swal from 'sweetalert';
 
 import Carousel, { Modal, ModalGateway } from "react-images";
 import { GalleryContext } from '../context/GalleryContext';
 
-import LoadSimilarImages from './LoadSimilarImages';
+// import LoadSimilarImages from './LoadSimilarImages';
 
-
+import HorizontalAd from './HorizontalAd';
+import RectangleAd from './RectangleAd';
 
 
 
@@ -44,7 +45,7 @@ const useStyles = (theme) => ({
     },
     container: {
         maxWidth: "1310px",
-        margin: "32px auto 0",
+        margin: "0 auto",
         padding: "0 20px",
         position: "relative",
     },
@@ -166,7 +167,7 @@ class Image_Details extends Component {
 
     constructor(props) {
         super(props);
-        this.child = React.createRef();
+        // this.child = React.createRef();
         this.state = {
             viewerIsOpen: false,
             customBoxIsOpen: false,
@@ -188,6 +189,7 @@ class Image_Details extends Component {
             height: '',
             width: '',
             creatorDetails: {},
+            callChildReset: 0,
         }
     }
 
@@ -197,17 +199,22 @@ class Image_Details extends Component {
         window.scrollTo({
             top: 0,
         });
+        
 
-        var details = this.props.location.state
+
+        var details = this.props.location.state;
+
+        // (window.adsbygoogle = window.adsbygoogle || []).push({});
+
 
         const galleryData = this.context;
 
         if (details === "undefined" || !details) {
-            
+
             setTimeout(() => {
 
                 var imageData = galleryData.findById(this.props.match.params.id)
-                
+
                 if (imageData) {
                     this.setState({ details: imageData });
 
@@ -218,7 +225,7 @@ class Image_Details extends Component {
                     });
                 }
 
-                
+
             }, 7000);
 
         } else {
@@ -227,7 +234,7 @@ class Image_Details extends Component {
 
 
             setTimeout(() => {
-                
+
                 this.setState({ similarImagesArray: galleryData.SearchSimilarImages(details.keywords) })
             }, 3000);
 
@@ -294,7 +301,12 @@ class Image_Details extends Component {
 
         swal(this.state.details.title, "is added to cart !", "success");
 
-        this.child.current.getUpdate();
+        // console.log(this.child)
+        // this.child.current.getUpdate();
+        // this.refs.child.getUpdate();
+
+        console.log(this)
+        console.log(this.refs)
     }
 
 
@@ -313,8 +325,11 @@ class Image_Details extends Component {
                 {(gallery) => {
                     return (
                         <div style={{ background: "white", minHeight: "100vh" }}>
-                            <Header ref={this.child} />
-
+                            {/* <Header ref={this.child} /> */}
+                            <Header />
+                            <div className="addSection" >
+                                    <HorizontalAd />
+                            </div>
                             <Grid container spacing={2} className={classes.container} >
                                 <Grid item md={8} sm={6} xs={12} >
                                     <div className={classes.detailsImageSection}>
@@ -336,9 +351,11 @@ class Image_Details extends Component {
                                         </div>
 
                                     }
+                                   <HorizontalAd />
                                 </Grid>
 
                                 <Grid item md={4} sm={6} xs={12} >
+
                                     <div className={classes.detailsSection} >
                                         <div className={classes.detail_title} >
                                             {this.state.details.title}
@@ -362,8 +379,9 @@ class Image_Details extends Component {
                                     <div className={classes.downloadSection}>
                                         <h4>Purchase Orignal</h4>
                                         Download Image with it's orignal height and width
-                                        <button className="btn green" style={{ width: "100%", margin: "5px auto", padding: "initial" }} onClick={this.addToCart} > <i className="fas fa-cart-plus"></i> Add To Cart</button>
+                                        <button className="btn green" style={{ width: "100%", margin: "5px auto", padding: "initial" }} onClick={ this.addToCart } > <i className="fas fa-cart-plus"></i> Add To Cart</button>
                                     </div>
+                                    <RectangleAd />
                                 </Grid>
 
 
@@ -389,4 +407,4 @@ class Image_Details extends Component {
     }
 }
 
-export default withStyles(useStyles)(Image_Details);
+export default withStyles(useStyles , {withTheme: true } )(Image_Details);

@@ -50,7 +50,6 @@ const useImageStyles = theme => ({
         marginTop: 0,
         marginBottom: 0,
         textTransform: "capitalize",
-        display: "-webkit-inline-box",
         display: "inline-flex",
         padding: ".35rem",
         paddingRight: "1.25rem",
@@ -76,7 +75,6 @@ const useImageStyles = theme => ({
         lineHeight: "1.2",
         fontWeight: 800,
         marginTop: 0,
-        marginBottom: 0,
         textTransform: "capitalize",
         textAlign: "center",
         marginBottom: "1rem",
@@ -98,7 +96,6 @@ const useImageStyles = theme => ({
             marginTop: theme.spacing(1),
             letterSpacing: ".4px",
             marginBottom: 0,
-            display: "-webkit-inline-box",
             display: "inline-flex",
             "-webkit-box-align": "center",
             alignItems: "center",
@@ -185,7 +182,7 @@ class LoadAll_Images2 extends Component {
             this.setState({ similarTagsArray: [] });
 
 
-            var category;
+            var category , photoArray;
             switch (categoryName) {
                 case 'all':
                     category = "All";
@@ -195,7 +192,7 @@ class LoadAll_Images2 extends Component {
                     category = "Texture";
                     var texturTags = gallery.SearchSimilarTags("texture");
 
-                    var photoArray = gallery.searchByCategory(categoryName);
+                    photoArray = gallery.searchByCategory(categoryName);
 
                     this.setState({ similarTagsArray: this.state.similarTagsArray.concat(texturTags) , sortPhotos:photoArray });
                     break;
@@ -203,7 +200,7 @@ class LoadAll_Images2 extends Component {
                     category = "Pattren";
                     var pattren = gallery.SearchSimilarTags("pattren");
 
-                    var photoArray = gallery.searchByCategory(categoryName);
+                    photoArray = gallery.searchByCategory(categoryName);
 
                     this.setState({ similarTagsArray: this.state.similarTagsArray.concat(pattren) , sortPhotos:photoArray  });
                     break;
@@ -211,7 +208,7 @@ class LoadAll_Images2 extends Component {
                     category = "Degital And Textile Design";
                     var TextileDesign = gallery.SearchSimilarTags("textileDesign");
 
-                    var photoArray = gallery.searchByCategory(categoryName);
+                    photoArray = gallery.searchByCategory(categoryName);
 
                     this.setState({ similarTagsArray: this.state.similarTagsArray.concat(TextileDesign) , sortPhotos:photoArray  });
                     break;
@@ -221,7 +218,7 @@ class LoadAll_Images2 extends Component {
                     var Flowers = gallery.SearchSimilarTags("flowers");
                     var Leaves = gallery.SearchSimilarTags("leaves");
 
-                    var photoArray = gallery.searchByCategory(categoryName);
+                    photoArray = gallery.searchByCategory(categoryName);
 
                     this.setState({ similarTagsArray: this.state.similarTagsArray.concat(botanical).concat(Flowers).concat(Leaves) , sortPhotos:photoArray  });
                     break;
@@ -230,7 +227,7 @@ class LoadAll_Images2 extends Component {
                     var Ornaments = gallery.SearchSimilarTags("ornament");
                     var Baroque = gallery.SearchSimilarTags("baroque");
 
-                    var photoArray = gallery.searchByCategory(categoryName);
+                    photoArray = gallery.searchByCategory(categoryName);
 
                     this.setState({ similarTagsArray: this.state.similarTagsArray.concat(Ornaments).concat(Baroque) , sortPhotos:photoArray  });
 

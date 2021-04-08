@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RectangleAd from './RectangleAd';
 
 class Footer extends React.Component {
+  
     render() {
         return (
             <div>
@@ -55,7 +57,7 @@ class Footer extends React.Component {
                                         <li>
                                             <Link to="/privacy"> Privacy Policy </Link>
                                         </li>
-                                      
+
                                     </ul>
 
                                 </div>
@@ -65,31 +67,31 @@ class Footer extends React.Component {
                                         <li>
                                             <Link to="/contact-us"> Contact us </Link>
                                         </li>
-                                      
+
                                     </ul>
                                     <h5 className="white-text">Customers</h5>
                                     <ul>
                                         <li className="grey-text">
-                                          +92310 7078901
+                                            +92310 7078901
                                         </li>
                                         <li>
-                                        <a href="mailto:support@sstock.com.pk">support@sstock.com.pk</a>
+                                            <a href="mailto:support@sstock.com.pk">support@sstock.com.pk</a>
                                         </li>
                                     </ul>
-                                  
+                                    <RectangleAd />
 
                                 </div>
-                              
+
                                 <hr />
                             </div>
                         </div>
 
 
 
-                        
+
                         <div className="footer-copyright">
                             <div className="container">
-                            <hr style={{borderBottom: "1px solid #474759"}} />
+                                <hr style={{ borderBottom: "1px solid #474759" }} />
                                 © 20013-2020 S-Stock, Inc.
                         <div className="grey-text text-lighten-4 right">
                                     <ul className="footerIcons">

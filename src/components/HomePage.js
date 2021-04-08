@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Header from './Header';
 import { GalleryContext } from '../context/GalleryContext';
 import LoadImages from './LoadImages';
-
+import VerticalAd from './VerticalAd';
+import HorizontalAd from './HorizontalAd';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
@@ -11,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// import GoogleAdsense from 'react-adsense-google';
 
 const styles = theme => ({
     topSearch: {
@@ -49,7 +51,6 @@ const styles = theme => ({
         color: "#6d6d6d",
     },
     topCategories: {
-        margin: "10px",
         fontSize: "14px",
         color: "#fff",
         opacity: 0.5,
@@ -68,7 +69,6 @@ const styles = theme => ({
             marginTop: theme.spacing(1),
             letterSpacing: ".4px",
             marginBottom: 0,
-            display: "-webkit-inline-box",
             display: "inline-flex",
             "-webkit-box-align": "center",
             alignItems: "center",
@@ -128,8 +128,11 @@ class HomePage extends Component {
         // setTimeout(() => {
         // this.setState({displaySection:"block"})
         // },4000);
+        // (window.adsbygoogle = window.adsbygoogle || []).push({});
         this.getData();
+
     }
+
 
     getData = () => {
         var gallery = this.context;
@@ -139,9 +142,9 @@ class HomePage extends Component {
                 this.getData();
             }, 1000)
         } else {
-            
+
             this.setState({ displaySection: "block", backdrop: false });
-           
+
         }
     }
 
@@ -162,7 +165,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const { classes, theme } = this.props;
+        const { classes } = this.props;
         return (
             <div>
                 {/* <Header /> */}
@@ -193,6 +196,21 @@ class HomePage extends Component {
 
                     </div>
                 </div>
+                <div className="container addSection1" >
+                    {/* <!-- horizotal add for main page --> */}
+
+                    {/* <GoogleAdsense
+                        adClient='ca-pub-7362256281567785'
+                        adSlot='6606615613'
+                        style={{ 'display': 'block', textAlign: 'center' }}
+                        adLayout='in-article'
+                        adFormat='horizontal'
+                        fullWidthResponsive='true'
+                    /> */}
+
+                    <HorizontalAd />
+
+                </div>
                 <div className={classes.categoryList} >
                     <ul>
                         <li className="active" >
@@ -217,10 +235,23 @@ class HomePage extends Component {
                 </div>
                 <br />
 
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-10 col-sm-10">
+                            <div style={{ display: `${this.state.displaySection}` }} >
+                                <LoadImages />
+                            </div>
+                        </div>
+                        <div className="col-md-2 col-sm-2" style={{ borderLeft: "1px solid #d0cdcd", minHeight: "340px", padding: '5px' }}>
 
-                <div style={{ display: `${this.state.displaySection}` }} >
-                    <LoadImages />
+                            <VerticalAd />
+                            <br />
+                            <VerticalAd />
+
+                        </div>
+                    </div>
                 </div>
+
                 <Backdrop className={classes.backdrop} open={this.state.backdrop} >
                     <CircularProgress color="inherit" />
                 </Backdrop>

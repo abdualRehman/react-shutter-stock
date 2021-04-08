@@ -244,7 +244,6 @@ export default class GalleryContextProvider extends Component {
         }).catch((error) => {
             console.log(error);
         });
-
     }
 
     getAllData = () => {
@@ -380,10 +379,12 @@ export default class GalleryContextProvider extends Component {
 
         if (sortByCategory.length > 0) {
 
-            for (var i = 0; i < sortByCategory.length; i++) {
+            for (let i = 0; i < sortByCategory.length; i++) {
                 sortByCategory[i].keywords.filter((photoTag) => {
                     if (photoTag.tag.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
                         resultData.push(sortByCategory[i]);
+                        i++;
+                        return true;
                     }
                 });
             }

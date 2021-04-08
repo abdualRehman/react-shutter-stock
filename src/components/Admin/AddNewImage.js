@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../App.css';
-import { db, storage, storageRef } from '../../config/firebase';
-import watermark from 'watermarkjs';
+import { db, storageRef } from '../../config/firebase';
+// import watermark from 'watermarkjs';
 // import ImageCompressor from 'image-compressor.js';
-import ImageCompressor from 'compressorjs';
+// import ImageCompressor from 'compressorjs';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -382,11 +382,7 @@ class AddNewImage extends React.Component {
     }
 
     render() {
-        const disableStyle = {
-            backgroundColor: "#cccccc!important",
-            color: "#666666",
-            cursor: "not-allowed",
-        }
+        
 
         return (
             <AuthContext.Consumer>

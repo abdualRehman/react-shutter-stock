@@ -150,10 +150,8 @@ const styles = theme => ({
     searchIcon: {
 
         border: "none",
-        background: "0 0",
         borderTopRightRadius: "6px",
         borderBottomRightRadius: "6px",
-        display: "-webkit-box",
         display: "flex",
         "-webkit-box-align": "center",
         alignItems: "center",
@@ -500,7 +498,8 @@ class Header extends Component {
 
 
 
-export default withStyles(styles, { withTheme: true })(withRouter(Header));
+// export default withStyles(styles, { withTheme: true })(withRouter(Header));
+export default withStyles(styles, { withTheme: true })(Header);
 
 
 
